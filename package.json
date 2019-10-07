@@ -1,0 +1,24 @@
+{
+  "name": "review-backend",
+  "version": "1.0.0",
+  "description": "review project GraphQL + Apollo + Prisma with Gu,Ham",
+  "repository": "https://github.com/bolonge/review-backend.git",
+  "author": "bolonge <xxs456@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/node": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "dotenv": "^8.1.0",
+    "graphql-tools": "^4.0.5",
+    "graphql-yoga": "^1.18.3",
+    "merge-graphql-schemas": "^1.7.0",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  }
+}
