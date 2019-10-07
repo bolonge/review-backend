@@ -1,0 +1,24 @@
+type User {
+  id: ID! @id
+  name: String!
+}
+
+type Product {
+  id: ID! @id
+}
+
+type Review {
+  id: ID! @id
+}
+
+type Like {
+  id: ID! @id
+}
+
+type Hate {
+  id: ID! @id
+}
+
+type Photo {
+  id: ID! @id
+}
