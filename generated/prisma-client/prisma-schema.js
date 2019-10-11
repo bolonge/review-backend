@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateHate {
+/* GraphQL */ `type AggregateCategory {
+  count: Int!
+}
+
+type AggregateHate {
   count: Int!
 }
 
@@ -31,8 +35,156 @@ type BatchPayload {
   count: Long!
 }
 
+type Category {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CategoryConnection {
+  pageInfo: PageInfo!
+  edges: [CategoryEdge]!
+  aggregate: AggregateCategory!
+}
+
+input CategoryCreateInput {
+  id: ID
+  name: String!
+}
+
+input CategoryCreateOneInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
+}
+
+type CategoryEdge {
+  node: Category!
+  cursor: String!
+}
+
+enum CategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CategoryPreviousValues {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CategorySubscriptionPayload {
+  mutation: MutationType!
+  node: Category
+  updatedFields: [String!]
+  previousValues: CategoryPreviousValues
+}
+
+input CategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CategoryWhereInput
+  AND: [CategorySubscriptionWhereInput!]
+  OR: [CategorySubscriptionWhereInput!]
+  NOT: [CategorySubscriptionWhereInput!]
+}
+
+input CategoryUpdateDataInput {
+  name: String
+}
+
+input CategoryUpdateInput {
+  name: String
+}
+
+input CategoryUpdateManyMutationInput {
+  name: String
+}
+
+input CategoryUpdateOneRequiredInput {
+  create: CategoryCreateInput
+  update: CategoryUpdateDataInput
+  upsert: CategoryUpsertNestedInput
+  connect: CategoryWhereUniqueInput
+}
+
+input CategoryUpsertNestedInput {
+  update: CategoryUpdateDataInput!
+  create: CategoryCreateInput!
+}
+
+input CategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CategoryWhereInput!]
+  OR: [CategoryWhereInput!]
+  NOT: [CategoryWhereInput!]
+}
+
+input CategoryWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
 type Hate {
   id: ID!
+  user: User
+  review: Review
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type HateConnection {
@@ -43,6 +195,28 @@ type HateConnection {
 
 input HateCreateInput {
   id: ID
+  user: UserCreateOneWithoutMyHateInput
+  review: ReviewCreateOneWithoutHatesInput
+}
+
+input HateCreateManyWithoutReviewInput {
+  create: [HateCreateWithoutReviewInput!]
+  connect: [HateWhereUniqueInput!]
+}
+
+input HateCreateManyWithoutUserInput {
+  create: [HateCreateWithoutUserInput!]
+  connect: [HateWhereUniqueInput!]
+}
+
+input HateCreateWithoutReviewInput {
+  id: ID
+  user: UserCreateOneWithoutMyHateInput
+}
+
+input HateCreateWithoutUserInput {
+  id: ID
+  review: ReviewCreateOneWithoutHatesInput
 }
 
 type HateEdge {
@@ -53,10 +227,52 @@ type HateEdge {
 enum HateOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type HatePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input HateScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [HateScalarWhereInput!]
+  OR: [HateScalarWhereInput!]
+  NOT: [HateScalarWhereInput!]
 }
 
 type HateSubscriptionPayload {
@@ -77,6 +293,63 @@ input HateSubscriptionWhereInput {
   NOT: [HateSubscriptionWhereInput!]
 }
 
+input HateUpdateInput {
+  user: UserUpdateOneWithoutMyHateInput
+  review: ReviewUpdateOneWithoutHatesInput
+}
+
+input HateUpdateManyWithoutReviewInput {
+  create: [HateCreateWithoutReviewInput!]
+  delete: [HateWhereUniqueInput!]
+  connect: [HateWhereUniqueInput!]
+  set: [HateWhereUniqueInput!]
+  disconnect: [HateWhereUniqueInput!]
+  update: [HateUpdateWithWhereUniqueWithoutReviewInput!]
+  upsert: [HateUpsertWithWhereUniqueWithoutReviewInput!]
+  deleteMany: [HateScalarWhereInput!]
+}
+
+input HateUpdateManyWithoutUserInput {
+  create: [HateCreateWithoutUserInput!]
+  delete: [HateWhereUniqueInput!]
+  connect: [HateWhereUniqueInput!]
+  set: [HateWhereUniqueInput!]
+  disconnect: [HateWhereUniqueInput!]
+  update: [HateUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [HateUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [HateScalarWhereInput!]
+}
+
+input HateUpdateWithoutReviewDataInput {
+  user: UserUpdateOneWithoutMyHateInput
+}
+
+input HateUpdateWithoutUserDataInput {
+  review: ReviewUpdateOneWithoutHatesInput
+}
+
+input HateUpdateWithWhereUniqueWithoutReviewInput {
+  where: HateWhereUniqueInput!
+  data: HateUpdateWithoutReviewDataInput!
+}
+
+input HateUpdateWithWhereUniqueWithoutUserInput {
+  where: HateWhereUniqueInput!
+  data: HateUpdateWithoutUserDataInput!
+}
+
+input HateUpsertWithWhereUniqueWithoutReviewInput {
+  where: HateWhereUniqueInput!
+  update: HateUpdateWithoutReviewDataInput!
+  create: HateCreateWithoutReviewInput!
+}
+
+input HateUpsertWithWhereUniqueWithoutUserInput {
+  where: HateWhereUniqueInput!
+  update: HateUpdateWithoutUserDataInput!
+  create: HateCreateWithoutUserInput!
+}
+
 input HateWhereInput {
   id: ID
   id_not: ID
@@ -92,6 +365,24 @@ input HateWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  user: UserWhereInput
+  review: ReviewWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [HateWhereInput!]
   OR: [HateWhereInput!]
   NOT: [HateWhereInput!]
@@ -103,6 +394,10 @@ input HateWhereUniqueInput {
 
 type Like {
   id: ID!
+  user: User
+  review: Review
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type LikeConnection {
@@ -113,6 +408,28 @@ type LikeConnection {
 
 input LikeCreateInput {
   id: ID
+  user: UserCreateOneWithoutMyLikeInput
+  review: ReviewCreateOneWithoutLikesInput
+}
+
+input LikeCreateManyWithoutReviewInput {
+  create: [LikeCreateWithoutReviewInput!]
+  connect: [LikeWhereUniqueInput!]
+}
+
+input LikeCreateManyWithoutUserInput {
+  create: [LikeCreateWithoutUserInput!]
+  connect: [LikeWhereUniqueInput!]
+}
+
+input LikeCreateWithoutReviewInput {
+  id: ID
+  user: UserCreateOneWithoutMyLikeInput
+}
+
+input LikeCreateWithoutUserInput {
+  id: ID
+  review: ReviewCreateOneWithoutLikesInput
 }
 
 type LikeEdge {
@@ -123,10 +440,52 @@ type LikeEdge {
 enum LikeOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type LikePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input LikeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [LikeScalarWhereInput!]
+  OR: [LikeScalarWhereInput!]
+  NOT: [LikeScalarWhereInput!]
 }
 
 type LikeSubscriptionPayload {
@@ -147,6 +506,63 @@ input LikeSubscriptionWhereInput {
   NOT: [LikeSubscriptionWhereInput!]
 }
 
+input LikeUpdateInput {
+  user: UserUpdateOneWithoutMyLikeInput
+  review: ReviewUpdateOneWithoutLikesInput
+}
+
+input LikeUpdateManyWithoutReviewInput {
+  create: [LikeCreateWithoutReviewInput!]
+  delete: [LikeWhereUniqueInput!]
+  connect: [LikeWhereUniqueInput!]
+  set: [LikeWhereUniqueInput!]
+  disconnect: [LikeWhereUniqueInput!]
+  update: [LikeUpdateWithWhereUniqueWithoutReviewInput!]
+  upsert: [LikeUpsertWithWhereUniqueWithoutReviewInput!]
+  deleteMany: [LikeScalarWhereInput!]
+}
+
+input LikeUpdateManyWithoutUserInput {
+  create: [LikeCreateWithoutUserInput!]
+  delete: [LikeWhereUniqueInput!]
+  connect: [LikeWhereUniqueInput!]
+  set: [LikeWhereUniqueInput!]
+  disconnect: [LikeWhereUniqueInput!]
+  update: [LikeUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [LikeUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [LikeScalarWhereInput!]
+}
+
+input LikeUpdateWithoutReviewDataInput {
+  user: UserUpdateOneWithoutMyLikeInput
+}
+
+input LikeUpdateWithoutUserDataInput {
+  review: ReviewUpdateOneWithoutLikesInput
+}
+
+input LikeUpdateWithWhereUniqueWithoutReviewInput {
+  where: LikeWhereUniqueInput!
+  data: LikeUpdateWithoutReviewDataInput!
+}
+
+input LikeUpdateWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput!
+  data: LikeUpdateWithoutUserDataInput!
+}
+
+input LikeUpsertWithWhereUniqueWithoutReviewInput {
+  where: LikeWhereUniqueInput!
+  update: LikeUpdateWithoutReviewDataInput!
+  create: LikeCreateWithoutReviewInput!
+}
+
+input LikeUpsertWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput!
+  update: LikeUpdateWithoutUserDataInput!
+  create: LikeCreateWithoutUserInput!
+}
+
 input LikeWhereInput {
   id: ID
   id_not: ID
@@ -162,6 +578,24 @@ input LikeWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  user: UserWhereInput
+  review: ReviewWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [LikeWhereInput!]
   OR: [LikeWhereInput!]
   NOT: [LikeWhereInput!]
@@ -174,19 +608,37 @@ input LikeWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createCategory(data: CategoryCreateInput!): Category!
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   createHate(data: HateCreateInput!): Hate!
+  updateHate(data: HateUpdateInput!, where: HateWhereUniqueInput!): Hate
+  upsertHate(where: HateWhereUniqueInput!, create: HateCreateInput!, update: HateUpdateInput!): Hate!
   deleteHate(where: HateWhereUniqueInput!): Hate
   deleteManyHates(where: HateWhereInput): BatchPayload!
   createLike(data: LikeCreateInput!): Like!
+  updateLike(data: LikeUpdateInput!, where: LikeWhereUniqueInput!): Like
+  upsertLike(where: LikeWhereUniqueInput!, create: LikeCreateInput!, update: LikeUpdateInput!): Like!
   deleteLike(where: LikeWhereUniqueInput!): Like
   deleteManyLikes(where: LikeWhereInput): BatchPayload!
   createPhoto(data: PhotoCreateInput!): Photo!
+  updatePhoto(data: PhotoUpdateInput!, where: PhotoWhereUniqueInput!): Photo
+  updateManyPhotos(data: PhotoUpdateManyMutationInput!, where: PhotoWhereInput): BatchPayload!
+  upsertPhoto(where: PhotoWhereUniqueInput!, create: PhotoCreateInput!, update: PhotoUpdateInput!): Photo!
   deletePhoto(where: PhotoWhereUniqueInput!): Photo
   deleteManyPhotos(where: PhotoWhereInput): BatchPayload!
   createProduct(data: ProductCreateInput!): Product!
+  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
+  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   createReview(data: ReviewCreateInput!): Review!
+  updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
+  upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
@@ -216,6 +668,10 @@ type PageInfo {
 
 type Photo {
   id: ID!
+  url: String!
+  review: Review
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type PhotoConnection {
@@ -226,6 +682,18 @@ type PhotoConnection {
 
 input PhotoCreateInput {
   id: ID
+  url: String!
+  review: ReviewCreateOneWithoutPhotosInput
+}
+
+input PhotoCreateManyWithoutReviewInput {
+  create: [PhotoCreateWithoutReviewInput!]
+  connect: [PhotoWhereUniqueInput!]
+}
+
+input PhotoCreateWithoutReviewInput {
+  id: ID
+  url: String!
 }
 
 type PhotoEdge {
@@ -236,10 +704,69 @@ type PhotoEdge {
 enum PhotoOrderByInput {
   id_ASC
   id_DESC
+  url_ASC
+  url_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type PhotoPreviousValues {
   id: ID!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input PhotoScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [PhotoScalarWhereInput!]
+  OR: [PhotoScalarWhereInput!]
+  NOT: [PhotoScalarWhereInput!]
 }
 
 type PhotoSubscriptionPayload {
@@ -260,6 +787,51 @@ input PhotoSubscriptionWhereInput {
   NOT: [PhotoSubscriptionWhereInput!]
 }
 
+input PhotoUpdateInput {
+  url: String
+  review: ReviewUpdateOneWithoutPhotosInput
+}
+
+input PhotoUpdateManyDataInput {
+  url: String
+}
+
+input PhotoUpdateManyMutationInput {
+  url: String
+}
+
+input PhotoUpdateManyWithoutReviewInput {
+  create: [PhotoCreateWithoutReviewInput!]
+  delete: [PhotoWhereUniqueInput!]
+  connect: [PhotoWhereUniqueInput!]
+  set: [PhotoWhereUniqueInput!]
+  disconnect: [PhotoWhereUniqueInput!]
+  update: [PhotoUpdateWithWhereUniqueWithoutReviewInput!]
+  upsert: [PhotoUpsertWithWhereUniqueWithoutReviewInput!]
+  deleteMany: [PhotoScalarWhereInput!]
+  updateMany: [PhotoUpdateManyWithWhereNestedInput!]
+}
+
+input PhotoUpdateManyWithWhereNestedInput {
+  where: PhotoScalarWhereInput!
+  data: PhotoUpdateManyDataInput!
+}
+
+input PhotoUpdateWithoutReviewDataInput {
+  url: String
+}
+
+input PhotoUpdateWithWhereUniqueWithoutReviewInput {
+  where: PhotoWhereUniqueInput!
+  data: PhotoUpdateWithoutReviewDataInput!
+}
+
+input PhotoUpsertWithWhereUniqueWithoutReviewInput {
+  where: PhotoWhereUniqueInput!
+  update: PhotoUpdateWithoutReviewDataInput!
+  create: PhotoCreateWithoutReviewInput!
+}
+
 input PhotoWhereInput {
   id: ID
   id_not: ID
@@ -275,6 +847,37 @@ input PhotoWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  review: ReviewWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [PhotoWhereInput!]
   OR: [PhotoWhereInput!]
   NOT: [PhotoWhereInput!]
@@ -286,6 +889,10 @@ input PhotoWhereUniqueInput {
 
 type Product {
   id: ID!
+  name: String!
+  category: Category!
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  createdAt: DateTime!
 }
 
 type ProductConnection {
@@ -296,6 +903,20 @@ type ProductConnection {
 
 input ProductCreateInput {
   id: ID
+  name: String!
+  category: CategoryCreateOneInput!
+  reviews: ReviewCreateManyWithoutProductInput
+}
+
+input ProductCreateOneWithoutReviewsInput {
+  create: ProductCreateWithoutReviewsInput
+  connect: ProductWhereUniqueInput
+}
+
+input ProductCreateWithoutReviewsInput {
+  id: ID
+  name: String!
+  category: CategoryCreateOneInput!
 }
 
 type ProductEdge {
@@ -306,10 +927,16 @@ type ProductEdge {
 enum ProductOrderByInput {
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type ProductPreviousValues {
   id: ID!
+  name: String!
+  createdAt: DateTime!
 }
 
 type ProductSubscriptionPayload {
@@ -330,191 +957,34 @@ input ProductSubscriptionWhereInput {
   NOT: [ProductSubscriptionWhereInput!]
 }
 
+input ProductUpdateInput {
+  name: String
+  category: CategoryUpdateOneRequiredInput
+  reviews: ReviewUpdateManyWithoutProductInput
+}
+
+input ProductUpdateManyMutationInput {
+  name: String
+}
+
+input ProductUpdateOneRequiredWithoutReviewsInput {
+  create: ProductCreateWithoutReviewsInput
+  update: ProductUpdateWithoutReviewsDataInput
+  upsert: ProductUpsertWithoutReviewsInput
+  connect: ProductWhereUniqueInput
+}
+
+input ProductUpdateWithoutReviewsDataInput {
+  name: String
+  category: CategoryUpdateOneRequiredInput
+}
+
+input ProductUpsertWithoutReviewsInput {
+  update: ProductUpdateWithoutReviewsDataInput!
+  create: ProductCreateWithoutReviewsInput!
+}
+
 input ProductWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  AND: [ProductWhereInput!]
-  OR: [ProductWhereInput!]
-  NOT: [ProductWhereInput!]
-}
-
-input ProductWhereUniqueInput {
-  id: ID
-}
-
-type Query {
-  hate(where: HateWhereUniqueInput!): Hate
-  hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate]!
-  hatesConnection(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HateConnection!
-  like(where: LikeWhereUniqueInput!): Like
-  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like]!
-  likesConnection(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LikeConnection!
-  photo(where: PhotoWhereUniqueInput!): Photo
-  photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo]!
-  photosConnection(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PhotoConnection!
-  product(where: ProductWhereUniqueInput!): Product
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
-  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
-  review(where: ReviewWhereUniqueInput!): Review
-  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
-  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  node(id: ID!): Node
-}
-
-type Review {
-  id: ID!
-}
-
-type ReviewConnection {
-  pageInfo: PageInfo!
-  edges: [ReviewEdge]!
-  aggregate: AggregateReview!
-}
-
-input ReviewCreateInput {
-  id: ID
-}
-
-type ReviewEdge {
-  node: Review!
-  cursor: String!
-}
-
-enum ReviewOrderByInput {
-  id_ASC
-  id_DESC
-}
-
-type ReviewPreviousValues {
-  id: ID!
-}
-
-type ReviewSubscriptionPayload {
-  mutation: MutationType!
-  node: Review
-  updatedFields: [String!]
-  previousValues: ReviewPreviousValues
-}
-
-input ReviewSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: ReviewWhereInput
-  AND: [ReviewSubscriptionWhereInput!]
-  OR: [ReviewSubscriptionWhereInput!]
-  NOT: [ReviewSubscriptionWhereInput!]
-}
-
-input ReviewWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  AND: [ReviewWhereInput!]
-  OR: [ReviewWhereInput!]
-  NOT: [ReviewWhereInput!]
-}
-
-input ReviewWhereUniqueInput {
-  id: ID
-}
-
-type Subscription {
-  hate(where: HateSubscriptionWhereInput): HateSubscriptionPayload
-  like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
-  photo(where: PhotoSubscriptionWhereInput): PhotoSubscriptionPayload
-  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
-  review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User {
-  id: ID!
-  name: String!
-}
-
-type UserConnection {
-  pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
-}
-
-input UserCreateInput {
-  id: ID
-  name: String!
-}
-
-type UserEdge {
-  node: User!
-  cursor: String!
-}
-
-enum UserOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-}
-
-type UserPreviousValues {
-  id: ID!
-  name: String!
-}
-
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
-  OR: [UserSubscriptionWhereInput!]
-  NOT: [UserSubscriptionWhereInput!]
-}
-
-input UserUpdateInput {
-  name: String
-}
-
-input UserUpdateManyMutationInput {
-  name: String
-}
-
-input UserWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -543,6 +1013,687 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  category: CategoryWhereInput
+  reviews_every: ReviewWhereInput
+  reviews_some: ReviewWhereInput
+  reviews_none: ReviewWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  NOT: [ProductWhereInput!]
+}
+
+input ProductWhereUniqueInput {
+  id: ID
+}
+
+type Query {
+  category(where: CategoryWhereUniqueInput!): Category
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  hate(where: HateWhereUniqueInput!): Hate
+  hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate]!
+  hatesConnection(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HateConnection!
+  like(where: LikeWhereUniqueInput!): Like
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like]!
+  likesConnection(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LikeConnection!
+  photo(where: PhotoWhereUniqueInput!): Photo
+  photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo]!
+  photosConnection(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PhotoConnection!
+  product(where: ProductWhereUniqueInput!): Product
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
+  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
+  review(where: ReviewWhereUniqueInput!): Review
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
+  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  node(id: ID!): Node
+}
+
+type Review {
+  id: ID!
+  user: User
+  product: Product!
+  likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
+  hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
+  photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ReviewConnection {
+  pageInfo: PageInfo!
+  edges: [ReviewEdge]!
+  aggregate: AggregateReview!
+}
+
+input ReviewCreateInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput
+  product: ProductCreateOneWithoutReviewsInput!
+  likes: LikeCreateManyWithoutReviewInput
+  hates: HateCreateManyWithoutReviewInput
+  photos: PhotoCreateManyWithoutReviewInput
+}
+
+input ReviewCreateManyWithoutProductInput {
+  create: [ReviewCreateWithoutProductInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateManyWithoutUserInput {
+  create: [ReviewCreateWithoutUserInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateOneWithoutHatesInput {
+  create: ReviewCreateWithoutHatesInput
+  connect: ReviewWhereUniqueInput
+}
+
+input ReviewCreateOneWithoutLikesInput {
+  create: ReviewCreateWithoutLikesInput
+  connect: ReviewWhereUniqueInput
+}
+
+input ReviewCreateOneWithoutPhotosInput {
+  create: ReviewCreateWithoutPhotosInput
+  connect: ReviewWhereUniqueInput
+}
+
+input ReviewCreateWithoutHatesInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput
+  product: ProductCreateOneWithoutReviewsInput!
+  likes: LikeCreateManyWithoutReviewInput
+  photos: PhotoCreateManyWithoutReviewInput
+}
+
+input ReviewCreateWithoutLikesInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput
+  product: ProductCreateOneWithoutReviewsInput!
+  hates: HateCreateManyWithoutReviewInput
+  photos: PhotoCreateManyWithoutReviewInput
+}
+
+input ReviewCreateWithoutPhotosInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput
+  product: ProductCreateOneWithoutReviewsInput!
+  likes: LikeCreateManyWithoutReviewInput
+  hates: HateCreateManyWithoutReviewInput
+}
+
+input ReviewCreateWithoutProductInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput
+  likes: LikeCreateManyWithoutReviewInput
+  hates: HateCreateManyWithoutReviewInput
+  photos: PhotoCreateManyWithoutReviewInput
+}
+
+input ReviewCreateWithoutUserInput {
+  id: ID
+  product: ProductCreateOneWithoutReviewsInput!
+  likes: LikeCreateManyWithoutReviewInput
+  hates: HateCreateManyWithoutReviewInput
+  photos: PhotoCreateManyWithoutReviewInput
+}
+
+type ReviewEdge {
+  node: Review!
+  cursor: String!
+}
+
+enum ReviewOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ReviewPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input ReviewScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ReviewScalarWhereInput!]
+  OR: [ReviewScalarWhereInput!]
+  NOT: [ReviewScalarWhereInput!]
+}
+
+type ReviewSubscriptionPayload {
+  mutation: MutationType!
+  node: Review
+  updatedFields: [String!]
+  previousValues: ReviewPreviousValues
+}
+
+input ReviewSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ReviewWhereInput
+  AND: [ReviewSubscriptionWhereInput!]
+  OR: [ReviewSubscriptionWhereInput!]
+  NOT: [ReviewSubscriptionWhereInput!]
+}
+
+input ReviewUpdateInput {
+  user: UserUpdateOneWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
+  photos: PhotoUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateManyWithoutProductInput {
+  create: [ReviewCreateWithoutProductInput!]
+  delete: [ReviewWhereUniqueInput!]
+  connect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutProductInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutProductInput!]
+  deleteMany: [ReviewScalarWhereInput!]
+}
+
+input ReviewUpdateManyWithoutUserInput {
+  create: [ReviewCreateWithoutUserInput!]
+  delete: [ReviewWhereUniqueInput!]
+  connect: [ReviewWhereUniqueInput!]
+  set: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [ReviewScalarWhereInput!]
+}
+
+input ReviewUpdateOneWithoutHatesInput {
+  create: ReviewCreateWithoutHatesInput
+  update: ReviewUpdateWithoutHatesDataInput
+  upsert: ReviewUpsertWithoutHatesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ReviewWhereUniqueInput
+}
+
+input ReviewUpdateOneWithoutLikesInput {
+  create: ReviewCreateWithoutLikesInput
+  update: ReviewUpdateWithoutLikesDataInput
+  upsert: ReviewUpsertWithoutLikesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ReviewWhereUniqueInput
+}
+
+input ReviewUpdateOneWithoutPhotosInput {
+  create: ReviewCreateWithoutPhotosInput
+  update: ReviewUpdateWithoutPhotosDataInput
+  upsert: ReviewUpsertWithoutPhotosInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ReviewWhereUniqueInput
+}
+
+input ReviewUpdateWithoutHatesDataInput {
+  user: UserUpdateOneWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  likes: LikeUpdateManyWithoutReviewInput
+  photos: PhotoUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateWithoutLikesDataInput {
+  user: UserUpdateOneWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  hates: HateUpdateManyWithoutReviewInput
+  photos: PhotoUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateWithoutPhotosDataInput {
+  user: UserUpdateOneWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateWithoutProductDataInput {
+  user: UserUpdateOneWithoutMyReviewInput
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
+  photos: PhotoUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateWithoutUserDataInput {
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
+  photos: PhotoUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateWithWhereUniqueWithoutProductInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutProductDataInput!
+}
+
+input ReviewUpdateWithWhereUniqueWithoutUserInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutUserDataInput!
+}
+
+input ReviewUpsertWithoutHatesInput {
+  update: ReviewUpdateWithoutHatesDataInput!
+  create: ReviewCreateWithoutHatesInput!
+}
+
+input ReviewUpsertWithoutLikesInput {
+  update: ReviewUpdateWithoutLikesDataInput!
+  create: ReviewCreateWithoutLikesInput!
+}
+
+input ReviewUpsertWithoutPhotosInput {
+  update: ReviewUpdateWithoutPhotosDataInput!
+  create: ReviewCreateWithoutPhotosInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutProductInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutProductDataInput!
+  create: ReviewCreateWithoutProductInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutUserInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutUserDataInput!
+  create: ReviewCreateWithoutUserInput!
+}
+
+input ReviewWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  product: ProductWhereInput
+  likes_every: LikeWhereInput
+  likes_some: LikeWhereInput
+  likes_none: LikeWhereInput
+  hates_every: HateWhereInput
+  hates_some: HateWhereInput
+  hates_none: HateWhereInput
+  photos_every: PhotoWhereInput
+  photos_some: PhotoWhereInput
+  photos_none: PhotoWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+}
+
+input ReviewWhereUniqueInput {
+  id: ID
+}
+
+type Subscription {
+  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  hate(where: HateSubscriptionWhereInput): HateSubscriptionPayload
+  like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
+  photo(where: PhotoSubscriptionWhereInput): PhotoSubscriptionPayload
+  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
+  review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type User {
+  id: ID!
+  nickName: String!
+  phone: String!
+  email: String!
+  myReview(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  myLike(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
+  myHate(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  id: ID
+  nickName: String!
+  phone: String!
+  email: String!
+  myReview: ReviewCreateManyWithoutUserInput
+  myLike: LikeCreateManyWithoutUserInput
+  myHate: HateCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutMyHateInput {
+  create: UserCreateWithoutMyHateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutMyLikeInput {
+  create: UserCreateWithoutMyLikeInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutMyReviewInput {
+  create: UserCreateWithoutMyReviewInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutMyHateInput {
+  id: ID
+  nickName: String!
+  phone: String!
+  email: String!
+  myReview: ReviewCreateManyWithoutUserInput
+  myLike: LikeCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutMyLikeInput {
+  id: ID
+  nickName: String!
+  phone: String!
+  email: String!
+  myReview: ReviewCreateManyWithoutUserInput
+  myHate: HateCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutMyReviewInput {
+  id: ID
+  nickName: String!
+  phone: String!
+  email: String!
+  myLike: LikeCreateManyWithoutUserInput
+  myHate: HateCreateManyWithoutUserInput
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  nickName_ASC
+  nickName_DESC
+  phone_ASC
+  phone_DESC
+  email_ASC
+  email_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  nickName: String!
+  phone: String!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateInput {
+  nickName: String
+  phone: String
+  email: String
+  myReview: ReviewUpdateManyWithoutUserInput
+  myLike: LikeUpdateManyWithoutUserInput
+  myHate: HateUpdateManyWithoutUserInput
+}
+
+input UserUpdateManyMutationInput {
+  nickName: String
+  phone: String
+  email: String
+}
+
+input UserUpdateOneWithoutMyHateInput {
+  create: UserCreateWithoutMyHateInput
+  update: UserUpdateWithoutMyHateDataInput
+  upsert: UserUpsertWithoutMyHateInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutMyLikeInput {
+  create: UserCreateWithoutMyLikeInput
+  update: UserUpdateWithoutMyLikeDataInput
+  upsert: UserUpsertWithoutMyLikeInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutMyReviewInput {
+  create: UserCreateWithoutMyReviewInput
+  update: UserUpdateWithoutMyReviewDataInput
+  upsert: UserUpsertWithoutMyReviewInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutMyHateDataInput {
+  nickName: String
+  phone: String
+  email: String
+  myReview: ReviewUpdateManyWithoutUserInput
+  myLike: LikeUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutMyLikeDataInput {
+  nickName: String
+  phone: String
+  email: String
+  myReview: ReviewUpdateManyWithoutUserInput
+  myHate: HateUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutMyReviewDataInput {
+  nickName: String
+  phone: String
+  email: String
+  myLike: LikeUpdateManyWithoutUserInput
+  myHate: HateUpdateManyWithoutUserInput
+}
+
+input UserUpsertWithoutMyHateInput {
+  update: UserUpdateWithoutMyHateDataInput!
+  create: UserCreateWithoutMyHateInput!
+}
+
+input UserUpsertWithoutMyLikeInput {
+  update: UserUpdateWithoutMyLikeDataInput!
+  create: UserCreateWithoutMyLikeInput!
+}
+
+input UserUpsertWithoutMyReviewInput {
+  update: UserUpdateWithoutMyReviewDataInput!
+  create: UserCreateWithoutMyReviewInput!
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  nickName: String
+  nickName_not: String
+  nickName_in: [String!]
+  nickName_not_in: [String!]
+  nickName_lt: String
+  nickName_lte: String
+  nickName_gt: String
+  nickName_gte: String
+  nickName_contains: String
+  nickName_not_contains: String
+  nickName_starts_with: String
+  nickName_not_starts_with: String
+  nickName_ends_with: String
+  nickName_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  myReview_every: ReviewWhereInput
+  myReview_some: ReviewWhereInput
+  myReview_none: ReviewWhereInput
+  myLike_every: LikeWhereInput
+  myLike_some: LikeWhereInput
+  myLike_none: LikeWhereInput
+  myHate_every: HateWhereInput
+  myHate_some: HateWhereInput
+  myHate_none: HateWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

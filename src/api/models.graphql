@@ -1,0 +1,61 @@
+type User {
+  id: ID!
+  nickName: String!
+  phone: String!
+  email: String!
+  myReview: [Review!]!
+  myLike: [Like!]!
+  myHate: [Hate!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  category: Category!
+  reviews: [Review!]!
+  createdAt: String!
+}
+
+type Review {
+  id: ID!
+  user: User
+  product: Product!
+  photos: [Photo!]!
+  createdAt: String!
+}
+
+type Like {
+  id: ID!
+  user: User
+  review: Review
+}
+
+type Hate {
+  id: ID!
+  user: User
+  review: Review
+}
+
+type Photo {
+  id: ID!
+  url: String!
+  review: Review
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Categories {
+  id: ID!
+  name: String!
+  createdAt: String!
+  updatedAt: String!
+}

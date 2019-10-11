@@ -1,24 +1,61 @@
 type User {
   id: ID! @id
-  name: String!
+  nickName: String!
+  phone: String!
+  email: String!
+  myReview: [Review!]!
+  myLike: [Like!]!
+  myHate: [Hate!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Product {
   id: ID! @id
+  name: String!
+  category: Category!
+  reviews: [Review!]!
+  createdAt: DateTime! @createdAt
 }
 
 type Review {
   id: ID! @id
+  user: User
+  product: Product!
+  likes: [Like!]!
+  hates: [Hate!]!
+  photos: [Photo!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Like {
   id: ID! @id
+  user: User
+  review: Review
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Hate {
   id: ID! @id
+  user: User
+  review: Review
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Photo {
   id: ID! @id
+  url: String!
+  review: Review
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Category {
+  id: ID! @id
+  name: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
