@@ -37,7 +37,8 @@ type BatchPayload {
 
 type Category {
   id: ID!
-  name: String!
+  categoryName: String!
+  product(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -50,12 +51,18 @@ type CategoryConnection {
 
 input CategoryCreateInput {
   id: ID
-  name: String!
+  categoryName: String!
+  product: ProductCreateManyWithoutCategoryInput
 }
 
-input CategoryCreateOneInput {
-  create: CategoryCreateInput
+input CategoryCreateOneWithoutProductInput {
+  create: CategoryCreateWithoutProductInput
   connect: CategoryWhereUniqueInput
+}
+
+input CategoryCreateWithoutProductInput {
+  id: ID
+  categoryName: String!
 }
 
 type CategoryEdge {
@@ -66,8 +73,8 @@ type CategoryEdge {
 enum CategoryOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  categoryName_ASC
+  categoryName_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -76,7 +83,7 @@ enum CategoryOrderByInput {
 
 type CategoryPreviousValues {
   id: ID!
-  name: String!
+  categoryName: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -99,28 +106,29 @@ input CategorySubscriptionWhereInput {
   NOT: [CategorySubscriptionWhereInput!]
 }
 
-input CategoryUpdateDataInput {
-  name: String
-}
-
 input CategoryUpdateInput {
-  name: String
+  categoryName: String
+  product: ProductUpdateManyWithoutCategoryInput
 }
 
 input CategoryUpdateManyMutationInput {
-  name: String
+  categoryName: String
 }
 
-input CategoryUpdateOneRequiredInput {
-  create: CategoryCreateInput
-  update: CategoryUpdateDataInput
-  upsert: CategoryUpsertNestedInput
+input CategoryUpdateOneRequiredWithoutProductInput {
+  create: CategoryCreateWithoutProductInput
+  update: CategoryUpdateWithoutProductDataInput
+  upsert: CategoryUpsertWithoutProductInput
   connect: CategoryWhereUniqueInput
 }
 
-input CategoryUpsertNestedInput {
-  update: CategoryUpdateDataInput!
-  create: CategoryCreateInput!
+input CategoryUpdateWithoutProductDataInput {
+  categoryName: String
+}
+
+input CategoryUpsertWithoutProductInput {
+  update: CategoryUpdateWithoutProductDataInput!
+  create: CategoryCreateWithoutProductInput!
 }
 
 input CategoryWhereInput {
@@ -138,20 +146,23 @@ input CategoryWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  categoryName: String
+  categoryName_not: String
+  categoryName_in: [String!]
+  categoryName_not_in: [String!]
+  categoryName_lt: String
+  categoryName_lte: String
+  categoryName_gt: String
+  categoryName_gte: String
+  categoryName_contains: String
+  categoryName_not_contains: String
+  categoryName_starts_with: String
+  categoryName_not_starts_with: String
+  categoryName_ends_with: String
+  categoryName_not_ends_with: String
+  product_every: ProductWhereInput
+  product_some: ProductWhereInput
+  product_none: ProductWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -182,7 +193,7 @@ scalar DateTime
 type Hate {
   id: ID!
   user: User
-  review: Review
+  review: Review!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -196,7 +207,7 @@ type HateConnection {
 input HateCreateInput {
   id: ID
   user: UserCreateOneWithoutMyHateInput
-  review: ReviewCreateOneWithoutHatesInput
+  review: ReviewCreateOneWithoutHatesInput!
 }
 
 input HateCreateManyWithoutReviewInput {
@@ -216,7 +227,7 @@ input HateCreateWithoutReviewInput {
 
 input HateCreateWithoutUserInput {
   id: ID
-  review: ReviewCreateOneWithoutHatesInput
+  review: ReviewCreateOneWithoutHatesInput!
 }
 
 type HateEdge {
@@ -295,7 +306,7 @@ input HateSubscriptionWhereInput {
 
 input HateUpdateInput {
   user: UserUpdateOneWithoutMyHateInput
-  review: ReviewUpdateOneWithoutHatesInput
+  review: ReviewUpdateOneRequiredWithoutHatesInput
 }
 
 input HateUpdateManyWithoutReviewInput {
@@ -325,7 +336,7 @@ input HateUpdateWithoutReviewDataInput {
 }
 
 input HateUpdateWithoutUserDataInput {
-  review: ReviewUpdateOneWithoutHatesInput
+  review: ReviewUpdateOneRequiredWithoutHatesInput
 }
 
 input HateUpdateWithWhereUniqueWithoutReviewInput {
@@ -395,7 +406,7 @@ input HateWhereUniqueInput {
 type Like {
   id: ID!
   user: User
-  review: Review
+  review: Review!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -409,7 +420,7 @@ type LikeConnection {
 input LikeCreateInput {
   id: ID
   user: UserCreateOneWithoutMyLikeInput
-  review: ReviewCreateOneWithoutLikesInput
+  review: ReviewCreateOneWithoutLikesInput!
 }
 
 input LikeCreateManyWithoutReviewInput {
@@ -429,7 +440,7 @@ input LikeCreateWithoutReviewInput {
 
 input LikeCreateWithoutUserInput {
   id: ID
-  review: ReviewCreateOneWithoutLikesInput
+  review: ReviewCreateOneWithoutLikesInput!
 }
 
 type LikeEdge {
@@ -508,7 +519,7 @@ input LikeSubscriptionWhereInput {
 
 input LikeUpdateInput {
   user: UserUpdateOneWithoutMyLikeInput
-  review: ReviewUpdateOneWithoutLikesInput
+  review: ReviewUpdateOneRequiredWithoutLikesInput
 }
 
 input LikeUpdateManyWithoutReviewInput {
@@ -538,7 +549,7 @@ input LikeUpdateWithoutReviewDataInput {
 }
 
 input LikeUpdateWithoutUserDataInput {
-  review: ReviewUpdateOneWithoutLikesInput
+  review: ReviewUpdateOneRequiredWithoutLikesInput
 }
 
 input LikeUpdateWithWhereUniqueWithoutReviewInput {
@@ -670,6 +681,7 @@ type Photo {
   id: ID!
   url: String!
   review: Review
+  product: Product
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -684,6 +696,7 @@ input PhotoCreateInput {
   id: ID
   url: String!
   review: ReviewCreateOneWithoutPhotosInput
+  product: ProductCreateOneInput
 }
 
 input PhotoCreateManyWithoutReviewInput {
@@ -694,6 +707,7 @@ input PhotoCreateManyWithoutReviewInput {
 input PhotoCreateWithoutReviewInput {
   id: ID
   url: String!
+  product: ProductCreateOneInput
 }
 
 type PhotoEdge {
@@ -790,6 +804,7 @@ input PhotoSubscriptionWhereInput {
 input PhotoUpdateInput {
   url: String
   review: ReviewUpdateOneWithoutPhotosInput
+  product: ProductUpdateOneInput
 }
 
 input PhotoUpdateManyDataInput {
@@ -819,6 +834,7 @@ input PhotoUpdateManyWithWhereNestedInput {
 
 input PhotoUpdateWithoutReviewDataInput {
   url: String
+  product: ProductUpdateOneInput
 }
 
 input PhotoUpdateWithWhereUniqueWithoutReviewInput {
@@ -862,6 +878,7 @@ input PhotoWhereInput {
   url_ends_with: String
   url_not_ends_with: String
   review: ReviewWhereInput
+  product: ProductWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -889,7 +906,7 @@ input PhotoWhereUniqueInput {
 
 type Product {
   id: ID!
-  name: String!
+  productName: String!
   category: Category!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   createdAt: DateTime!
@@ -903,9 +920,19 @@ type ProductConnection {
 
 input ProductCreateInput {
   id: ID
-  name: String!
-  category: CategoryCreateOneInput!
+  productName: String!
+  category: CategoryCreateOneWithoutProductInput!
   reviews: ReviewCreateManyWithoutProductInput
+}
+
+input ProductCreateManyWithoutCategoryInput {
+  create: [ProductCreateWithoutCategoryInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ProductCreateOneInput {
+  create: ProductCreateInput
+  connect: ProductWhereUniqueInput
 }
 
 input ProductCreateOneWithoutReviewsInput {
@@ -913,10 +940,16 @@ input ProductCreateOneWithoutReviewsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductCreateWithoutCategoryInput {
+  id: ID
+  productName: String!
+  reviews: ReviewCreateManyWithoutProductInput
+}
+
 input ProductCreateWithoutReviewsInput {
   id: ID
-  name: String!
-  category: CategoryCreateOneInput!
+  productName: String!
+  category: CategoryCreateOneWithoutProductInput!
 }
 
 type ProductEdge {
@@ -927,16 +960,58 @@ type ProductEdge {
 enum ProductOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  productName_ASC
+  productName_DESC
   createdAt_ASC
   createdAt_DESC
 }
 
 type ProductPreviousValues {
   id: ID!
-  name: String!
+  productName: String!
   createdAt: DateTime!
+}
+
+input ProductScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  productName: String
+  productName_not: String
+  productName_in: [String!]
+  productName_not_in: [String!]
+  productName_lt: String
+  productName_lte: String
+  productName_gt: String
+  productName_gte: String
+  productName_contains: String
+  productName_not_contains: String
+  productName_starts_with: String
+  productName_not_starts_with: String
+  productName_ends_with: String
+  productName_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [ProductScalarWhereInput!]
+  OR: [ProductScalarWhereInput!]
+  NOT: [ProductScalarWhereInput!]
 }
 
 type ProductSubscriptionPayload {
@@ -957,14 +1032,50 @@ input ProductSubscriptionWhereInput {
   NOT: [ProductSubscriptionWhereInput!]
 }
 
-input ProductUpdateInput {
-  name: String
-  category: CategoryUpdateOneRequiredInput
+input ProductUpdateDataInput {
+  productName: String
+  category: CategoryUpdateOneRequiredWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
 }
 
+input ProductUpdateInput {
+  productName: String
+  category: CategoryUpdateOneRequiredWithoutProductInput
+  reviews: ReviewUpdateManyWithoutProductInput
+}
+
+input ProductUpdateManyDataInput {
+  productName: String
+}
+
 input ProductUpdateManyMutationInput {
-  name: String
+  productName: String
+}
+
+input ProductUpdateManyWithoutCategoryInput {
+  create: [ProductCreateWithoutCategoryInput!]
+  delete: [ProductWhereUniqueInput!]
+  connect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueWithoutCategoryInput!]
+  upsert: [ProductUpsertWithWhereUniqueWithoutCategoryInput!]
+  deleteMany: [ProductScalarWhereInput!]
+  updateMany: [ProductUpdateManyWithWhereNestedInput!]
+}
+
+input ProductUpdateManyWithWhereNestedInput {
+  where: ProductScalarWhereInput!
+  data: ProductUpdateManyDataInput!
+}
+
+input ProductUpdateOneInput {
+  create: ProductCreateInput
+  update: ProductUpdateDataInput
+  upsert: ProductUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ProductWhereUniqueInput
 }
 
 input ProductUpdateOneRequiredWithoutReviewsInput {
@@ -974,14 +1085,35 @@ input ProductUpdateOneRequiredWithoutReviewsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductUpdateWithoutCategoryDataInput {
+  productName: String
+  reviews: ReviewUpdateManyWithoutProductInput
+}
+
 input ProductUpdateWithoutReviewsDataInput {
-  name: String
-  category: CategoryUpdateOneRequiredInput
+  productName: String
+  category: CategoryUpdateOneRequiredWithoutProductInput
+}
+
+input ProductUpdateWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateWithoutCategoryDataInput!
+}
+
+input ProductUpsertNestedInput {
+  update: ProductUpdateDataInput!
+  create: ProductCreateInput!
 }
 
 input ProductUpsertWithoutReviewsInput {
   update: ProductUpdateWithoutReviewsDataInput!
   create: ProductCreateWithoutReviewsInput!
+}
+
+input ProductUpsertWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateWithoutCategoryDataInput!
+  create: ProductCreateWithoutCategoryInput!
 }
 
 input ProductWhereInput {
@@ -999,20 +1131,20 @@ input ProductWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  productName: String
+  productName_not: String
+  productName_in: [String!]
+  productName_not_in: [String!]
+  productName_lt: String
+  productName_lte: String
+  productName_gt: String
+  productName_gte: String
+  productName_contains: String
+  productName_not_contains: String
+  productName_starts_with: String
+  productName_not_starts_with: String
+  productName_ends_with: String
+  productName_not_ends_with: String
   category: CategoryWhereInput
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
@@ -1254,21 +1386,17 @@ input ReviewUpdateManyWithoutUserInput {
   deleteMany: [ReviewScalarWhereInput!]
 }
 
-input ReviewUpdateOneWithoutHatesInput {
+input ReviewUpdateOneRequiredWithoutHatesInput {
   create: ReviewCreateWithoutHatesInput
   update: ReviewUpdateWithoutHatesDataInput
   upsert: ReviewUpsertWithoutHatesInput
-  delete: Boolean
-  disconnect: Boolean
   connect: ReviewWhereUniqueInput
 }
 
-input ReviewUpdateOneWithoutLikesInput {
+input ReviewUpdateOneRequiredWithoutLikesInput {
   create: ReviewCreateWithoutLikesInput
   update: ReviewUpdateWithoutLikesDataInput
   upsert: ReviewUpsertWithoutLikesInput
-  delete: Boolean
-  disconnect: Boolean
   connect: ReviewWhereUniqueInput
 }
 
@@ -1419,6 +1547,7 @@ type User {
   nickName: String!
   phone: String!
   email: String!
+  fingerPrint: String
   myReview(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   myLike(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   myHate(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
@@ -1437,6 +1566,7 @@ input UserCreateInput {
   nickName: String!
   phone: String!
   email: String!
+  fingerPrint: String
   myReview: ReviewCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
@@ -1462,6 +1592,7 @@ input UserCreateWithoutMyHateInput {
   nickName: String!
   phone: String!
   email: String!
+  fingerPrint: String
   myReview: ReviewCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
 }
@@ -1471,6 +1602,7 @@ input UserCreateWithoutMyLikeInput {
   nickName: String!
   phone: String!
   email: String!
+  fingerPrint: String
   myReview: ReviewCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
 }
@@ -1480,6 +1612,7 @@ input UserCreateWithoutMyReviewInput {
   nickName: String!
   phone: String!
   email: String!
+  fingerPrint: String
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
 }
@@ -1498,6 +1631,8 @@ enum UserOrderByInput {
   phone_DESC
   email_ASC
   email_DESC
+  fingerPrint_ASC
+  fingerPrint_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1509,6 +1644,7 @@ type UserPreviousValues {
   nickName: String!
   phone: String!
   email: String!
+  fingerPrint: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1535,6 +1671,7 @@ input UserUpdateInput {
   nickName: String
   phone: String
   email: String
+  fingerPrint: String
   myReview: ReviewUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
@@ -1544,6 +1681,7 @@ input UserUpdateManyMutationInput {
   nickName: String
   phone: String
   email: String
+  fingerPrint: String
 }
 
 input UserUpdateOneWithoutMyHateInput {
@@ -1577,6 +1715,7 @@ input UserUpdateWithoutMyHateDataInput {
   nickName: String
   phone: String
   email: String
+  fingerPrint: String
   myReview: ReviewUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
 }
@@ -1585,6 +1724,7 @@ input UserUpdateWithoutMyLikeDataInput {
   nickName: String
   phone: String
   email: String
+  fingerPrint: String
   myReview: ReviewUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
 }
@@ -1593,6 +1733,7 @@ input UserUpdateWithoutMyReviewDataInput {
   nickName: String
   phone: String
   email: String
+  fingerPrint: String
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
 }
@@ -1669,6 +1810,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  fingerPrint: String
+  fingerPrint_not: String
+  fingerPrint_in: [String!]
+  fingerPrint_not_in: [String!]
+  fingerPrint_lt: String
+  fingerPrint_lte: String
+  fingerPrint_gt: String
+  fingerPrint_gte: String
+  fingerPrint_contains: String
+  fingerPrint_not_contains: String
+  fingerPrint_starts_with: String
+  fingerPrint_not_starts_with: String
+  fingerPrint_ends_with: String
+  fingerPrint_not_ends_with: String
   myReview_every: ReviewWhereInput
   myReview_some: ReviewWhereInput
   myReview_none: ReviewWhereInput
