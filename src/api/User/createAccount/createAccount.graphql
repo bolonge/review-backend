@@ -6,3 +6,7 @@ type Mutation {
     bio: Boolean!
   ): Boolean!
 }
+
+type Query {
+  someting: String
+}

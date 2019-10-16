@@ -1,8 +1,8 @@
 type User {
   id: ID! @id
-  nickName: String!
-  phone: String!
-  email: String!
+  nickName: String! @unique
+  phone: String! @unique
+  email: String! @unique
   bio: Boolean! @default(value: false)
   myReview: [Review!]!
   myLike: [Like!]!

@@ -1340,6 +1340,9 @@ export interface HateUpdateWithoutUserDataInput {
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
 }>;
 
 export interface ReviewUpdateOneRequiredWithoutHatesInput {

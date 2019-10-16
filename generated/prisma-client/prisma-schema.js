@@ -1891,6 +1891,9 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  nickName: String
+  phone: String
+  email: String
 }
 `
       }

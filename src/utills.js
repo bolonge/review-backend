@@ -2,9 +2,9 @@ import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import sgTransport from "nodemailer-sendgrid-transport";
 
-export const secretThings = async () => {
+export const secretThings = () => {
   const randomNumber = Math.floor(Math.random() * 99999);
-  const randomHash = await bcrypt.hash("364738", 10);
+  const randomHash = bcrypt.hashSync(`${randomNumber}`, 10);
   return `${randomNumber} ${randomHash}`;
 };
 
@@ -19,10 +19,10 @@ export const sendMail = email => {
   return client.sendMail(email);
 };
 
-export const sendSecretMail = (adress, secret) => {
+export const sendSecretMail = (address, secret) => {
   const email = {
     from: "bolong@reviewmaster.com",
-    to: adress,
+    to: address,
     subject: "리뷰 로그인 시크릿",
     html: `로그인 시크릿 <br/>${secret}`
   };
