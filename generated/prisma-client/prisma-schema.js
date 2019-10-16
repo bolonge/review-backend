@@ -910,6 +910,7 @@ type Product {
   category: Category!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ProductConnection {
@@ -964,12 +965,15 @@ enum ProductOrderByInput {
   productName_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ProductPreviousValues {
   id: ID!
   productName: String!
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input ProductScalarWhereInput {
@@ -1009,6 +1013,14 @@ input ProductScalarWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ProductScalarWhereInput!]
   OR: [ProductScalarWhereInput!]
   NOT: [ProductScalarWhereInput!]
@@ -1157,6 +1169,14 @@ input ProductWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ProductWhereInput!]
   OR: [ProductWhereInput!]
   NOT: [ProductWhereInput!]
@@ -1547,10 +1567,11 @@ type User {
   nickName: String!
   phone: String!
   email: String!
-  fingerPrint: String
+  bio: Boolean!
   myReview(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   myLike(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   myHate(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
+  loginSecret: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1566,10 +1587,11 @@ input UserCreateInput {
   nickName: String!
   phone: String!
   email: String!
-  fingerPrint: String
+  bio: Boolean
   myReview: ReviewCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserCreateOneWithoutMyHateInput {
@@ -1592,9 +1614,10 @@ input UserCreateWithoutMyHateInput {
   nickName: String!
   phone: String!
   email: String!
-  fingerPrint: String
+  bio: Boolean
   myReview: ReviewCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserCreateWithoutMyLikeInput {
@@ -1602,9 +1625,10 @@ input UserCreateWithoutMyLikeInput {
   nickName: String!
   phone: String!
   email: String!
-  fingerPrint: String
+  bio: Boolean
   myReview: ReviewCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserCreateWithoutMyReviewInput {
@@ -1612,9 +1636,10 @@ input UserCreateWithoutMyReviewInput {
   nickName: String!
   phone: String!
   email: String!
-  fingerPrint: String
+  bio: Boolean
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  loginSecret: String
 }
 
 type UserEdge {
@@ -1631,8 +1656,10 @@ enum UserOrderByInput {
   phone_DESC
   email_ASC
   email_DESC
-  fingerPrint_ASC
-  fingerPrint_DESC
+  bio_ASC
+  bio_DESC
+  loginSecret_ASC
+  loginSecret_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1644,7 +1671,8 @@ type UserPreviousValues {
   nickName: String!
   phone: String!
   email: String!
-  fingerPrint: String
+  bio: Boolean!
+  loginSecret: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1671,17 +1699,19 @@ input UserUpdateInput {
   nickName: String
   phone: String
   email: String
-  fingerPrint: String
+  bio: Boolean
   myReview: ReviewUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserUpdateManyMutationInput {
   nickName: String
   phone: String
   email: String
-  fingerPrint: String
+  bio: Boolean
+  loginSecret: String
 }
 
 input UserUpdateOneWithoutMyHateInput {
@@ -1715,27 +1745,30 @@ input UserUpdateWithoutMyHateDataInput {
   nickName: String
   phone: String
   email: String
-  fingerPrint: String
+  bio: Boolean
   myReview: ReviewUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserUpdateWithoutMyLikeDataInput {
   nickName: String
   phone: String
   email: String
-  fingerPrint: String
+  bio: Boolean
   myReview: ReviewUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserUpdateWithoutMyReviewDataInput {
   nickName: String
   phone: String
   email: String
-  fingerPrint: String
+  bio: Boolean
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  loginSecret: String
 }
 
 input UserUpsertWithoutMyHateInput {
@@ -1810,20 +1843,8 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  fingerPrint: String
-  fingerPrint_not: String
-  fingerPrint_in: [String!]
-  fingerPrint_not_in: [String!]
-  fingerPrint_lt: String
-  fingerPrint_lte: String
-  fingerPrint_gt: String
-  fingerPrint_gte: String
-  fingerPrint_contains: String
-  fingerPrint_not_contains: String
-  fingerPrint_starts_with: String
-  fingerPrint_not_starts_with: String
-  fingerPrint_ends_with: String
-  fingerPrint_not_ends_with: String
+  bio: Boolean
+  bio_not: Boolean
   myReview_every: ReviewWhereInput
   myReview_some: ReviewWhereInput
   myReview_none: ReviewWhereInput
@@ -1833,6 +1854,20 @@ input UserWhereInput {
   myHate_every: HateWhereInput
   myHate_some: HateWhereInput
   myHate_none: HateWhereInput
+  loginSecret: String
+  loginSecret_not: String
+  loginSecret_in: [String!]
+  loginSecret_not_in: [String!]
+  loginSecret_lt: String
+  loginSecret_lte: String
+  loginSecret_gt: String
+  loginSecret_gte: String
+  loginSecret_contains: String
+  loginSecret_not_contains: String
+  loginSecret_starts_with: String
+  loginSecret_not_starts_with: String
+  loginSecret_ends_with: String
+  loginSecret_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

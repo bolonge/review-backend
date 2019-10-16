@@ -7,6 +7,7 @@ type User {
   myReview: [Review!]!
   myLike: [Like!]!
   myHate: [Hate!]!
+  loginSecret: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -17,6 +18,7 @@ type Product {
   category: Category!
   reviews: [Review!]!
   createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Review {
