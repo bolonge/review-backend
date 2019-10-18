@@ -1,5 +1,6 @@
-endpoint: https://us1.prisma.sh/kooham/review-backend/dev
+endpoint: ${env:PRISMA__ENDPOINT}
 datamodel: datamodel.prisma
+secret: ${env:PRISMA_SECRET}
 
 generate:
   - generator: javascript-client

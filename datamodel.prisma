@@ -25,6 +25,8 @@ type Review {
   id: ID! @id
   user: User
   product: Product!
+  text: String!
+  rating: Int!
   likes: [Like!]!
   hates: [Hate!]!
   photos: [Photo!]!
