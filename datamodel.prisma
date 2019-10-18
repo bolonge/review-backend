@@ -35,7 +35,7 @@ type Review {
 type Like {
   id: ID! @id
   user: User
-  review: Review!
+  review: Review
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -43,7 +43,7 @@ type Like {
 type Hate {
   id: ID! @id
   user: User
-  review: Review!
+  review: Review
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -60,7 +60,16 @@ type Photo {
 type Category {
   id: ID! @id
   categoryName: String!
-  product: [Product!]!
+  product: [Product]
+  superCategory: SuperCategory
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type SuperCategory {
+  id: ID! @id
+  superCategoryName: String!
+  category: [Category]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

@@ -27,6 +27,10 @@ type AggregateReview {
   count: Int!
 }
 
+type AggregateSuperCategory {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -39,6 +43,7 @@ type Category {
   id: ID!
   categoryName: String!
   product(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+  superCategory: SuperCategory
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -53,6 +58,12 @@ input CategoryCreateInput {
   id: ID
   categoryName: String!
   product: ProductCreateManyWithoutCategoryInput
+  superCategory: SuperCategoryCreateOneWithoutCategoryInput
+}
+
+input CategoryCreateManyWithoutSuperCategoryInput {
+  create: [CategoryCreateWithoutSuperCategoryInput!]
+  connect: [CategoryWhereUniqueInput!]
 }
 
 input CategoryCreateOneWithoutProductInput {
@@ -63,6 +74,13 @@ input CategoryCreateOneWithoutProductInput {
 input CategoryCreateWithoutProductInput {
   id: ID
   categoryName: String!
+  superCategory: SuperCategoryCreateOneWithoutCategoryInput
+}
+
+input CategoryCreateWithoutSuperCategoryInput {
+  id: ID
+  categoryName: String!
+  product: ProductCreateManyWithoutCategoryInput
 }
 
 type CategoryEdge {
@@ -88,6 +106,56 @@ type CategoryPreviousValues {
   updatedAt: DateTime!
 }
 
+input CategoryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  categoryName: String
+  categoryName_not: String
+  categoryName_in: [String!]
+  categoryName_not_in: [String!]
+  categoryName_lt: String
+  categoryName_lte: String
+  categoryName_gt: String
+  categoryName_gte: String
+  categoryName_contains: String
+  categoryName_not_contains: String
+  categoryName_starts_with: String
+  categoryName_not_starts_with: String
+  categoryName_ends_with: String
+  categoryName_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CategoryScalarWhereInput!]
+  OR: [CategoryScalarWhereInput!]
+  NOT: [CategoryScalarWhereInput!]
+}
+
 type CategorySubscriptionPayload {
   mutation: MutationType!
   node: Category
@@ -109,10 +177,32 @@ input CategorySubscriptionWhereInput {
 input CategoryUpdateInput {
   categoryName: String
   product: ProductUpdateManyWithoutCategoryInput
+  superCategory: SuperCategoryUpdateOneWithoutCategoryInput
+}
+
+input CategoryUpdateManyDataInput {
+  categoryName: String
 }
 
 input CategoryUpdateManyMutationInput {
   categoryName: String
+}
+
+input CategoryUpdateManyWithoutSuperCategoryInput {
+  create: [CategoryCreateWithoutSuperCategoryInput!]
+  delete: [CategoryWhereUniqueInput!]
+  connect: [CategoryWhereUniqueInput!]
+  set: [CategoryWhereUniqueInput!]
+  disconnect: [CategoryWhereUniqueInput!]
+  update: [CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput!]
+  upsert: [CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput!]
+  deleteMany: [CategoryScalarWhereInput!]
+  updateMany: [CategoryUpdateManyWithWhereNestedInput!]
+}
+
+input CategoryUpdateManyWithWhereNestedInput {
+  where: CategoryScalarWhereInput!
+  data: CategoryUpdateManyDataInput!
 }
 
 input CategoryUpdateOneRequiredWithoutProductInput {
@@ -124,11 +214,28 @@ input CategoryUpdateOneRequiredWithoutProductInput {
 
 input CategoryUpdateWithoutProductDataInput {
   categoryName: String
+  superCategory: SuperCategoryUpdateOneWithoutCategoryInput
+}
+
+input CategoryUpdateWithoutSuperCategoryDataInput {
+  categoryName: String
+  product: ProductUpdateManyWithoutCategoryInput
+}
+
+input CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput {
+  where: CategoryWhereUniqueInput!
+  data: CategoryUpdateWithoutSuperCategoryDataInput!
 }
 
 input CategoryUpsertWithoutProductInput {
   update: CategoryUpdateWithoutProductDataInput!
   create: CategoryCreateWithoutProductInput!
+}
+
+input CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput {
+  where: CategoryWhereUniqueInput!
+  update: CategoryUpdateWithoutSuperCategoryDataInput!
+  create: CategoryCreateWithoutSuperCategoryInput!
 }
 
 input CategoryWhereInput {
@@ -163,6 +270,7 @@ input CategoryWhereInput {
   product_every: ProductWhereInput
   product_some: ProductWhereInput
   product_none: ProductWhereInput
+  superCategory: SuperCategoryWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -193,7 +301,7 @@ scalar DateTime
 type Hate {
   id: ID!
   user: User
-  review: Review!
+  review: Review
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -207,7 +315,7 @@ type HateConnection {
 input HateCreateInput {
   id: ID
   user: UserCreateOneWithoutMyHateInput
-  review: ReviewCreateOneWithoutHatesInput!
+  review: ReviewCreateOneWithoutHatesInput
 }
 
 input HateCreateManyWithoutReviewInput {
@@ -227,7 +335,7 @@ input HateCreateWithoutReviewInput {
 
 input HateCreateWithoutUserInput {
   id: ID
-  review: ReviewCreateOneWithoutHatesInput!
+  review: ReviewCreateOneWithoutHatesInput
 }
 
 type HateEdge {
@@ -306,7 +414,7 @@ input HateSubscriptionWhereInput {
 
 input HateUpdateInput {
   user: UserUpdateOneWithoutMyHateInput
-  review: ReviewUpdateOneRequiredWithoutHatesInput
+  review: ReviewUpdateOneWithoutHatesInput
 }
 
 input HateUpdateManyWithoutReviewInput {
@@ -336,7 +444,7 @@ input HateUpdateWithoutReviewDataInput {
 }
 
 input HateUpdateWithoutUserDataInput {
-  review: ReviewUpdateOneRequiredWithoutHatesInput
+  review: ReviewUpdateOneWithoutHatesInput
 }
 
 input HateUpdateWithWhereUniqueWithoutReviewInput {
@@ -406,7 +514,7 @@ input HateWhereUniqueInput {
 type Like {
   id: ID!
   user: User
-  review: Review!
+  review: Review
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -420,7 +528,7 @@ type LikeConnection {
 input LikeCreateInput {
   id: ID
   user: UserCreateOneWithoutMyLikeInput
-  review: ReviewCreateOneWithoutLikesInput!
+  review: ReviewCreateOneWithoutLikesInput
 }
 
 input LikeCreateManyWithoutReviewInput {
@@ -440,7 +548,7 @@ input LikeCreateWithoutReviewInput {
 
 input LikeCreateWithoutUserInput {
   id: ID
-  review: ReviewCreateOneWithoutLikesInput!
+  review: ReviewCreateOneWithoutLikesInput
 }
 
 type LikeEdge {
@@ -519,7 +627,7 @@ input LikeSubscriptionWhereInput {
 
 input LikeUpdateInput {
   user: UserUpdateOneWithoutMyLikeInput
-  review: ReviewUpdateOneRequiredWithoutLikesInput
+  review: ReviewUpdateOneWithoutLikesInput
 }
 
 input LikeUpdateManyWithoutReviewInput {
@@ -549,7 +657,7 @@ input LikeUpdateWithoutReviewDataInput {
 }
 
 input LikeUpdateWithoutUserDataInput {
-  review: ReviewUpdateOneRequiredWithoutLikesInput
+  review: ReviewUpdateOneWithoutLikesInput
 }
 
 input LikeUpdateWithWhereUniqueWithoutReviewInput {
@@ -652,6 +760,12 @@ type Mutation {
   upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
+  createSuperCategory(data: SuperCategoryCreateInput!): SuperCategory!
+  updateSuperCategory(data: SuperCategoryUpdateInput!, where: SuperCategoryWhereUniqueInput!): SuperCategory
+  updateManySuperCategories(data: SuperCategoryUpdateManyMutationInput!, where: SuperCategoryWhereInput): BatchPayload!
+  upsertSuperCategory(where: SuperCategoryWhereUniqueInput!, create: SuperCategoryCreateInput!, update: SuperCategoryUpdateInput!): SuperCategory!
+  deleteSuperCategory(where: SuperCategoryWhereUniqueInput!): SuperCategory
+  deleteManySuperCategories(where: SuperCategoryWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -1205,6 +1319,9 @@ type Query {
   review(where: ReviewWhereUniqueInput!): Review
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
   reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  superCategory(where: SuperCategoryWhereUniqueInput!): SuperCategory
+  superCategories(where: SuperCategoryWhereInput, orderBy: SuperCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SuperCategory]!
+  superCategoriesConnection(where: SuperCategoryWhereInput, orderBy: SuperCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SuperCategoryConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -1406,17 +1523,21 @@ input ReviewUpdateManyWithoutUserInput {
   deleteMany: [ReviewScalarWhereInput!]
 }
 
-input ReviewUpdateOneRequiredWithoutHatesInput {
+input ReviewUpdateOneWithoutHatesInput {
   create: ReviewCreateWithoutHatesInput
   update: ReviewUpdateWithoutHatesDataInput
   upsert: ReviewUpsertWithoutHatesInput
+  delete: Boolean
+  disconnect: Boolean
   connect: ReviewWhereUniqueInput
 }
 
-input ReviewUpdateOneRequiredWithoutLikesInput {
+input ReviewUpdateOneWithoutLikesInput {
   create: ReviewCreateWithoutLikesInput
   update: ReviewUpdateWithoutLikesDataInput
   upsert: ReviewUpsertWithoutLikesInput
+  delete: Boolean
+  disconnect: Boolean
   connect: ReviewWhereUniqueInput
 }
 
@@ -1559,7 +1680,163 @@ type Subscription {
   photo(where: PhotoSubscriptionWhereInput): PhotoSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
+  superCategory(where: SuperCategorySubscriptionWhereInput): SuperCategorySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type SuperCategory {
+  id: ID!
+  superCategoryName: String!
+  category(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SuperCategoryConnection {
+  pageInfo: PageInfo!
+  edges: [SuperCategoryEdge]!
+  aggregate: AggregateSuperCategory!
+}
+
+input SuperCategoryCreateInput {
+  id: ID
+  superCategoryName: String!
+  category: CategoryCreateManyWithoutSuperCategoryInput
+}
+
+input SuperCategoryCreateOneWithoutCategoryInput {
+  create: SuperCategoryCreateWithoutCategoryInput
+  connect: SuperCategoryWhereUniqueInput
+}
+
+input SuperCategoryCreateWithoutCategoryInput {
+  id: ID
+  superCategoryName: String!
+}
+
+type SuperCategoryEdge {
+  node: SuperCategory!
+  cursor: String!
+}
+
+enum SuperCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  superCategoryName_ASC
+  superCategoryName_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SuperCategoryPreviousValues {
+  id: ID!
+  superCategoryName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SuperCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: SuperCategory
+  updatedFields: [String!]
+  previousValues: SuperCategoryPreviousValues
+}
+
+input SuperCategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SuperCategoryWhereInput
+  AND: [SuperCategorySubscriptionWhereInput!]
+  OR: [SuperCategorySubscriptionWhereInput!]
+  NOT: [SuperCategorySubscriptionWhereInput!]
+}
+
+input SuperCategoryUpdateInput {
+  superCategoryName: String
+  category: CategoryUpdateManyWithoutSuperCategoryInput
+}
+
+input SuperCategoryUpdateManyMutationInput {
+  superCategoryName: String
+}
+
+input SuperCategoryUpdateOneWithoutCategoryInput {
+  create: SuperCategoryCreateWithoutCategoryInput
+  update: SuperCategoryUpdateWithoutCategoryDataInput
+  upsert: SuperCategoryUpsertWithoutCategoryInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: SuperCategoryWhereUniqueInput
+}
+
+input SuperCategoryUpdateWithoutCategoryDataInput {
+  superCategoryName: String
+}
+
+input SuperCategoryUpsertWithoutCategoryInput {
+  update: SuperCategoryUpdateWithoutCategoryDataInput!
+  create: SuperCategoryCreateWithoutCategoryInput!
+}
+
+input SuperCategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  superCategoryName: String
+  superCategoryName_not: String
+  superCategoryName_in: [String!]
+  superCategoryName_not_in: [String!]
+  superCategoryName_lt: String
+  superCategoryName_lte: String
+  superCategoryName_gt: String
+  superCategoryName_gte: String
+  superCategoryName_contains: String
+  superCategoryName_not_contains: String
+  superCategoryName_starts_with: String
+  superCategoryName_not_starts_with: String
+  superCategoryName_ends_with: String
+  superCategoryName_not_ends_with: String
+  category_every: CategoryWhereInput
+  category_some: CategoryWhereInput
+  category_none: CategoryWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [SuperCategoryWhereInput!]
+  OR: [SuperCategoryWhereInput!]
+  NOT: [SuperCategoryWhereInput!]
+}
+
+input SuperCategoryWhereUniqueInput {
+  id: ID
 }
 
 type User {
