@@ -3,11 +3,11 @@ import { isAuthenticated } from "../../../middlewares";
 
 export default {
   Mutation: {
-    deleteAccount: async (_, args, { request }) => {
+    deleteAccount: async (_, __, { request }) => {
       isAuthenticated(request);
-      const { email, nickName } = args;
 
-      await prisma.deleteUser({});
+      const { user } = request;
+      await prisma.deleteUser({ id: user.id });
     }
   }
 };

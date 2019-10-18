@@ -4,7 +4,7 @@ import logger from "morgan";
 import schema from "./schema";
 import "./passport";
 import { authenticateJwt } from "./passport";
-import { uploadController, uploadMiddleware } from "./upload";
+// import { uploadController, uploadMiddleware } from "./upload";
 
 const PORT = process.env.PORT || 4000;
 
