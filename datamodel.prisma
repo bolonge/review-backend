@@ -17,6 +17,7 @@ type Product {
   productName: String!
   category: Category!
   reviews: [Review!]!
+  isPublished: Boolean @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
