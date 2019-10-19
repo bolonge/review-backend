@@ -3,59 +3,75 @@ type User {
   nickName: String!
   phone: String!
   email: String!
+  bio: Boolean!
   myReview: [Review!]!
   myLike: [Like!]!
   myHate: [Hate!]!
+  loginSecret: String
   createdAt: String!
   updatedAt: String!
 }
 
 type Product {
   id: ID!
-  name: String!
+  productName: String!
   category: Category!
   reviews: [Review!]!
   createdAt: String!
+  updatedAt: String!
 }
 
 type Review {
   id: ID!
   user: User
   product: Product!
+  text: String!
+  rating: Int!
+  likes: [Like!]!
+  hates: [Hate!]!
   photos: [Photo!]!
   createdAt: String!
+  updatedAt: String!
 }
 
 type Like {
   id: ID!
   user: User
   review: Review
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Hate {
   id: ID!
   user: User
   review: Review
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Photo {
   id: ID!
   url: String!
   review: Review
+  product: Product
   createdAt: String!
   updatedAt: String!
 }
 
 type Category {
   id: ID!
-  name: String!
+  categoryName: String!
+  product: [Product]
+  superCategory: SuperCategory
   createdAt: String!
   updatedAt: String!
 }
 
-type Categories {
+type SuperCategory {
   id: ID!
-  name: String!
+  superCategoryName: String!
+  category: [Category]
   createdAt: String!
   updatedAt: String!
 }
