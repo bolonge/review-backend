@@ -810,8 +810,13 @@ type PhotoConnection {
 input PhotoCreateInput {
   id: ID
   url: String!
-  review: ReviewCreateOneWithoutPhotosInput
-  product: ProductCreateOneInput
+  review: ReviewCreateOneWithoutReviewPhotosInput
+  product: ProductCreateOneWithoutProductPhotosInput
+}
+
+input PhotoCreateManyWithoutProductInput {
+  create: [PhotoCreateWithoutProductInput!]
+  connect: [PhotoWhereUniqueInput!]
 }
 
 input PhotoCreateManyWithoutReviewInput {
@@ -819,10 +824,16 @@ input PhotoCreateManyWithoutReviewInput {
   connect: [PhotoWhereUniqueInput!]
 }
 
+input PhotoCreateWithoutProductInput {
+  id: ID
+  url: String!
+  review: ReviewCreateOneWithoutReviewPhotosInput
+}
+
 input PhotoCreateWithoutReviewInput {
   id: ID
   url: String!
-  product: ProductCreateOneInput
+  product: ProductCreateOneWithoutProductPhotosInput
 }
 
 type PhotoEdge {
@@ -918,8 +929,8 @@ input PhotoSubscriptionWhereInput {
 
 input PhotoUpdateInput {
   url: String
-  review: ReviewUpdateOneWithoutPhotosInput
-  product: ProductUpdateOneInput
+  review: ReviewUpdateOneWithoutReviewPhotosInput
+  product: ProductUpdateOneWithoutProductPhotosInput
 }
 
 input PhotoUpdateManyDataInput {
@@ -928,6 +939,18 @@ input PhotoUpdateManyDataInput {
 
 input PhotoUpdateManyMutationInput {
   url: String
+}
+
+input PhotoUpdateManyWithoutProductInput {
+  create: [PhotoCreateWithoutProductInput!]
+  delete: [PhotoWhereUniqueInput!]
+  connect: [PhotoWhereUniqueInput!]
+  set: [PhotoWhereUniqueInput!]
+  disconnect: [PhotoWhereUniqueInput!]
+  update: [PhotoUpdateWithWhereUniqueWithoutProductInput!]
+  upsert: [PhotoUpsertWithWhereUniqueWithoutProductInput!]
+  deleteMany: [PhotoScalarWhereInput!]
+  updateMany: [PhotoUpdateManyWithWhereNestedInput!]
 }
 
 input PhotoUpdateManyWithoutReviewInput {
@@ -947,14 +970,30 @@ input PhotoUpdateManyWithWhereNestedInput {
   data: PhotoUpdateManyDataInput!
 }
 
+input PhotoUpdateWithoutProductDataInput {
+  url: String
+  review: ReviewUpdateOneWithoutReviewPhotosInput
+}
+
 input PhotoUpdateWithoutReviewDataInput {
   url: String
-  product: ProductUpdateOneInput
+  product: ProductUpdateOneWithoutProductPhotosInput
+}
+
+input PhotoUpdateWithWhereUniqueWithoutProductInput {
+  where: PhotoWhereUniqueInput!
+  data: PhotoUpdateWithoutProductDataInput!
 }
 
 input PhotoUpdateWithWhereUniqueWithoutReviewInput {
   where: PhotoWhereUniqueInput!
   data: PhotoUpdateWithoutReviewDataInput!
+}
+
+input PhotoUpsertWithWhereUniqueWithoutProductInput {
+  where: PhotoWhereUniqueInput!
+  update: PhotoUpdateWithoutProductDataInput!
+  create: PhotoCreateWithoutProductInput!
 }
 
 input PhotoUpsertWithWhereUniqueWithoutReviewInput {
@@ -1024,6 +1063,8 @@ type Product {
   productName: String!
   category: Category!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  productPhotos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
+  isPublished: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1039,6 +1080,8 @@ input ProductCreateInput {
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
   reviews: ReviewCreateManyWithoutProductInput
+  productPhotos: PhotoCreateManyWithoutProductInput
+  isPublished: Boolean
 }
 
 input ProductCreateManyWithoutCategoryInput {
@@ -1046,8 +1089,8 @@ input ProductCreateManyWithoutCategoryInput {
   connect: [ProductWhereUniqueInput!]
 }
 
-input ProductCreateOneInput {
-  create: ProductCreateInput
+input ProductCreateOneWithoutProductPhotosInput {
+  create: ProductCreateWithoutProductPhotosInput
   connect: ProductWhereUniqueInput
 }
 
@@ -1060,12 +1103,24 @@ input ProductCreateWithoutCategoryInput {
   id: ID
   productName: String!
   reviews: ReviewCreateManyWithoutProductInput
+  productPhotos: PhotoCreateManyWithoutProductInput
+  isPublished: Boolean
+}
+
+input ProductCreateWithoutProductPhotosInput {
+  id: ID
+  productName: String!
+  category: CategoryCreateOneWithoutProductInput!
+  reviews: ReviewCreateManyWithoutProductInput
+  isPublished: Boolean
 }
 
 input ProductCreateWithoutReviewsInput {
   id: ID
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
+  productPhotos: PhotoCreateManyWithoutProductInput
+  isPublished: Boolean
 }
 
 type ProductEdge {
@@ -1078,6 +1133,8 @@ enum ProductOrderByInput {
   id_DESC
   productName_ASC
   productName_DESC
+  isPublished_ASC
+  isPublished_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1087,6 +1144,7 @@ enum ProductOrderByInput {
 type ProductPreviousValues {
   id: ID!
   productName: String!
+  isPublished: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1120,6 +1178,8 @@ input ProductScalarWhereInput {
   productName_not_starts_with: String
   productName_ends_with: String
   productName_not_ends_with: String
+  isPublished: Boolean
+  isPublished_not: Boolean
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1159,24 +1219,22 @@ input ProductSubscriptionWhereInput {
   NOT: [ProductSubscriptionWhereInput!]
 }
 
-input ProductUpdateDataInput {
-  productName: String
-  category: CategoryUpdateOneRequiredWithoutProductInput
-  reviews: ReviewUpdateManyWithoutProductInput
-}
-
 input ProductUpdateInput {
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
+  productPhotos: PhotoUpdateManyWithoutProductInput
+  isPublished: Boolean
 }
 
 input ProductUpdateManyDataInput {
   productName: String
+  isPublished: Boolean
 }
 
 input ProductUpdateManyMutationInput {
   productName: String
+  isPublished: Boolean
 }
 
 input ProductUpdateManyWithoutCategoryInput {
@@ -1196,15 +1254,6 @@ input ProductUpdateManyWithWhereNestedInput {
   data: ProductUpdateManyDataInput!
 }
 
-input ProductUpdateOneInput {
-  create: ProductCreateInput
-  update: ProductUpdateDataInput
-  upsert: ProductUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: ProductWhereUniqueInput
-}
-
 input ProductUpdateOneRequiredWithoutReviewsInput {
   create: ProductCreateWithoutReviewsInput
   update: ProductUpdateWithoutReviewsDataInput
@@ -1212,14 +1261,34 @@ input ProductUpdateOneRequiredWithoutReviewsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductUpdateOneWithoutProductPhotosInput {
+  create: ProductCreateWithoutProductPhotosInput
+  update: ProductUpdateWithoutProductPhotosDataInput
+  upsert: ProductUpsertWithoutProductPhotosInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ProductWhereUniqueInput
+}
+
 input ProductUpdateWithoutCategoryDataInput {
   productName: String
   reviews: ReviewUpdateManyWithoutProductInput
+  productPhotos: PhotoUpdateManyWithoutProductInput
+  isPublished: Boolean
+}
+
+input ProductUpdateWithoutProductPhotosDataInput {
+  productName: String
+  category: CategoryUpdateOneRequiredWithoutProductInput
+  reviews: ReviewUpdateManyWithoutProductInput
+  isPublished: Boolean
 }
 
 input ProductUpdateWithoutReviewsDataInput {
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
+  productPhotos: PhotoUpdateManyWithoutProductInput
+  isPublished: Boolean
 }
 
 input ProductUpdateWithWhereUniqueWithoutCategoryInput {
@@ -1227,9 +1296,9 @@ input ProductUpdateWithWhereUniqueWithoutCategoryInput {
   data: ProductUpdateWithoutCategoryDataInput!
 }
 
-input ProductUpsertNestedInput {
-  update: ProductUpdateDataInput!
-  create: ProductCreateInput!
+input ProductUpsertWithoutProductPhotosInput {
+  update: ProductUpdateWithoutProductPhotosDataInput!
+  create: ProductCreateWithoutProductPhotosInput!
 }
 
 input ProductUpsertWithoutReviewsInput {
@@ -1276,6 +1345,11 @@ input ProductWhereInput {
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
   reviews_none: ReviewWhereInput
+  productPhotos_every: PhotoWhereInput
+  productPhotos_some: PhotoWhereInput
+  productPhotos_none: PhotoWhereInput
+  isPublished: Boolean
+  isPublished_not: Boolean
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1337,7 +1411,7 @@ type Review {
   rating: Int!
   likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
-  photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
+  reviewPhotos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1356,7 +1430,7 @@ input ReviewCreateInput {
   rating: Int!
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
-  photos: PhotoCreateManyWithoutReviewInput
+  reviewPhotos: PhotoCreateManyWithoutReviewInput
 }
 
 input ReviewCreateManyWithoutProductInput {
@@ -1379,8 +1453,8 @@ input ReviewCreateOneWithoutLikesInput {
   connect: ReviewWhereUniqueInput
 }
 
-input ReviewCreateOneWithoutPhotosInput {
-  create: ReviewCreateWithoutPhotosInput
+input ReviewCreateOneWithoutReviewPhotosInput {
+  create: ReviewCreateWithoutReviewPhotosInput
   connect: ReviewWhereUniqueInput
 }
 
@@ -1391,7 +1465,7 @@ input ReviewCreateWithoutHatesInput {
   text: String!
   rating: Int!
   likes: LikeCreateManyWithoutReviewInput
-  photos: PhotoCreateManyWithoutReviewInput
+  reviewPhotos: PhotoCreateManyWithoutReviewInput
 }
 
 input ReviewCreateWithoutLikesInput {
@@ -1401,17 +1475,7 @@ input ReviewCreateWithoutLikesInput {
   text: String!
   rating: Int!
   hates: HateCreateManyWithoutReviewInput
-  photos: PhotoCreateManyWithoutReviewInput
-}
-
-input ReviewCreateWithoutPhotosInput {
-  id: ID
-  user: UserCreateOneWithoutMyReviewInput
-  product: ProductCreateOneWithoutReviewsInput!
-  text: String!
-  rating: Int!
-  likes: LikeCreateManyWithoutReviewInput
-  hates: HateCreateManyWithoutReviewInput
+  reviewPhotos: PhotoCreateManyWithoutReviewInput
 }
 
 input ReviewCreateWithoutProductInput {
@@ -1421,7 +1485,17 @@ input ReviewCreateWithoutProductInput {
   rating: Int!
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
-  photos: PhotoCreateManyWithoutReviewInput
+  reviewPhotos: PhotoCreateManyWithoutReviewInput
+}
+
+input ReviewCreateWithoutReviewPhotosInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput
+  product: ProductCreateOneWithoutReviewsInput!
+  text: String!
+  rating: Int!
+  likes: LikeCreateManyWithoutReviewInput
+  hates: HateCreateManyWithoutReviewInput
 }
 
 input ReviewCreateWithoutUserInput {
@@ -1431,7 +1505,7 @@ input ReviewCreateWithoutUserInput {
   rating: Int!
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
-  photos: PhotoCreateManyWithoutReviewInput
+  reviewPhotos: PhotoCreateManyWithoutReviewInput
 }
 
 type ReviewEdge {
@@ -1543,7 +1617,7 @@ input ReviewUpdateInput {
   rating: Int
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
-  photos: PhotoUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
 }
 
 input ReviewUpdateManyDataInput {
@@ -1603,10 +1677,10 @@ input ReviewUpdateOneWithoutLikesInput {
   connect: ReviewWhereUniqueInput
 }
 
-input ReviewUpdateOneWithoutPhotosInput {
-  create: ReviewCreateWithoutPhotosInput
-  update: ReviewUpdateWithoutPhotosDataInput
-  upsert: ReviewUpsertWithoutPhotosInput
+input ReviewUpdateOneWithoutReviewPhotosInput {
+  create: ReviewCreateWithoutReviewPhotosInput
+  update: ReviewUpdateWithoutReviewPhotosDataInput
+  upsert: ReviewUpsertWithoutReviewPhotosInput
   delete: Boolean
   disconnect: Boolean
   connect: ReviewWhereUniqueInput
@@ -1618,7 +1692,7 @@ input ReviewUpdateWithoutHatesDataInput {
   text: String
   rating: Int
   likes: LikeUpdateManyWithoutReviewInput
-  photos: PhotoUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
 }
 
 input ReviewUpdateWithoutLikesDataInput {
@@ -1627,16 +1701,7 @@ input ReviewUpdateWithoutLikesDataInput {
   text: String
   rating: Int
   hates: HateUpdateManyWithoutReviewInput
-  photos: PhotoUpdateManyWithoutReviewInput
-}
-
-input ReviewUpdateWithoutPhotosDataInput {
-  user: UserUpdateOneWithoutMyReviewInput
-  product: ProductUpdateOneRequiredWithoutReviewsInput
-  text: String
-  rating: Int
-  likes: LikeUpdateManyWithoutReviewInput
-  hates: HateUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
 }
 
 input ReviewUpdateWithoutProductDataInput {
@@ -1645,7 +1710,16 @@ input ReviewUpdateWithoutProductDataInput {
   rating: Int
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
-  photos: PhotoUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
+}
+
+input ReviewUpdateWithoutReviewPhotosDataInput {
+  user: UserUpdateOneWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  text: String
+  rating: Int
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
 }
 
 input ReviewUpdateWithoutUserDataInput {
@@ -1654,7 +1728,7 @@ input ReviewUpdateWithoutUserDataInput {
   rating: Int
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
-  photos: PhotoUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
 }
 
 input ReviewUpdateWithWhereUniqueWithoutProductInput {
@@ -1677,9 +1751,9 @@ input ReviewUpsertWithoutLikesInput {
   create: ReviewCreateWithoutLikesInput!
 }
 
-input ReviewUpsertWithoutPhotosInput {
-  update: ReviewUpdateWithoutPhotosDataInput!
-  create: ReviewCreateWithoutPhotosInput!
+input ReviewUpsertWithoutReviewPhotosInput {
+  update: ReviewUpdateWithoutReviewPhotosDataInput!
+  create: ReviewCreateWithoutReviewPhotosInput!
 }
 
 input ReviewUpsertWithWhereUniqueWithoutProductInput {
@@ -1739,9 +1813,9 @@ input ReviewWhereInput {
   hates_every: HateWhereInput
   hates_some: HateWhereInput
   hates_none: HateWhereInput
-  photos_every: PhotoWhereInput
-  photos_some: PhotoWhereInput
-  photos_none: PhotoWhereInput
+  reviewPhotos_every: PhotoWhereInput
+  reviewPhotos_some: PhotoWhereInput
+  reviewPhotos_none: PhotoWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

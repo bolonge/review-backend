@@ -377,6 +377,8 @@ export type ProductOrderByInput =
   | "id_DESC"
   | "productName_ASC"
   | "productName_DESC"
+  | "isPublished_ASC"
+  | "isPublished_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -471,9 +473,9 @@ export type CategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ProductUpsertWithoutReviewsInput {
-  update: ProductUpdateWithoutReviewsDataInput;
-  create: ProductCreateWithoutReviewsInput;
+export interface CategoryUpsertWithoutProductInput {
+  update: CategoryUpdateWithoutProductDataInput;
+  create: CategoryCreateWithoutProductInput;
 }
 
 export interface LikeWhereInput {
@@ -514,44 +516,48 @@ export interface LikeWhereInput {
   NOT?: Maybe<LikeWhereInput[] | LikeWhereInput>;
 }
 
-export interface PhotoCreateManyWithoutReviewInput {
-  create?: Maybe<
-    PhotoCreateWithoutReviewInput[] | PhotoCreateWithoutReviewInput
-  >;
-  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-}
-
-export interface HateUpdateInput {
-  user?: Maybe<UserUpdateOneWithoutMyHateInput>;
-  review?: Maybe<ReviewUpdateOneWithoutHatesInput>;
-}
-
-export interface PhotoCreateWithoutReviewInput {
+export interface ProductCreateWithoutProductPhotosInput {
   id?: Maybe<ID_Input>;
-  url: String;
-  product?: Maybe<ProductCreateOneInput>;
+  productName: String;
+  category: CategoryCreateOneWithoutProductInput;
+  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
 }
 
-export interface HateUpdateManyWithoutReviewInput {
-  create?: Maybe<HateCreateWithoutReviewInput[] | HateCreateWithoutReviewInput>;
-  delete?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+export interface CategoryUpdateManyMutationInput {
+  categoryName?: Maybe<String>;
+}
+
+export interface HateCreateManyWithoutUserInput {
+  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
   connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
-  set?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
-  disconnect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+}
+
+export interface PhotoUpdateManyWithoutProductInput {
+  create?: Maybe<
+    PhotoCreateWithoutProductInput[] | PhotoCreateWithoutProductInput
+  >;
+  delete?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  set?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  disconnect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
   update?: Maybe<
-    | HateUpdateWithWhereUniqueWithoutReviewInput[]
-    | HateUpdateWithWhereUniqueWithoutReviewInput
+    | PhotoUpdateWithWhereUniqueWithoutProductInput[]
+    | PhotoUpdateWithWhereUniqueWithoutProductInput
   >;
   upsert?: Maybe<
-    | HateUpsertWithWhereUniqueWithoutReviewInput[]
-    | HateUpsertWithWhereUniqueWithoutReviewInput
+    | PhotoUpsertWithWhereUniqueWithoutProductInput[]
+    | PhotoUpsertWithWhereUniqueWithoutProductInput
   >;
-  deleteMany?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+  deleteMany?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
+  updateMany?: Maybe<
+    PhotoUpdateManyWithWhereNestedInput[] | PhotoUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface ProductCreateOneInput {
-  create?: Maybe<ProductCreateInput>;
-  connect?: Maybe<ProductWhereUniqueInput>;
+export interface HateCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  review?: Maybe<ReviewCreateOneWithoutHatesInput>;
 }
 
 export interface SuperCategorySubscriptionWhereInput {
@@ -571,11 +577,9 @@ export interface SuperCategorySubscriptionWhereInput {
   >;
 }
 
-export interface ProductCreateInput {
-  id?: Maybe<ID_Input>;
-  productName: String;
-  category: CategoryCreateOneWithoutProductInput;
-  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+export interface ReviewCreateOneWithoutHatesInput {
+  create?: Maybe<ReviewCreateWithoutHatesInput>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
 export interface ReviewSubscriptionWhereInput {
@@ -589,10 +593,14 @@ export interface ReviewSubscriptionWhereInput {
   NOT?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
 }
 
-export interface CategoryUpdateInput {
-  categoryName?: Maybe<String>;
-  product?: Maybe<ProductUpdateManyWithoutCategoryInput>;
-  superCategory?: Maybe<SuperCategoryUpdateOneWithoutCategoryInput>;
+export interface ReviewCreateWithoutHatesInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  product: ProductCreateOneWithoutReviewsInput;
+  text: String;
+  rating: Int;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
 }
 
 export interface ReviewWhereInput {
@@ -640,9 +648,9 @@ export interface ReviewWhereInput {
   hates_every?: Maybe<HateWhereInput>;
   hates_some?: Maybe<HateWhereInput>;
   hates_none?: Maybe<HateWhereInput>;
-  photos_every?: Maybe<PhotoWhereInput>;
-  photos_some?: Maybe<PhotoWhereInput>;
-  photos_none?: Maybe<PhotoWhereInput>;
+  reviewPhotos_every?: Maybe<PhotoWhereInput>;
+  reviewPhotos_some?: Maybe<PhotoWhereInput>;
+  reviewPhotos_none?: Maybe<PhotoWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -662,6 +670,23 @@ export interface ReviewWhereInput {
   AND?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
   OR?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
   NOT?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
+}
+
+export interface CategoryUpdateInput {
+  categoryName?: Maybe<String>;
+  product?: Maybe<ProductUpdateManyWithoutCategoryInput>;
+  superCategory?: Maybe<SuperCategoryUpdateOneWithoutCategoryInput>;
+}
+
+export interface LikeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LikeWhereInput>;
+  AND?: Maybe<LikeSubscriptionWhereInput[] | LikeSubscriptionWhereInput>;
+  OR?: Maybe<LikeSubscriptionWhereInput[] | LikeSubscriptionWhereInput>;
+  NOT?: Maybe<LikeSubscriptionWhereInput[] | LikeSubscriptionWhereInput>;
 }
 
 export interface ProductUpdateManyWithoutCategoryInput {
@@ -685,22 +710,6 @@ export interface ProductUpdateManyWithoutCategoryInput {
     | ProductUpdateManyWithWhereNestedInput[]
     | ProductUpdateManyWithWhereNestedInput
   >;
-}
-
-export interface LikeSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<LikeWhereInput>;
-  AND?: Maybe<LikeSubscriptionWhereInput[] | LikeSubscriptionWhereInput>;
-  OR?: Maybe<LikeSubscriptionWhereInput[] | LikeSubscriptionWhereInput>;
-  NOT?: Maybe<LikeSubscriptionWhereInput[] | LikeSubscriptionWhereInput>;
-}
-
-export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
-  where: ProductWhereUniqueInput;
-  data: ProductUpdateWithoutCategoryDataInput;
 }
 
 export interface SuperCategoryWhereInput {
@@ -756,9 +765,9 @@ export interface SuperCategoryWhereInput {
   NOT?: Maybe<SuperCategoryWhereInput[] | SuperCategoryWhereInput>;
 }
 
-export interface ProductUpdateWithoutCategoryDataInput {
-  productName?: Maybe<String>;
-  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
+export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput;
+  data: ProductUpdateWithoutCategoryDataInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -766,6 +775,24 @@ export interface UserUpdateManyMutationInput {
   phone?: Maybe<String>;
   email?: Maybe<String>;
   bio?: Maybe<Boolean>;
+  loginSecret?: Maybe<String>;
+}
+
+export interface ProductUpdateWithoutCategoryDataInput {
+  productName?: Maybe<String>;
+  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
+  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+}
+
+export interface UserUpdateInput {
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
+  bio?: Maybe<Boolean>;
+  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
+  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
+  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
   loginSecret?: Maybe<String>;
 }
 
@@ -792,15 +819,8 @@ export interface ReviewUpdateManyWithoutProductInput {
   >;
 }
 
-export interface UserUpdateInput {
-  nickName?: Maybe<String>;
-  phone?: Maybe<String>;
-  email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
-  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
-  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
-  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
-  loginSecret?: Maybe<String>;
+export interface SuperCategoryUpdateManyMutationInput {
+  superCategoryName?: Maybe<String>;
 }
 
 export interface ReviewUpdateWithWhereUniqueWithoutProductInput {
@@ -808,9 +828,9 @@ export interface ReviewUpdateWithWhereUniqueWithoutProductInput {
   data: ReviewUpdateWithoutProductDataInput;
 }
 
-export interface SuperCategoryUpdateManyMutationInput {
-  superCategoryName?: Maybe<String>;
-}
+export type HateWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface ReviewUpdateWithoutProductDataInput {
   user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
@@ -818,20 +838,7 @@ export interface ReviewUpdateWithoutProductDataInput {
   rating?: Maybe<Int>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
-}
-
-export type HateWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface UserUpdateOneWithoutMyReviewInput {
-  create?: Maybe<UserCreateWithoutMyReviewInput>;
-  update?: Maybe<UserUpdateWithoutMyReviewDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMyReviewInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
 }
 
 export interface CategoryScalarWhereInput {
@@ -884,6 +891,19 @@ export interface CategoryScalarWhereInput {
   NOT?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
 }
 
+export interface UserUpdateOneWithoutMyReviewInput {
+  create?: Maybe<UserCreateWithoutMyReviewInput>;
+  update?: Maybe<UserUpdateWithoutMyReviewDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMyReviewInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export type LikeWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export interface UserUpdateWithoutMyReviewDataInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
@@ -894,9 +914,10 @@ export interface UserUpdateWithoutMyReviewDataInput {
   loginSecret?: Maybe<String>;
 }
 
-export type LikeWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput {
+  where: CategoryWhereUniqueInput;
+  data: CategoryUpdateWithoutSuperCategoryDataInput;
+}
 
 export interface LikeUpdateManyWithoutUserInput {
   create?: Maybe<LikeCreateWithoutUserInput[] | LikeCreateWithoutUserInput>;
@@ -915,22 +936,13 @@ export interface LikeUpdateManyWithoutUserInput {
   deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
 }
 
-export interface CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput {
-  where: CategoryWhereUniqueInput;
-  data: CategoryUpdateWithoutSuperCategoryDataInput;
-}
-
-export interface LikeUpdateWithWhereUniqueWithoutUserInput {
-  where: LikeWhereUniqueInput;
-  data: LikeUpdateWithoutUserDataInput;
-}
-
 export type PhotoWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface LikeUpdateWithoutUserDataInput {
-  review?: Maybe<ReviewUpdateOneWithoutLikesInput>;
+export interface LikeUpdateWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput;
+  data: LikeUpdateWithoutUserDataInput;
 }
 
 export interface CategoryCreateWithoutSuperCategoryInput {
@@ -938,6 +950,14 @@ export interface CategoryCreateWithoutSuperCategoryInput {
   categoryName: String;
   product?: Maybe<ProductCreateManyWithoutCategoryInput>;
 }
+
+export interface LikeUpdateWithoutUserDataInput {
+  review?: Maybe<ReviewUpdateOneWithoutLikesInput>;
+}
+
+export type ProductWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface ReviewUpdateOneWithoutLikesInput {
   create?: Maybe<ReviewCreateWithoutLikesInput>;
@@ -948,9 +968,10 @@ export interface ReviewUpdateOneWithoutLikesInput {
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export type ProductWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface ReviewUpdateManyMutationInput {
+  text?: Maybe<String>;
+  rating?: Maybe<Int>;
+}
 
 export interface ReviewUpdateWithoutLikesDataInput {
   user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
@@ -958,13 +979,12 @@ export interface ReviewUpdateWithoutLikesDataInput {
   text?: Maybe<String>;
   rating?: Maybe<Int>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
 }
 
-export interface ReviewUpdateManyMutationInput {
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-}
+export type ReviewWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface ProductUpdateOneRequiredWithoutReviewsInput {
   create?: Maybe<ProductCreateWithoutReviewsInput>;
@@ -973,37 +993,46 @@ export interface ProductUpdateOneRequiredWithoutReviewsInput {
   connect?: Maybe<ProductWhereUniqueInput>;
 }
 
-export type ReviewWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface ProductUpdateManyMutationInput {
+  productName?: Maybe<String>;
+  isPublished?: Maybe<Boolean>;
+}
 
 export interface ProductUpdateWithoutReviewsDataInput {
   productName?: Maybe<String>;
   category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
-}
-
-export interface ProductUpdateManyMutationInput {
-  productName?: Maybe<String>;
-}
-
-export interface PhotoCreateInput {
-  id?: Maybe<ID_Input>;
-  url: String;
-  review?: Maybe<ReviewCreateOneWithoutPhotosInput>;
-  product?: Maybe<ProductCreateOneInput>;
+  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
 }
 
 export type SuperCategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
+export interface HateCreateInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyHateInput>;
+  review?: Maybe<ReviewCreateOneWithoutHatesInput>;
+}
+
+export interface ProductCreateInput {
+  id?: Maybe<ID_Input>;
+  productName: String;
+  category: CategoryCreateOneWithoutProductInput;
+  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+}
+
 export interface CategoryUpdateWithoutProductDataInput {
   categoryName?: Maybe<String>;
   superCategory?: Maybe<SuperCategoryUpdateOneWithoutCategoryInput>;
 }
 
-export interface PhotoUpdateManyMutationInput {
+export interface PhotoUpdateInput {
   url?: Maybe<String>;
+  review?: Maybe<ReviewUpdateOneWithoutReviewPhotosInput>;
+  product?: Maybe<ProductUpdateOneWithoutProductPhotosInput>;
 }
 
 export interface SuperCategoryUpdateOneWithoutCategoryInput {
@@ -1015,46 +1044,26 @@ export interface SuperCategoryUpdateOneWithoutCategoryInput {
   connect?: Maybe<SuperCategoryWhereUniqueInput>;
 }
 
-export interface ReviewUpdateWithoutPhotosDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
-  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
+export interface PhotoCreateInput {
+  id?: Maybe<ID_Input>;
+  url: String;
+  review?: Maybe<ReviewCreateOneWithoutReviewPhotosInput>;
+  product?: Maybe<ProductCreateOneWithoutProductPhotosInput>;
 }
 
 export interface SuperCategoryUpdateWithoutCategoryDataInput {
   superCategoryName?: Maybe<String>;
 }
 
-export interface ReviewUpdateOneWithoutPhotosInput {
-  create?: Maybe<ReviewCreateWithoutPhotosInput>;
-  update?: Maybe<ReviewUpdateWithoutPhotosDataInput>;
-  upsert?: Maybe<ReviewUpsertWithoutPhotosInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ReviewWhereUniqueInput>;
+export interface LikeCreateInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyLikeInput>;
+  review?: Maybe<ReviewCreateOneWithoutLikesInput>;
 }
 
 export interface SuperCategoryUpsertWithoutCategoryInput {
   update: SuperCategoryUpdateWithoutCategoryDataInput;
   create: SuperCategoryCreateWithoutCategoryInput;
-}
-
-export interface ReviewCreateWithoutPhotosInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
-  product: ProductCreateOneWithoutReviewsInput;
-  text: String;
-  rating: Int;
-  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
-}
-
-export interface CategoryUpsertWithoutProductInput {
-  update: CategoryUpdateWithoutProductDataInput;
-  create: CategoryCreateWithoutProductInput;
 }
 
 export interface ProductCreateManyWithoutCategoryInput {
@@ -1166,9 +1175,9 @@ export interface UserCreateOneWithoutMyReviewInput {
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface HateUpdateWithWhereUniqueWithoutReviewInput {
-  where: HateWhereUniqueInput;
-  data: HateUpdateWithoutReviewDataInput;
+export interface PhotoUpdateWithWhereUniqueWithoutProductInput {
+  where: PhotoWhereUniqueInput;
+  data: PhotoUpdateWithoutProductDataInput;
 }
 
 export interface LikeCreateManyWithoutUserInput {
@@ -1176,8 +1185,9 @@ export interface LikeCreateManyWithoutUserInput {
   connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
 }
 
-export interface HateUpdateWithoutReviewDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyHateInput>;
+export interface PhotoUpdateWithoutProductDataInput {
+  url?: Maybe<String>;
+  review?: Maybe<ReviewUpdateOneWithoutReviewPhotosInput>;
 }
 
 export interface ReviewCreateOneWithoutLikesInput {
@@ -1185,13 +1195,13 @@ export interface ReviewCreateOneWithoutLikesInput {
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export interface UserUpdateOneWithoutMyHateInput {
-  create?: Maybe<UserCreateWithoutMyHateInput>;
-  update?: Maybe<UserUpdateWithoutMyHateDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMyHateInput>;
+export interface ReviewUpdateOneWithoutReviewPhotosInput {
+  create?: Maybe<ReviewCreateWithoutReviewPhotosInput>;
+  update?: Maybe<ReviewUpdateWithoutReviewPhotosDataInput>;
+  upsert?: Maybe<ReviewUpsertWithoutReviewPhotosInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
 export interface ProductCreateOneWithoutReviewsInput {
@@ -1199,19 +1209,90 @@ export interface ProductCreateOneWithoutReviewsInput {
   connect?: Maybe<ProductWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutMyHateDataInput {
-  nickName?: Maybe<String>;
-  phone?: Maybe<String>;
-  email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
-  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
-  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
-  loginSecret?: Maybe<String>;
+export interface ReviewUpdateWithoutReviewPhotosDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  text?: Maybe<String>;
+  rating?: Maybe<Int>;
+  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
+  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
 }
 
 export interface CategoryCreateOneWithoutProductInput {
   create?: Maybe<CategoryCreateWithoutProductInput>;
   connect?: Maybe<CategoryWhereUniqueInput>;
+}
+
+export interface LikeUpdateManyWithoutReviewInput {
+  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
+  delete?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  set?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  disconnect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  update?: Maybe<
+    | LikeUpdateWithWhereUniqueWithoutReviewInput[]
+    | LikeUpdateWithWhereUniqueWithoutReviewInput
+  >;
+  upsert?: Maybe<
+    | LikeUpsertWithWhereUniqueWithoutReviewInput[]
+    | LikeUpsertWithWhereUniqueWithoutReviewInput
+  >;
+  deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+}
+
+export interface SuperCategoryCreateOneWithoutCategoryInput {
+  create?: Maybe<SuperCategoryCreateWithoutCategoryInput>;
+  connect?: Maybe<SuperCategoryWhereUniqueInput>;
+}
+
+export interface LikeUpdateWithWhereUniqueWithoutReviewInput {
+  where: LikeWhereUniqueInput;
+  data: LikeUpdateWithoutReviewDataInput;
+}
+
+export interface PhotoCreateManyWithoutProductInput {
+  create?: Maybe<
+    PhotoCreateWithoutProductInput[] | PhotoCreateWithoutProductInput
+  >;
+  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+}
+
+export interface LikeUpdateWithoutReviewDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyLikeInput>;
+}
+
+export interface ReviewCreateOneWithoutReviewPhotosInput {
+  create?: Maybe<ReviewCreateWithoutReviewPhotosInput>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
+}
+
+export interface UserUpdateOneWithoutMyLikeInput {
+  create?: Maybe<UserCreateWithoutMyLikeInput>;
+  update?: Maybe<UserUpdateWithoutMyLikeDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMyLikeInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface LikeCreateManyWithoutReviewInput {
+  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
+  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutMyLikeDataInput {
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
+  bio?: Maybe<Boolean>;
+  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
+  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
+  loginSecret?: Maybe<String>;
+}
+
+export interface UserCreateOneWithoutMyLikeInput {
+  create?: Maybe<UserCreateWithoutMyLikeInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface ReviewUpdateManyWithoutUserInput {
@@ -1235,9 +1316,9 @@ export interface ReviewUpdateManyWithoutUserInput {
   >;
 }
 
-export interface SuperCategoryCreateOneWithoutCategoryInput {
-  create?: Maybe<SuperCategoryCreateWithoutCategoryInput>;
-  connect?: Maybe<SuperCategoryWhereUniqueInput>;
+export interface ReviewCreateManyWithoutUserInput {
+  create?: Maybe<ReviewCreateWithoutUserInput[] | ReviewCreateWithoutUserInput>;
+  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
 }
 
 export interface ReviewUpdateWithWhereUniqueWithoutUserInput {
@@ -1256,7 +1337,7 @@ export interface ReviewUpdateWithoutUserDataInput {
   rating?: Maybe<Int>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
 }
 
 export interface UserCreateOneWithoutMyHateInput {
@@ -1264,539 +1345,42 @@ export interface UserCreateOneWithoutMyHateInput {
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface LikeUpdateManyWithoutReviewInput {
-  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
-  delete?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  set?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  disconnect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  update?: Maybe<
-    | LikeUpdateWithWhereUniqueWithoutReviewInput[]
-    | LikeUpdateWithWhereUniqueWithoutReviewInput
-  >;
-  upsert?: Maybe<
-    | LikeUpsertWithWhereUniqueWithoutReviewInput[]
-    | LikeUpsertWithWhereUniqueWithoutReviewInput
-  >;
-  deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
-}
-
-export interface ReviewCreateManyWithoutUserInput {
-  create?: Maybe<ReviewCreateWithoutUserInput[] | ReviewCreateWithoutUserInput>;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-}
-
-export interface LikeUpdateWithWhereUniqueWithoutReviewInput {
-  where: LikeWhereUniqueInput;
-  data: LikeUpdateWithoutReviewDataInput;
-}
-
-export interface LikeCreateManyWithoutReviewInput {
-  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
-  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-}
-
-export interface LikeUpdateWithoutReviewDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyLikeInput>;
-}
-
-export interface UserCreateOneWithoutMyLikeInput {
-  create?: Maybe<UserCreateWithoutMyLikeInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateOneWithoutMyLikeInput {
-  create?: Maybe<UserCreateWithoutMyLikeInput>;
-  update?: Maybe<UserUpdateWithoutMyLikeDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMyLikeInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface HateCreateManyWithoutUserInput {
-  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
-  connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutMyLikeDataInput {
-  nickName?: Maybe<String>;
-  phone?: Maybe<String>;
-  email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
-  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
-  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
-  loginSecret?: Maybe<String>;
-}
-
-export interface ReviewCreateOneWithoutHatesInput {
-  create?: Maybe<ReviewCreateWithoutHatesInput>;
-  connect?: Maybe<ReviewWhereUniqueInput>;
-}
-
-export interface HateUpdateManyWithoutUserInput {
-  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
+export interface HateUpdateManyWithoutReviewInput {
+  create?: Maybe<HateCreateWithoutReviewInput[] | HateCreateWithoutReviewInput>;
   delete?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   set?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   disconnect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   update?: Maybe<
-    | HateUpdateWithWhereUniqueWithoutUserInput[]
-    | HateUpdateWithWhereUniqueWithoutUserInput
+    | HateUpdateWithWhereUniqueWithoutReviewInput[]
+    | HateUpdateWithWhereUniqueWithoutReviewInput
   >;
   upsert?: Maybe<
-    | HateUpsertWithWhereUniqueWithoutUserInput[]
-    | HateUpsertWithWhereUniqueWithoutUserInput
+    | HateUpsertWithWhereUniqueWithoutReviewInput[]
+    | HateUpsertWithWhereUniqueWithoutReviewInput
   >;
   deleteMany?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
-export interface HateUpdateWithWhereUniqueWithoutUserInput {
-  where: HateWhereUniqueInput;
-  data: HateUpdateWithoutUserDataInput;
-}
-
-export interface ProductSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ProductWhereInput>;
-  AND?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
-  OR?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
-  NOT?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
-}
-
-export interface HateUpdateWithoutUserDataInput {
-  review?: Maybe<ReviewUpdateOneWithoutHatesInput>;
-}
-
-export interface HateSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<HateWhereInput>;
-  AND?: Maybe<HateSubscriptionWhereInput[] | HateSubscriptionWhereInput>;
-  OR?: Maybe<HateSubscriptionWhereInput[] | HateSubscriptionWhereInput>;
-  NOT?: Maybe<HateSubscriptionWhereInput[] | HateSubscriptionWhereInput>;
-}
-
-export interface ReviewUpdateOneWithoutHatesInput {
-  create?: Maybe<ReviewCreateWithoutHatesInput>;
-  update?: Maybe<ReviewUpdateWithoutHatesDataInput>;
-  upsert?: Maybe<ReviewUpsertWithoutHatesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ReviewWhereUniqueInput>;
-}
-
-export interface CategoryWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  categoryName?: Maybe<String>;
-  categoryName_not?: Maybe<String>;
-  categoryName_in?: Maybe<String[] | String>;
-  categoryName_not_in?: Maybe<String[] | String>;
-  categoryName_lt?: Maybe<String>;
-  categoryName_lte?: Maybe<String>;
-  categoryName_gt?: Maybe<String>;
-  categoryName_gte?: Maybe<String>;
-  categoryName_contains?: Maybe<String>;
-  categoryName_not_contains?: Maybe<String>;
-  categoryName_starts_with?: Maybe<String>;
-  categoryName_not_starts_with?: Maybe<String>;
-  categoryName_ends_with?: Maybe<String>;
-  categoryName_not_ends_with?: Maybe<String>;
-  product_every?: Maybe<ProductWhereInput>;
-  product_some?: Maybe<ProductWhereInput>;
-  product_none?: Maybe<ProductWhereInput>;
-  superCategory?: Maybe<SuperCategoryWhereInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<CategoryWhereInput[] | CategoryWhereInput>;
-  OR?: Maybe<CategoryWhereInput[] | CategoryWhereInput>;
-  NOT?: Maybe<CategoryWhereInput[] | CategoryWhereInput>;
-}
-
-export interface ReviewUpdateWithoutHatesDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
-}
-
-export interface CategoryUpdateManyDataInput {
-  categoryName?: Maybe<String>;
-}
-
-export interface PhotoUpdateManyWithoutReviewInput {
+export interface PhotoCreateManyWithoutReviewInput {
   create?: Maybe<
     PhotoCreateWithoutReviewInput[] | PhotoCreateWithoutReviewInput
   >;
-  delete?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
   connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  set?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  disconnect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  update?: Maybe<
-    | PhotoUpdateWithWhereUniqueWithoutReviewInput[]
-    | PhotoUpdateWithWhereUniqueWithoutReviewInput
-  >;
-  upsert?: Maybe<
-    | PhotoUpsertWithWhereUniqueWithoutReviewInput[]
-    | PhotoUpsertWithWhereUniqueWithoutReviewInput
-  >;
-  deleteMany?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
-  updateMany?: Maybe<
-    PhotoUpdateManyWithWhereNestedInput[] | PhotoUpdateManyWithWhereNestedInput
-  >;
 }
 
-export interface CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput {
-  where: CategoryWhereUniqueInput;
-  update: CategoryUpdateWithoutSuperCategoryDataInput;
-  create: CategoryCreateWithoutSuperCategoryInput;
+export interface HateUpdateWithWhereUniqueWithoutReviewInput {
+  where: HateWhereUniqueInput;
+  data: HateUpdateWithoutReviewDataInput;
 }
 
-export interface PhotoUpdateWithWhereUniqueWithoutReviewInput {
-  where: PhotoWhereUniqueInput;
-  data: PhotoUpdateWithoutReviewDataInput;
-}
-
-export interface CategoryUpdateManyWithoutSuperCategoryInput {
-  create?: Maybe<
-    | CategoryCreateWithoutSuperCategoryInput[]
-    | CategoryCreateWithoutSuperCategoryInput
-  >;
-  delete?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
-  connect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
-  set?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
-  disconnect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
-  update?: Maybe<
-    | CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput[]
-    | CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput
-  >;
-  upsert?: Maybe<
-    | CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput[]
-    | CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput
-  >;
-  deleteMany?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
-  updateMany?: Maybe<
-    | CategoryUpdateManyWithWhereNestedInput[]
-    | CategoryUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface PhotoUpdateWithoutReviewDataInput {
-  url?: Maybe<String>;
-  product?: Maybe<ProductUpdateOneInput>;
-}
-
-export interface CategoryCreateManyWithoutSuperCategoryInput {
-  create?: Maybe<
-    | CategoryCreateWithoutSuperCategoryInput[]
-    | CategoryCreateWithoutSuperCategoryInput
-  >;
-  connect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
-}
-
-export interface ProductUpdateOneInput {
-  create?: Maybe<ProductCreateInput>;
-  update?: Maybe<ProductUpdateDataInput>;
-  upsert?: Maybe<ProductUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
+export interface ProductCreateOneWithoutProductPhotosInput {
+  create?: Maybe<ProductCreateWithoutProductPhotosInput>;
   connect?: Maybe<ProductWhereUniqueInput>;
 }
 
-export interface ReviewUpdateInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
-  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
-}
-
-export interface ProductUpdateDataInput {
-  productName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
-  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
-}
-
-export interface ProductUpdateInput {
-  productName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
-  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
-}
-
-export interface ProductUpsertNestedInput {
-  update: ProductUpdateDataInput;
-  create: ProductCreateInput;
-}
-
-export interface ReviewUpsertWithoutPhotosInput {
-  update: ReviewUpdateWithoutPhotosDataInput;
-  create: ReviewCreateWithoutPhotosInput;
-}
-
-export interface PhotoUpsertWithWhereUniqueWithoutReviewInput {
-  where: PhotoWhereUniqueInput;
-  update: PhotoUpdateWithoutReviewDataInput;
-  create: PhotoCreateWithoutReviewInput;
-}
-
-export interface PhotoUpdateInput {
-  url?: Maybe<String>;
-  review?: Maybe<ReviewUpdateOneWithoutPhotosInput>;
-  product?: Maybe<ProductUpdateOneInput>;
-}
-
-export interface PhotoScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
-  OR?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
-  NOT?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
-}
-
-export interface CategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  categoryName: String;
-  product?: Maybe<ProductCreateManyWithoutCategoryInput>;
-  superCategory?: Maybe<SuperCategoryCreateOneWithoutCategoryInput>;
-}
-
-export interface PhotoUpdateManyWithWhereNestedInput {
-  where: PhotoScalarWhereInput;
-  data: PhotoUpdateManyDataInput;
-}
-
-export interface ReviewCreateWithoutProductInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
-  text: String;
-  rating: Int;
-  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoCreateManyWithoutReviewInput>;
-}
-
-export interface PhotoUpdateManyDataInput {
-  url?: Maybe<String>;
-}
-
-export interface LikeCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  review?: Maybe<ReviewCreateOneWithoutLikesInput>;
-}
-
-export interface ReviewUpsertWithoutHatesInput {
-  update: ReviewUpdateWithoutHatesDataInput;
-  create: ReviewCreateWithoutHatesInput;
-}
-
-export interface ProductCreateWithoutReviewsInput {
-  id?: Maybe<ID_Input>;
-  productName: String;
-  category: CategoryCreateOneWithoutProductInput;
-}
-
-export interface HateUpsertWithWhereUniqueWithoutUserInput {
-  where: HateWhereUniqueInput;
-  update: HateUpdateWithoutUserDataInput;
-  create: HateCreateWithoutUserInput;
-}
-
-export interface SuperCategoryCreateWithoutCategoryInput {
-  id?: Maybe<ID_Input>;
-  superCategoryName: String;
-}
-
-export interface HateScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
-  OR?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
-  NOT?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
-}
-
-export interface UserCreateWithoutMyHateInput {
-  id?: Maybe<ID_Input>;
-  nickName: String;
-  phone: String;
-  email: String;
-  bio?: Maybe<Boolean>;
-  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
-  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
-  loginSecret?: Maybe<String>;
-}
-
-export interface UserUpsertWithoutMyLikeInput {
-  update: UserUpdateWithoutMyLikeDataInput;
-  create: UserCreateWithoutMyLikeInput;
-}
-
-export interface LikeCreateWithoutReviewInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyLikeInput>;
-}
-
-export interface LikeUpsertWithWhereUniqueWithoutReviewInput {
-  where: LikeWhereUniqueInput;
-  update: LikeUpdateWithoutReviewDataInput;
-  create: LikeCreateWithoutReviewInput;
-}
-
-export interface HateCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  review?: Maybe<ReviewCreateOneWithoutHatesInput>;
-}
-
-export interface LikeScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
-  OR?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
-  NOT?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+export interface HateUpdateWithoutReviewDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyHateInput>;
 }
 
 export interface UserWhereInput {
@@ -1902,10 +1486,34 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface ReviewUpsertWithWhereUniqueWithoutUserInput {
-  where: ReviewWhereUniqueInput;
-  update: ReviewUpdateWithoutUserDataInput;
-  create: ReviewCreateWithoutUserInput;
+export interface UserUpdateOneWithoutMyHateInput {
+  create?: Maybe<UserCreateWithoutMyHateInput>;
+  update?: Maybe<UserUpdateWithoutMyHateDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMyHateInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface PhotoSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PhotoWhereInput>;
+  AND?: Maybe<PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput>;
+  OR?: Maybe<PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput>;
+  NOT?: Maybe<PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput>;
+}
+
+export interface UserUpdateWithoutMyHateDataInput {
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
+  bio?: Maybe<Boolean>;
+  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
+  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
+  loginSecret?: Maybe<String>;
 }
 
 export interface CategorySubscriptionWhereInput {
@@ -1921,6 +1529,333 @@ export interface CategorySubscriptionWhereInput {
   NOT?: Maybe<
     CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
   >;
+}
+
+export interface UserUpsertWithoutMyHateInput {
+  update: UserUpdateWithoutMyHateDataInput;
+  create: UserCreateWithoutMyHateInput;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  nickName: String;
+  phone: String;
+  email: String;
+  bio?: Maybe<Boolean>;
+  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
+  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
+  myHate?: Maybe<HateCreateManyWithoutUserInput>;
+  loginSecret?: Maybe<String>;
+}
+
+export interface HateUpsertWithWhereUniqueWithoutReviewInput {
+  where: HateWhereUniqueInput;
+  update: HateUpdateWithoutReviewDataInput;
+  create: HateCreateWithoutReviewInput;
+}
+
+export interface CategoryUpdateManyWithWhereNestedInput {
+  where: CategoryScalarWhereInput;
+  data: CategoryUpdateManyDataInput;
+}
+
+export interface HateScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+  OR?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+  NOT?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+}
+
+export interface CategoryUpdateWithoutSuperCategoryDataInput {
+  categoryName?: Maybe<String>;
+  product?: Maybe<ProductUpdateManyWithoutCategoryInput>;
+}
+
+export interface PhotoUpdateManyWithoutReviewInput {
+  create?: Maybe<
+    PhotoCreateWithoutReviewInput[] | PhotoCreateWithoutReviewInput
+  >;
+  delete?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  set?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  disconnect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+  update?: Maybe<
+    | PhotoUpdateWithWhereUniqueWithoutReviewInput[]
+    | PhotoUpdateWithWhereUniqueWithoutReviewInput
+  >;
+  upsert?: Maybe<
+    | PhotoUpsertWithWhereUniqueWithoutReviewInput[]
+    | PhotoUpsertWithWhereUniqueWithoutReviewInput
+  >;
+  deleteMany?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
+  updateMany?: Maybe<
+    PhotoUpdateManyWithWhereNestedInput[] | PhotoUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface SuperCategoryUpdateInput {
+  superCategoryName?: Maybe<String>;
+  category?: Maybe<CategoryUpdateManyWithoutSuperCategoryInput>;
+}
+
+export interface PhotoUpdateWithWhereUniqueWithoutReviewInput {
+  where: PhotoWhereUniqueInput;
+  data: PhotoUpdateWithoutReviewDataInput;
+}
+
+export interface SuperCategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  superCategoryName: String;
+  category?: Maybe<CategoryCreateManyWithoutSuperCategoryInput>;
+}
+
+export interface PhotoUpdateWithoutReviewDataInput {
+  url?: Maybe<String>;
+  product?: Maybe<ProductUpdateOneWithoutProductPhotosInput>;
+}
+
+export interface ReviewCreateInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  product: ProductCreateOneWithoutReviewsInput;
+  text: String;
+  rating: Int;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+}
+
+export interface ProductUpdateOneWithoutProductPhotosInput {
+  create?: Maybe<ProductCreateWithoutProductPhotosInput>;
+  update?: Maybe<ProductUpdateWithoutProductPhotosDataInput>;
+  upsert?: Maybe<ProductUpsertWithoutProductPhotosInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ProductWhereUniqueInput>;
+}
+
+export interface ProductWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  productName?: Maybe<String>;
+  productName_not?: Maybe<String>;
+  productName_in?: Maybe<String[] | String>;
+  productName_not_in?: Maybe<String[] | String>;
+  productName_lt?: Maybe<String>;
+  productName_lte?: Maybe<String>;
+  productName_gt?: Maybe<String>;
+  productName_gte?: Maybe<String>;
+  productName_contains?: Maybe<String>;
+  productName_not_contains?: Maybe<String>;
+  productName_starts_with?: Maybe<String>;
+  productName_not_starts_with?: Maybe<String>;
+  productName_ends_with?: Maybe<String>;
+  productName_not_ends_with?: Maybe<String>;
+  category?: Maybe<CategoryWhereInput>;
+  reviews_every?: Maybe<ReviewWhereInput>;
+  reviews_some?: Maybe<ReviewWhereInput>;
+  reviews_none?: Maybe<ReviewWhereInput>;
+  productPhotos_every?: Maybe<PhotoWhereInput>;
+  productPhotos_some?: Maybe<PhotoWhereInput>;
+  productPhotos_none?: Maybe<PhotoWhereInput>;
+  isPublished?: Maybe<Boolean>;
+  isPublished_not?: Maybe<Boolean>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  OR?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  NOT?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+}
+
+export interface ProductUpdateWithoutProductPhotosDataInput {
+  productName?: Maybe<String>;
+  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
+  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
+}>;
+
+export interface ProductUpsertWithoutProductPhotosInput {
+  update: ProductUpdateWithoutProductPhotosDataInput;
+  create: ProductCreateWithoutProductPhotosInput;
+}
+
+export interface HateUpdateInput {
+  user?: Maybe<UserUpdateOneWithoutMyHateInput>;
+  review?: Maybe<ReviewUpdateOneWithoutHatesInput>;
+}
+
+export interface PhotoUpsertWithWhereUniqueWithoutReviewInput {
+  where: PhotoWhereUniqueInput;
+  update: PhotoUpdateWithoutReviewDataInput;
+  create: PhotoCreateWithoutReviewInput;
+}
+
+export interface ProductCreateWithoutCategoryInput {
+  id?: Maybe<ID_Input>;
+  productName: String;
+  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+}
+
+export interface PhotoScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
+  OR?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
+  NOT?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
+}
+
+export interface UserCreateWithoutMyReviewInput {
+  id?: Maybe<ID_Input>;
+  nickName: String;
+  phone: String;
+  email: String;
+  bio?: Maybe<Boolean>;
+  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
+  myHate?: Maybe<HateCreateManyWithoutUserInput>;
+  loginSecret?: Maybe<String>;
+}
+
+export interface PhotoUpdateManyWithWhereNestedInput {
+  where: PhotoScalarWhereInput;
+  data: PhotoUpdateManyDataInput;
+}
+
+export interface ReviewCreateWithoutLikesInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  product: ProductCreateOneWithoutReviewsInput;
+  text: String;
+  rating: Int;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+}
+
+export interface PhotoUpdateManyDataInput {
+  url?: Maybe<String>;
+}
+
+export interface CategoryCreateWithoutProductInput {
+  id?: Maybe<ID_Input>;
+  categoryName: String;
+  superCategory?: Maybe<SuperCategoryCreateOneWithoutCategoryInput>;
+}
+
+export interface ReviewUpsertWithWhereUniqueWithoutUserInput {
+  where: ReviewWhereUniqueInput;
+  update: ReviewUpdateWithoutUserDataInput;
+  create: ReviewCreateWithoutUserInput;
+}
+
+export interface PhotoCreateWithoutProductInput {
+  id?: Maybe<ID_Input>;
+  url: String;
+  review?: Maybe<ReviewCreateOneWithoutReviewPhotosInput>;
 }
 
 export interface ReviewScalarWhereInput {
@@ -1981,9 +1916,9 @@ export interface ReviewScalarWhereInput {
   NOT?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
 }
 
-export interface CategoryUpdateManyWithWhereNestedInput {
-  where: CategoryScalarWhereInput;
-  data: CategoryUpdateManyDataInput;
+export interface LikeCreateWithoutReviewInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyLikeInput>;
 }
 
 export interface ReviewUpdateManyWithWhereNestedInput {
@@ -1991,9 +1926,14 @@ export interface ReviewUpdateManyWithWhereNestedInput {
   data: ReviewUpdateManyDataInput;
 }
 
-export interface SuperCategoryUpdateInput {
-  superCategoryName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateManyWithoutSuperCategoryInput>;
+export interface ReviewCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  product: ProductCreateOneWithoutReviewsInput;
+  text: String;
+  rating: Int;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
 }
 
 export interface ReviewUpdateManyDataInput {
@@ -2001,70 +1941,198 @@ export interface ReviewUpdateManyDataInput {
   rating?: Maybe<Int>;
 }
 
-export interface ReviewCreateInput {
+export interface UserCreateWithoutMyHateInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
-  product: ProductCreateOneWithoutReviewsInput;
-  text: String;
-  rating: Int;
-  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+  nickName: String;
+  phone: String;
+  email: String;
+  bio?: Maybe<Boolean>;
+  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
+  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
+  loginSecret?: Maybe<String>;
 }
 
-export interface UserUpsertWithoutMyHateInput {
-  update: UserUpdateWithoutMyHateDataInput;
-  create: UserCreateWithoutMyHateInput;
+export interface HateUpdateManyWithoutUserInput {
+  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
+  delete?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  set?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  disconnect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  update?: Maybe<
+    | HateUpdateWithWhereUniqueWithoutUserInput[]
+    | HateUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | HateUpsertWithWhereUniqueWithoutUserInput[]
+    | HateUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  nickName?: Maybe<String>;
-  phone?: Maybe<String>;
-  email?: Maybe<String>;
-}>;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
 
-export interface HateUpsertWithWhereUniqueWithoutReviewInput {
+export interface HateUpdateWithWhereUniqueWithoutUserInput {
   where: HateWhereUniqueInput;
-  update: HateUpdateWithoutReviewDataInput;
-  create: HateCreateWithoutReviewInput;
+  data: HateUpdateWithoutUserDataInput;
 }
 
-export interface ProductCreateWithoutCategoryInput {
+export interface HateSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<HateWhereInput>;
+  AND?: Maybe<HateSubscriptionWhereInput[] | HateSubscriptionWhereInput>;
+  OR?: Maybe<HateSubscriptionWhereInput[] | HateSubscriptionWhereInput>;
+  NOT?: Maybe<HateSubscriptionWhereInput[] | HateSubscriptionWhereInput>;
+}
+
+export interface HateUpdateWithoutUserDataInput {
+  review?: Maybe<ReviewUpdateOneWithoutHatesInput>;
+}
+
+export interface CategoryUpdateManyDataInput {
+  categoryName?: Maybe<String>;
+}
+
+export interface ReviewUpdateOneWithoutHatesInput {
+  create?: Maybe<ReviewCreateWithoutHatesInput>;
+  update?: Maybe<ReviewUpdateWithoutHatesDataInput>;
+  upsert?: Maybe<ReviewUpsertWithoutHatesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
+}
+
+export interface CategoryUpdateManyWithoutSuperCategoryInput {
+  create?: Maybe<
+    | CategoryCreateWithoutSuperCategoryInput[]
+    | CategoryCreateWithoutSuperCategoryInput
+  >;
+  delete?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
+  connect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
+  set?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
+  disconnect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
+  update?: Maybe<
+    | CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput[]
+    | CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput
+  >;
+  upsert?: Maybe<
+    | CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput[]
+    | CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput
+  >;
+  deleteMany?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
+  updateMany?: Maybe<
+    | CategoryUpdateManyWithWhereNestedInput[]
+    | CategoryUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ReviewUpdateWithoutHatesDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  text?: Maybe<String>;
+  rating?: Maybe<Int>;
+  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+}
+
+export interface ReviewUpdateInput {
+  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  text?: Maybe<String>;
+  rating?: Maybe<Int>;
+  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
+  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+}
+
+export interface ReviewUpsertWithoutHatesInput {
+  update: ReviewUpdateWithoutHatesDataInput;
+  create: ReviewCreateWithoutHatesInput;
+}
+
+export interface PhotoUpdateManyMutationInput {
+  url?: Maybe<String>;
+}
+
+export interface HateUpsertWithWhereUniqueWithoutUserInput {
+  where: HateWhereUniqueInput;
+  update: HateUpdateWithoutUserDataInput;
+  create: HateCreateWithoutUserInput;
+}
+
+export interface CategoryCreateInput {
   id?: Maybe<ID_Input>;
-  productName: String;
-  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  categoryName: String;
+  product?: Maybe<ProductCreateManyWithoutCategoryInput>;
+  superCategory?: Maybe<SuperCategoryCreateOneWithoutCategoryInput>;
 }
 
-export interface ReviewUpsertWithoutLikesInput {
-  update: ReviewUpdateWithoutLikesDataInput;
-  create: ReviewCreateWithoutLikesInput;
+export interface UserUpsertWithoutMyLikeInput {
+  update: UserUpdateWithoutMyLikeDataInput;
+  create: UserCreateWithoutMyLikeInput;
 }
 
-export interface ReviewCreateWithoutLikesInput {
+export interface LikeCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
-  product: ProductCreateOneWithoutReviewsInput;
-  text: String;
-  rating: Int;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+  review?: Maybe<ReviewCreateOneWithoutLikesInput>;
 }
 
-export interface LikeUpsertWithWhereUniqueWithoutUserInput {
+export interface LikeUpsertWithWhereUniqueWithoutReviewInput {
   where: LikeWhereUniqueInput;
-  update: LikeUpdateWithoutUserDataInput;
-  create: LikeCreateWithoutUserInput;
+  update: LikeUpdateWithoutReviewDataInput;
+  create: LikeCreateWithoutReviewInput;
 }
 
-export interface HateCreateWithoutReviewInput {
+export interface SuperCategoryCreateWithoutCategoryInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyHateInput>;
+  superCategoryName: String;
 }
 
-export interface UserUpsertWithoutMyReviewInput {
-  update: UserUpdateWithoutMyReviewDataInput;
-  create: UserCreateWithoutMyReviewInput;
+export interface LikeScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+  OR?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+  NOT?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
 }
 
 export interface UserCreateWithoutMyLikeInput {
@@ -2078,32 +2146,144 @@ export interface UserCreateWithoutMyLikeInput {
   loginSecret?: Maybe<String>;
 }
 
+export interface ReviewUpsertWithoutReviewPhotosInput {
+  update: ReviewUpdateWithoutReviewPhotosDataInput;
+  create: ReviewCreateWithoutReviewPhotosInput;
+}
+
+export interface PhotoCreateWithoutReviewInput {
+  id?: Maybe<ID_Input>;
+  url: String;
+  product?: Maybe<ProductCreateOneWithoutProductPhotosInput>;
+}
+
+export interface PhotoUpsertWithWhereUniqueWithoutProductInput {
+  where: PhotoWhereUniqueInput;
+  update: PhotoUpdateWithoutProductDataInput;
+  create: PhotoCreateWithoutProductInput;
+}
+
+export interface CategoryWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  categoryName?: Maybe<String>;
+  categoryName_not?: Maybe<String>;
+  categoryName_in?: Maybe<String[] | String>;
+  categoryName_not_in?: Maybe<String[] | String>;
+  categoryName_lt?: Maybe<String>;
+  categoryName_lte?: Maybe<String>;
+  categoryName_gt?: Maybe<String>;
+  categoryName_gte?: Maybe<String>;
+  categoryName_contains?: Maybe<String>;
+  categoryName_not_contains?: Maybe<String>;
+  categoryName_starts_with?: Maybe<String>;
+  categoryName_not_starts_with?: Maybe<String>;
+  categoryName_ends_with?: Maybe<String>;
+  categoryName_not_ends_with?: Maybe<String>;
+  product_every?: Maybe<ProductWhereInput>;
+  product_some?: Maybe<ProductWhereInput>;
+  product_none?: Maybe<ProductWhereInput>;
+  superCategory?: Maybe<SuperCategoryWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<CategoryWhereInput[] | CategoryWhereInput>;
+  OR?: Maybe<CategoryWhereInput[] | CategoryWhereInput>;
+  NOT?: Maybe<CategoryWhereInput[] | CategoryWhereInput>;
+}
+
+export interface ProductUpsertWithoutReviewsInput {
+  update: ProductUpdateWithoutReviewsDataInput;
+  create: ProductCreateWithoutReviewsInput;
+}
+
+export interface CategoryCreateManyWithoutSuperCategoryInput {
+  create?: Maybe<
+    | CategoryCreateWithoutSuperCategoryInput[]
+    | CategoryCreateWithoutSuperCategoryInput
+  >;
+  connect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
+}
+
+export interface ReviewUpsertWithoutLikesInput {
+  update: ReviewUpdateWithoutLikesDataInput;
+  create: ReviewCreateWithoutLikesInput;
+}
+
+export interface LikeUpdateInput {
+  user?: Maybe<UserUpdateOneWithoutMyLikeInput>;
+  review?: Maybe<ReviewUpdateOneWithoutLikesInput>;
+}
+
+export interface LikeUpsertWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput;
+  update: LikeUpdateWithoutUserDataInput;
+  create: LikeCreateWithoutUserInput;
+}
+
+export interface ProductCreateWithoutReviewsInput {
+  id?: Maybe<ID_Input>;
+  productName: String;
+  category: CategoryCreateOneWithoutProductInput;
+  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+}
+
+export interface UserUpsertWithoutMyReviewInput {
+  update: UserUpdateWithoutMyReviewDataInput;
+  create: UserCreateWithoutMyReviewInput;
+}
+
+export interface HateCreateWithoutReviewInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyHateInput>;
+}
+
 export interface ReviewUpsertWithWhereUniqueWithoutProductInput {
   where: ReviewWhereUniqueInput;
   update: ReviewUpdateWithoutProductDataInput;
   create: ReviewCreateWithoutProductInput;
 }
 
-export interface PhotoSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PhotoWhereInput>;
-  AND?: Maybe<PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput>;
-  OR?: Maybe<PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput>;
-  NOT?: Maybe<PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput>;
+export interface CategoryUpsertWithWhereUniqueWithoutSuperCategoryInput {
+  where: CategoryWhereUniqueInput;
+  update: CategoryUpdateWithoutSuperCategoryDataInput;
+  create: CategoryCreateWithoutSuperCategoryInput;
 }
 
-export interface ProductUpsertWithWhereUniqueWithoutCategoryInput {
-  where: ProductWhereUniqueInput;
-  update: ProductUpdateWithoutCategoryDataInput;
-  create: ProductCreateWithoutCategoryInput;
+export interface ProductUpdateManyDataInput {
+  productName?: Maybe<String>;
+  isPublished?: Maybe<Boolean>;
 }
 
-export interface CategoryUpdateWithoutSuperCategoryDataInput {
-  categoryName?: Maybe<String>;
-  product?: Maybe<ProductUpdateManyWithoutCategoryInput>;
+export interface ProductUpdateManyWithWhereNestedInput {
+  where: ProductScalarWhereInput;
+  data: ProductUpdateManyDataInput;
 }
 
 export interface ProductScalarWhereInput {
@@ -2135,6 +2315,8 @@ export interface ProductScalarWhereInput {
   productName_not_starts_with?: Maybe<String>;
   productName_ends_with?: Maybe<String>;
   productName_not_ends_with?: Maybe<String>;
+  isPublished?: Maybe<Boolean>;
+  isPublished_not?: Maybe<Boolean>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -2156,148 +2338,49 @@ export interface ProductScalarWhereInput {
   NOT?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
 }
 
-export interface ProductWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
+export interface ProductUpsertWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput;
+  update: ProductUpdateWithoutCategoryDataInput;
+  create: ProductCreateWithoutCategoryInput;
+}
+
+export interface ProductUpdateInput {
   productName?: Maybe<String>;
-  productName_not?: Maybe<String>;
-  productName_in?: Maybe<String[] | String>;
-  productName_not_in?: Maybe<String[] | String>;
-  productName_lt?: Maybe<String>;
-  productName_lte?: Maybe<String>;
-  productName_gt?: Maybe<String>;
-  productName_gte?: Maybe<String>;
-  productName_contains?: Maybe<String>;
-  productName_not_contains?: Maybe<String>;
-  productName_starts_with?: Maybe<String>;
-  productName_not_starts_with?: Maybe<String>;
-  productName_ends_with?: Maybe<String>;
-  productName_not_ends_with?: Maybe<String>;
-  category?: Maybe<CategoryWhereInput>;
-  reviews_every?: Maybe<ReviewWhereInput>;
-  reviews_some?: Maybe<ReviewWhereInput>;
-  reviews_none?: Maybe<ReviewWhereInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<ProductWhereInput[] | ProductWhereInput>;
-  OR?: Maybe<ProductWhereInput[] | ProductWhereInput>;
-  NOT?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
+  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
+  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
 }
 
-export interface ProductUpdateManyWithWhereNestedInput {
-  where: ProductScalarWhereInput;
-  data: ProductUpdateManyDataInput;
+export interface ProductSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ProductWhereInput>;
+  AND?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
+  OR?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
+  NOT?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
 }
 
-export interface UserCreateWithoutMyReviewInput {
-  id?: Maybe<ID_Input>;
-  nickName: String;
-  phone: String;
-  email: String;
-  bio?: Maybe<Boolean>;
-  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
-  myHate?: Maybe<HateCreateManyWithoutUserInput>;
-  loginSecret?: Maybe<String>;
-}
-
-export interface ProductUpdateManyDataInput {
-  productName?: Maybe<String>;
-}
-
-export interface ReviewCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  product: ProductCreateOneWithoutReviewsInput;
-  text: String;
-  rating: Int;
-  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoCreateManyWithoutReviewInput>;
-}
-
-export interface HateCreateInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyHateInput>;
-  review?: Maybe<ReviewCreateOneWithoutHatesInput>;
-}
-
-export interface LikeCreateInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyLikeInput>;
-  review?: Maybe<ReviewCreateOneWithoutLikesInput>;
-}
-
-export interface LikeUpdateInput {
-  user?: Maybe<UserUpdateOneWithoutMyLikeInput>;
-  review?: Maybe<ReviewUpdateOneWithoutLikesInput>;
-}
-
-export interface CategoryUpdateManyMutationInput {
-  categoryName?: Maybe<String>;
-}
-
-export interface ReviewCreateWithoutHatesInput {
+export interface ReviewCreateWithoutReviewPhotosInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyReviewInput>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
-  photos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
 }
 
-export interface CategoryCreateWithoutProductInput {
+export interface ReviewCreateWithoutProductInput {
   id?: Maybe<ID_Input>;
-  categoryName: String;
-  superCategory?: Maybe<SuperCategoryCreateOneWithoutCategoryInput>;
-}
-
-export interface ReviewCreateOneWithoutPhotosInput {
-  create?: Maybe<ReviewCreateWithoutPhotosInput>;
-  connect?: Maybe<ReviewWhereUniqueInput>;
-}
-
-export interface SuperCategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  superCategoryName: String;
-  category?: Maybe<CategoryCreateManyWithoutSuperCategoryInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  nickName: String;
-  phone: String;
-  email: String;
-  bio?: Maybe<Boolean>;
-  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
-  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
-  myHate?: Maybe<HateCreateManyWithoutUserInput>;
-  loginSecret?: Maybe<String>;
+  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  text: String;
+  rating: Int;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
 }
 
 export interface NodeNode {
@@ -2341,103 +2424,6 @@ export interface UserPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface AggregateCategory {
-  count: Int;
-}
-
-export interface AggregateCategoryPromise
-  extends Promise<AggregateCategory>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCategorySubscription
-  extends Promise<AsyncIterator<AggregateCategory>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Product {
-  id: ID_Output;
-  productName: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface ProductPromise extends Promise<Product>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  productName: () => Promise<String>;
-  category: <T = CategoryPromise>() => T;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface ProductSubscription
-  extends Promise<AsyncIterator<Product>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  productName: () => Promise<AsyncIterator<String>>;
-  category: <T = CategorySubscription>() => T;
-  reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface ProductNullablePromise
-  extends Promise<Product | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  productName: () => Promise<String>;
-  category: <T = CategoryPromise>() => T;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface CategoryEdge {
-  node: Category;
-  cursor: String;
-}
-
-export interface CategoryEdgePromise
-  extends Promise<CategoryEdge>,
-    Fragmentable {
-  node: <T = CategoryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CategoryEdgeSubscription
-  extends Promise<AsyncIterator<CategoryEdge>>,
-    Fragmentable {
-  node: <T = CategorySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface PageInfo {
   hasNextPage: Boolean;
   hasPreviousPage: Boolean;
@@ -2477,20 +2463,141 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface AggregateUser {
-  count: Int;
+export interface CategoryEdge {
+  node: Category;
+  cursor: String;
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface CategoryEdgePromise
+  extends Promise<CategoryEdge>,
     Fragmentable {
-  count: () => Promise<Int>;
+  node: <T = CategoryPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface CategoryEdgeSubscription
+  extends Promise<AsyncIterator<CategoryEdge>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = CategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Product {
+  id: ID_Output;
+  productName: String;
+  isPublished?: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface ProductPromise extends Promise<Product>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  productName: () => Promise<String>;
+  category: <T = CategoryPromise>() => T;
+  reviews: <T = FragmentableArray<Review>>(args?: {
+    where?: ReviewWhereInput;
+    orderBy?: ReviewOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  productPhotos: <T = FragmentableArray<Photo>>(args?: {
+    where?: PhotoWhereInput;
+    orderBy?: PhotoOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  isPublished: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ProductSubscription
+  extends Promise<AsyncIterator<Product>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  productName: () => Promise<AsyncIterator<String>>;
+  category: <T = CategorySubscription>() => T;
+  reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(args?: {
+    where?: ReviewWhereInput;
+    orderBy?: ReviewOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  productPhotos: <T = Promise<AsyncIterator<PhotoSubscription>>>(args?: {
+    where?: PhotoWhereInput;
+    orderBy?: PhotoOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  isPublished: () => Promise<AsyncIterator<Boolean>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface ProductNullablePromise
+  extends Promise<Product | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  productName: () => Promise<String>;
+  category: <T = CategoryPromise>() => T;
+  reviews: <T = FragmentableArray<Review>>(args?: {
+    where?: ReviewWhereInput;
+    orderBy?: ReviewOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  productPhotos: <T = FragmentableArray<Photo>>(args?: {
+    where?: PhotoWhereInput;
+    orderBy?: PhotoOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  isPublished: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SuperCategoryPreviousValues {
+  id: ID_Output;
+  superCategoryName: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface SuperCategoryPreviousValuesPromise
+  extends Promise<SuperCategoryPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  superCategoryName: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SuperCategoryPreviousValuesSubscription
+  extends Promise<AsyncIterator<SuperCategoryPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  superCategoryName: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface CategoryConnection {
@@ -2512,6 +2619,22 @@ export interface CategoryConnectionSubscription
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<CategoryEdgeSubscription>>>() => T;
   aggregate: <T = AggregateCategorySubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserConnection {
@@ -3039,29 +3162,20 @@ export interface LikeSubscriptionPayloadSubscription
   previousValues: <T = LikePreviousValuesSubscription>() => T;
 }
 
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
+export interface AggregateCategory {
+  count: Int;
 }
 
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
+export interface AggregateCategoryPromise
+  extends Promise<AggregateCategory>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+export interface AggregateCategorySubscription
+  extends Promise<AsyncIterator<AggregateCategory>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface LikePreviousValues {
@@ -3086,29 +3200,29 @@ export interface LikePreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface SuperCategoryPreviousValues {
-  id: ID_Output;
-  superCategoryName: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
 }
 
-export interface SuperCategoryPreviousValuesPromise
-  extends Promise<SuperCategoryPreviousValues>,
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  superCategoryName: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
 }
 
-export interface SuperCategoryPreviousValuesSubscription
-  extends Promise<AsyncIterator<SuperCategoryPreviousValues>>,
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  superCategoryName: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 export interface Like {
@@ -3542,7 +3656,7 @@ export interface ReviewPromise extends Promise<Review>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  photos: <T = FragmentableArray<Photo>>(args?: {
+  reviewPhotos: <T = FragmentableArray<Photo>>(args?: {
     where?: PhotoWhereInput;
     orderBy?: PhotoOrderByInput;
     skip?: Int;
@@ -3581,7 +3695,7 @@ export interface ReviewSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  photos: <T = Promise<AsyncIterator<PhotoSubscription>>>(args?: {
+  reviewPhotos: <T = Promise<AsyncIterator<PhotoSubscription>>>(args?: {
     where?: PhotoWhereInput;
     orderBy?: PhotoOrderByInput;
     skip?: Int;
@@ -3620,7 +3734,7 @@ export interface ReviewNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  photos: <T = FragmentableArray<Photo>>(args?: {
+  reviewPhotos: <T = FragmentableArray<Photo>>(args?: {
     where?: PhotoWhereInput;
     orderBy?: PhotoOrderByInput;
     skip?: Int;
@@ -3636,6 +3750,7 @@ export interface ReviewNullablePromise
 export interface ProductPreviousValues {
   id: ID_Output;
   productName: String;
+  isPublished?: Boolean;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3645,6 +3760,7 @@ export interface ProductPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   productName: () => Promise<String>;
+  isPublished: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3654,6 +3770,7 @@ export interface ProductPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   productName: () => Promise<AsyncIterator<String>>;
+  isPublished: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3736,8 +3853,6 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 */
 export type Int = number;
 
-export type Long = string;
-
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
@@ -3745,14 +3860,16 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
+export type Long = string;
 
 /*
 DateTime scalar input type, allowing Date
