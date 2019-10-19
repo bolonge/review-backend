@@ -17,6 +17,7 @@ type Product {
   productName: String!
   category: Category!
   reviews: [Review!]!
+  productPhotos: [Photo!]!
   isPublished: Boolean @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -30,7 +31,7 @@ type Review {
   rating: Int!
   likes: [Like!]!
   hates: [Hate!]!
-  photos: [Photo!]!
+  reviewPhotos: [Photo!]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
