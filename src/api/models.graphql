@@ -17,7 +17,8 @@ type Product {
   productName: String!
   category: Category!
   reviews: [Review!]!
-  isPublished: Boolean
+  isPublished: Boolean!
+  reviewCount: Int!
   createdAt: String!
   updatedAt: String!
 }
@@ -31,6 +32,9 @@ type Review {
   likes: [Like!]!
   hates: [Hate!]!
   photos: [Photo!]!
+  isLiked: Boolean!
+  likeCount: Int!
+  hateCount: Int!
   createdAt: String!
   updatedAt: String!
 }
