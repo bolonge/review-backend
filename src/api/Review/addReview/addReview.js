@@ -18,6 +18,17 @@ export default {
         rating,
         text
       });
+      photos.forEach(
+        async photo =>
+          await prisma.createPhoto({
+            url: photo,
+            review: {
+              connect: {
+                id: review.id
+              }
+            }
+          })
+      );
       return review;
     }
   }
