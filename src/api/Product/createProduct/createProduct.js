@@ -5,14 +5,18 @@ export default {
     createProduct: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const { user } = request;
-      const { productName, productPhoto } = args;
+      const { productName, productPhotos, categoryId } = args;
       const product = await prisma.createProduct({
         user: { connect: { id: user.id } },
-        productName
+        productName,
+        category: { connect: { id: categoryId } }
       });
-      productPhoto = await prisma.createPhoto({
-        url: productPhoto,
-        product: { connect: { id: product.id } }
+
+      productPhotos.forEach(async photo => {
+        await prisma.createPhoto({
+          url: photo,
+          product: { connect: { id: product.id } }
+        });
       });
       return product;
     }

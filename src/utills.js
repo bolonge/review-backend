@@ -4,9 +4,9 @@ import sgTransport from "nodemailer-sendgrid-transport";
 import jwt from "jsonwebtoken";
 
 export const secretThings = () => {
-  const randomNumber = Math.floor(Math.random() * 99999);
-  const randomHash = bcrypt.hashSync(`${randomNumber}`, 10);
-  return `${randomNumber} ${randomHash}`;
+  const randomNumber = Math.floor(Math.random() * 1000000);
+  // const randomHash = bcrypt.hashSync(`${randomNumber}`, 10);
+  return `${randomNumber}`;
 };
 
 export const sendMail = email => {

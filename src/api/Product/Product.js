@@ -9,6 +9,5 @@ export default {
         .reviewsConnection({ where: { product: { id: parent.id } } })
         .aggregate()
         .count()
-  },
-  productPhotos: ({ id }) => prisma.product({ id }).productPhotos()
+  }
 };

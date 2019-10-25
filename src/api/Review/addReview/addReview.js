@@ -4,7 +4,7 @@ export default {
   Mutation: {
     addReview: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const { text, rating, reviewId, photos } = args;
+      const { text, rating, productId, photos } = args;
       const { user } = request;
       const review = await prisma.createReview({
         user: {
@@ -12,7 +12,7 @@ export default {
         },
         product: {
           connect: {
-            id: reviewId
+            id: productId
           }
         },
         rating,
