@@ -1060,6 +1060,7 @@ input PhotoWhereUniqueInput {
 
 type Product {
   id: ID!
+  user: User
   productName: String!
   category: Category!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
@@ -1077,6 +1078,7 @@ type ProductConnection {
 
 input ProductCreateInput {
   id: ID
+  user: UserCreateOneInput
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
   reviews: ReviewCreateManyWithoutProductInput
@@ -1101,6 +1103,7 @@ input ProductCreateOneWithoutReviewsInput {
 
 input ProductCreateWithoutCategoryInput {
   id: ID
+  user: UserCreateOneInput
   productName: String!
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
@@ -1109,6 +1112,7 @@ input ProductCreateWithoutCategoryInput {
 
 input ProductCreateWithoutProductPhotosInput {
   id: ID
+  user: UserCreateOneInput
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
   reviews: ReviewCreateManyWithoutProductInput
@@ -1117,6 +1121,7 @@ input ProductCreateWithoutProductPhotosInput {
 
 input ProductCreateWithoutReviewsInput {
   id: ID
+  user: UserCreateOneInput
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
   productPhotos: PhotoCreateManyWithoutProductInput
@@ -1220,6 +1225,7 @@ input ProductSubscriptionWhereInput {
 }
 
 input ProductUpdateInput {
+  user: UserUpdateOneInput
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
@@ -1271,6 +1277,7 @@ input ProductUpdateOneWithoutProductPhotosInput {
 }
 
 input ProductUpdateWithoutCategoryDataInput {
+  user: UserUpdateOneInput
   productName: String
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
@@ -1278,6 +1285,7 @@ input ProductUpdateWithoutCategoryDataInput {
 }
 
 input ProductUpdateWithoutProductPhotosDataInput {
+  user: UserUpdateOneInput
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
@@ -1285,6 +1293,7 @@ input ProductUpdateWithoutProductPhotosDataInput {
 }
 
 input ProductUpdateWithoutReviewsDataInput {
+  user: UserUpdateOneInput
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
@@ -1327,6 +1336,7 @@ input ProductWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  user: UserWhereInput
   productName: String
   productName_not: String
   productName_in: [String!]
@@ -2009,6 +2019,7 @@ input SuperCategoryWhereUniqueInput {
 
 type User {
   id: ID!
+  avatar: String
   nickName: String!
   phone: String!
   email: String!
@@ -2029,6 +2040,7 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
+  avatar: String
   nickName: String!
   phone: String!
   email: String!
@@ -2037,6 +2049,11 @@ input UserCreateInput {
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
   loginSecret: String
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutMyHateInput {
@@ -2056,6 +2073,7 @@ input UserCreateOneWithoutMyReviewInput {
 
 input UserCreateWithoutMyHateInput {
   id: ID
+  avatar: String
   nickName: String!
   phone: String!
   email: String!
@@ -2067,6 +2085,7 @@ input UserCreateWithoutMyHateInput {
 
 input UserCreateWithoutMyLikeInput {
   id: ID
+  avatar: String
   nickName: String!
   phone: String!
   email: String!
@@ -2078,6 +2097,7 @@ input UserCreateWithoutMyLikeInput {
 
 input UserCreateWithoutMyReviewInput {
   id: ID
+  avatar: String
   nickName: String!
   phone: String!
   email: String!
@@ -2095,6 +2115,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  avatar_ASC
+  avatar_DESC
   nickName_ASC
   nickName_DESC
   phone_ASC
@@ -2113,6 +2135,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  avatar: String
   nickName: String!
   phone: String!
   email: String!
@@ -2140,7 +2163,20 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  avatar: String
+  nickName: String
+  phone: String
+  email: String
+  bio: Boolean
+  myReview: ReviewUpdateManyWithoutUserInput
+  myLike: LikeUpdateManyWithoutUserInput
+  myHate: HateUpdateManyWithoutUserInput
+  loginSecret: String
+}
+
 input UserUpdateInput {
+  avatar: String
   nickName: String
   phone: String
   email: String
@@ -2152,11 +2188,21 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyMutationInput {
+  avatar: String
   nickName: String
   phone: String
   email: String
   bio: Boolean
   loginSecret: String
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneWithoutMyHateInput {
@@ -2187,6 +2233,7 @@ input UserUpdateOneWithoutMyReviewInput {
 }
 
 input UserUpdateWithoutMyHateDataInput {
+  avatar: String
   nickName: String
   phone: String
   email: String
@@ -2197,6 +2244,7 @@ input UserUpdateWithoutMyHateDataInput {
 }
 
 input UserUpdateWithoutMyLikeDataInput {
+  avatar: String
   nickName: String
   phone: String
   email: String
@@ -2207,6 +2255,7 @@ input UserUpdateWithoutMyLikeDataInput {
 }
 
 input UserUpdateWithoutMyReviewDataInput {
+  avatar: String
   nickName: String
   phone: String
   email: String
@@ -2214,6 +2263,11 @@ input UserUpdateWithoutMyReviewDataInput {
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
   loginSecret: String
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutMyHateInput {
@@ -2246,6 +2300,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  avatar: String
+  avatar_not: String
+  avatar_in: [String!]
+  avatar_not_in: [String!]
+  avatar_lt: String
+  avatar_lte: String
+  avatar_gt: String
+  avatar_gte: String
+  avatar_contains: String
+  avatar_not_contains: String
+  avatar_starts_with: String
+  avatar_not_starts_with: String
+  avatar_ends_with: String
+  avatar_not_ends_with: String
   nickName: String
   nickName_not: String
   nickName_in: [String!]
