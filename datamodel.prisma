@@ -6,6 +6,7 @@ type User {
   email: String! @unique
   bio: Boolean! @default(value: false)
   myReview: [Review!]!
+  myProduct: [Product!]!
   myLike: [Like!]!
   myHate: [Hate!]!
   loginSecret: String

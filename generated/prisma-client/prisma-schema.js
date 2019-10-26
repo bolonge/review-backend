@@ -1078,7 +1078,7 @@ type ProductConnection {
 
 input ProductCreateInput {
   id: ID
-  user: UserCreateOneInput
+  user: UserCreateOneWithoutMyProductInput
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
   reviews: ReviewCreateManyWithoutProductInput
@@ -1088,6 +1088,11 @@ input ProductCreateInput {
 
 input ProductCreateManyWithoutCategoryInput {
   create: [ProductCreateWithoutCategoryInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ProductCreateManyWithoutUserInput {
+  create: [ProductCreateWithoutUserInput!]
   connect: [ProductWhereUniqueInput!]
 }
 
@@ -1103,7 +1108,7 @@ input ProductCreateOneWithoutReviewsInput {
 
 input ProductCreateWithoutCategoryInput {
   id: ID
-  user: UserCreateOneInput
+  user: UserCreateOneWithoutMyProductInput
   productName: String!
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
@@ -1112,7 +1117,7 @@ input ProductCreateWithoutCategoryInput {
 
 input ProductCreateWithoutProductPhotosInput {
   id: ID
-  user: UserCreateOneInput
+  user: UserCreateOneWithoutMyProductInput
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
   reviews: ReviewCreateManyWithoutProductInput
@@ -1121,9 +1126,18 @@ input ProductCreateWithoutProductPhotosInput {
 
 input ProductCreateWithoutReviewsInput {
   id: ID
-  user: UserCreateOneInput
+  user: UserCreateOneWithoutMyProductInput
   productName: String!
   category: CategoryCreateOneWithoutProductInput!
+  productPhotos: PhotoCreateManyWithoutProductInput
+  isPublished: Boolean
+}
+
+input ProductCreateWithoutUserInput {
+  id: ID
+  productName: String!
+  category: CategoryCreateOneWithoutProductInput!
+  reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1225,7 +1239,7 @@ input ProductSubscriptionWhereInput {
 }
 
 input ProductUpdateInput {
-  user: UserUpdateOneInput
+  user: UserUpdateOneWithoutMyProductInput
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
@@ -1255,6 +1269,18 @@ input ProductUpdateManyWithoutCategoryInput {
   updateMany: [ProductUpdateManyWithWhereNestedInput!]
 }
 
+input ProductUpdateManyWithoutUserInput {
+  create: [ProductCreateWithoutUserInput!]
+  delete: [ProductWhereUniqueInput!]
+  connect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [ProductUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [ProductScalarWhereInput!]
+  updateMany: [ProductUpdateManyWithWhereNestedInput!]
+}
+
 input ProductUpdateManyWithWhereNestedInput {
   where: ProductScalarWhereInput!
   data: ProductUpdateManyDataInput!
@@ -1277,7 +1303,7 @@ input ProductUpdateOneWithoutProductPhotosInput {
 }
 
 input ProductUpdateWithoutCategoryDataInput {
-  user: UserUpdateOneInput
+  user: UserUpdateOneWithoutMyProductInput
   productName: String
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
@@ -1285,7 +1311,7 @@ input ProductUpdateWithoutCategoryDataInput {
 }
 
 input ProductUpdateWithoutProductPhotosDataInput {
-  user: UserUpdateOneInput
+  user: UserUpdateOneWithoutMyProductInput
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
@@ -1293,9 +1319,17 @@ input ProductUpdateWithoutProductPhotosDataInput {
 }
 
 input ProductUpdateWithoutReviewsDataInput {
-  user: UserUpdateOneInput
+  user: UserUpdateOneWithoutMyProductInput
   productName: String
   category: CategoryUpdateOneRequiredWithoutProductInput
+  productPhotos: PhotoUpdateManyWithoutProductInput
+  isPublished: Boolean
+}
+
+input ProductUpdateWithoutUserDataInput {
+  productName: String
+  category: CategoryUpdateOneRequiredWithoutProductInput
+  reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1303,6 +1337,11 @@ input ProductUpdateWithoutReviewsDataInput {
 input ProductUpdateWithWhereUniqueWithoutCategoryInput {
   where: ProductWhereUniqueInput!
   data: ProductUpdateWithoutCategoryDataInput!
+}
+
+input ProductUpdateWithWhereUniqueWithoutUserInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateWithoutUserDataInput!
 }
 
 input ProductUpsertWithoutProductPhotosInput {
@@ -1319,6 +1358,12 @@ input ProductUpsertWithWhereUniqueWithoutCategoryInput {
   where: ProductWhereUniqueInput!
   update: ProductUpdateWithoutCategoryDataInput!
   create: ProductCreateWithoutCategoryInput!
+}
+
+input ProductUpsertWithWhereUniqueWithoutUserInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateWithoutUserDataInput!
+  create: ProductCreateWithoutUserInput!
 }
 
 input ProductWhereInput {
@@ -2025,6 +2070,7 @@ type User {
   email: String!
   bio: Boolean!
   myReview(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  myProduct(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
   myLike(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   myHate(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
   loginSecret: String
@@ -2046,14 +2092,10 @@ input UserCreateInput {
   email: String!
   bio: Boolean
   myReview: ReviewCreateManyWithoutUserInput
+  myProduct: ProductCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
   loginSecret: String
-}
-
-input UserCreateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutMyHateInput {
@@ -2063,6 +2105,11 @@ input UserCreateOneWithoutMyHateInput {
 
 input UserCreateOneWithoutMyLikeInput {
   create: UserCreateWithoutMyLikeInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutMyProductInput {
+  create: UserCreateWithoutMyProductInput
   connect: UserWhereUniqueInput
 }
 
@@ -2079,6 +2126,7 @@ input UserCreateWithoutMyHateInput {
   email: String!
   bio: Boolean
   myReview: ReviewCreateManyWithoutUserInput
+  myProduct: ProductCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   loginSecret: String
 }
@@ -2091,6 +2139,20 @@ input UserCreateWithoutMyLikeInput {
   email: String!
   bio: Boolean
   myReview: ReviewCreateManyWithoutUserInput
+  myProduct: ProductCreateManyWithoutUserInput
+  myHate: HateCreateManyWithoutUserInput
+  loginSecret: String
+}
+
+input UserCreateWithoutMyProductInput {
+  id: ID
+  avatar: String
+  nickName: String!
+  phone: String!
+  email: String!
+  bio: Boolean
+  myReview: ReviewCreateManyWithoutUserInput
+  myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
   loginSecret: String
 }
@@ -2102,6 +2164,7 @@ input UserCreateWithoutMyReviewInput {
   phone: String!
   email: String!
   bio: Boolean
+  myProduct: ProductCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
   loginSecret: String
@@ -2163,18 +2226,6 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  avatar: String
-  nickName: String
-  phone: String
-  email: String
-  bio: Boolean
-  myReview: ReviewUpdateManyWithoutUserInput
-  myLike: LikeUpdateManyWithoutUserInput
-  myHate: HateUpdateManyWithoutUserInput
-  loginSecret: String
-}
-
 input UserUpdateInput {
   avatar: String
   nickName: String
@@ -2182,6 +2233,7 @@ input UserUpdateInput {
   email: String
   bio: Boolean
   myReview: ReviewUpdateManyWithoutUserInput
+  myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
   loginSecret: String
@@ -2194,15 +2246,6 @@ input UserUpdateManyMutationInput {
   email: String
   bio: Boolean
   loginSecret: String
-}
-
-input UserUpdateOneInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneWithoutMyHateInput {
@@ -2218,6 +2261,15 @@ input UserUpdateOneWithoutMyLikeInput {
   create: UserCreateWithoutMyLikeInput
   update: UserUpdateWithoutMyLikeDataInput
   upsert: UserUpsertWithoutMyLikeInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutMyProductInput {
+  create: UserCreateWithoutMyProductInput
+  update: UserUpdateWithoutMyProductDataInput
+  upsert: UserUpsertWithoutMyProductInput
   delete: Boolean
   disconnect: Boolean
   connect: UserWhereUniqueInput
@@ -2239,6 +2291,7 @@ input UserUpdateWithoutMyHateDataInput {
   email: String
   bio: Boolean
   myReview: ReviewUpdateManyWithoutUserInput
+  myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   loginSecret: String
 }
@@ -2250,6 +2303,19 @@ input UserUpdateWithoutMyLikeDataInput {
   email: String
   bio: Boolean
   myReview: ReviewUpdateManyWithoutUserInput
+  myProduct: ProductUpdateManyWithoutUserInput
+  myHate: HateUpdateManyWithoutUserInput
+  loginSecret: String
+}
+
+input UserUpdateWithoutMyProductDataInput {
+  avatar: String
+  nickName: String
+  phone: String
+  email: String
+  bio: Boolean
+  myReview: ReviewUpdateManyWithoutUserInput
+  myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
   loginSecret: String
 }
@@ -2260,14 +2326,10 @@ input UserUpdateWithoutMyReviewDataInput {
   phone: String
   email: String
   bio: Boolean
+  myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
   loginSecret: String
-}
-
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
 }
 
 input UserUpsertWithoutMyHateInput {
@@ -2278,6 +2340,11 @@ input UserUpsertWithoutMyHateInput {
 input UserUpsertWithoutMyLikeInput {
   update: UserUpdateWithoutMyLikeDataInput!
   create: UserCreateWithoutMyLikeInput!
+}
+
+input UserUpsertWithoutMyProductInput {
+  update: UserUpdateWithoutMyProductDataInput!
+  create: UserCreateWithoutMyProductInput!
 }
 
 input UserUpsertWithoutMyReviewInput {
@@ -2361,6 +2428,9 @@ input UserWhereInput {
   myReview_every: ReviewWhereInput
   myReview_some: ReviewWhereInput
   myReview_none: ReviewWhereInput
+  myProduct_every: ProductWhereInput
+  myProduct_some: ProductWhereInput
+  myProduct_none: ProductWhereInput
   myLike_every: LikeWhereInput
   myLike_some: LikeWhereInput
   myLike_none: LikeWhereInput
