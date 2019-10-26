@@ -5,6 +5,7 @@ type User {
   email: String!
   bio: Boolean!
   myReview: [Review!]!
+  myProduct: [Product!]!
   myLike: [Like!]!
   myHate: [Hate!]!
   reviewCount: Int!
