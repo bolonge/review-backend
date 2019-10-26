@@ -85,3 +85,8 @@ type SuperCategory {
   createdAt: String!
   updatedAt: String!
 }
+
+type BlackList {
+  id: ID!
+  email: String!
+}
