@@ -80,3 +80,8 @@ type SuperCategory {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
+
+type BlackList {
+  id: ID! @id
+  email: String!
+}

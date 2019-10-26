@@ -35,6 +35,10 @@ var models = [
   {
     name: "SuperCategory",
     embedded: false
+  },
+  {
+    name: "BlackList",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

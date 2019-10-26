@@ -6,6 +6,10 @@ export default {
       isAuthenticated(request);
       const { text, rating, productId, photos } = args;
       const { user } = request;
+      const exists = await prisma.$exists.review({ user });
+      if (exists) {
+        throw Error("리뷰가 이미 있습니다");
+      }
       const review = await prisma.createReview({
         user: {
           connect: { id: user.id }

@@ -15,6 +15,10 @@ export default {
       if (exists) {
         throw Error("This nickName / email is already taken");
       }
+      const blackCheck = await prisma.$exists.blackList({ email });
+      if (blackCheck) {
+        throw Error("블랙리스트 회원");
+      }
       await prisma.createUser({
         nickName,
         phone,

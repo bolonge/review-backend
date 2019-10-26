@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateCategory {
+/* GraphQL */ `type AggregateBlackList {
+  count: Int!
+}
+
+type AggregateCategory {
   count: Int!
 }
 
@@ -37,6 +41,103 @@ type AggregateUser {
 
 type BatchPayload {
   count: Long!
+}
+
+type BlackList {
+  id: ID!
+  email: String!
+}
+
+type BlackListConnection {
+  pageInfo: PageInfo!
+  edges: [BlackListEdge]!
+  aggregate: AggregateBlackList!
+}
+
+input BlackListCreateInput {
+  id: ID
+  email: String!
+}
+
+type BlackListEdge {
+  node: BlackList!
+  cursor: String!
+}
+
+enum BlackListOrderByInput {
+  id_ASC
+  id_DESC
+  email_ASC
+  email_DESC
+}
+
+type BlackListPreviousValues {
+  id: ID!
+  email: String!
+}
+
+type BlackListSubscriptionPayload {
+  mutation: MutationType!
+  node: BlackList
+  updatedFields: [String!]
+  previousValues: BlackListPreviousValues
+}
+
+input BlackListSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: BlackListWhereInput
+  AND: [BlackListSubscriptionWhereInput!]
+  OR: [BlackListSubscriptionWhereInput!]
+  NOT: [BlackListSubscriptionWhereInput!]
+}
+
+input BlackListUpdateInput {
+  email: String
+}
+
+input BlackListUpdateManyMutationInput {
+  email: String
+}
+
+input BlackListWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  AND: [BlackListWhereInput!]
+  OR: [BlackListWhereInput!]
+  NOT: [BlackListWhereInput!]
+}
+
+input BlackListWhereUniqueInput {
+  id: ID
 }
 
 type Category {
@@ -727,6 +828,12 @@ input LikeWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createBlackList(data: BlackListCreateInput!): BlackList!
+  updateBlackList(data: BlackListUpdateInput!, where: BlackListWhereUniqueInput!): BlackList
+  updateManyBlackLists(data: BlackListUpdateManyMutationInput!, where: BlackListWhereInput): BatchPayload!
+  upsertBlackList(where: BlackListWhereUniqueInput!, create: BlackListCreateInput!, update: BlackListUpdateInput!): BlackList!
+  deleteBlackList(where: BlackListWhereUniqueInput!): BlackList
+  deleteManyBlackLists(where: BlackListWhereInput): BatchPayload!
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
@@ -1431,6 +1538,9 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
+  blackList(where: BlackListWhereUniqueInput!): BlackList
+  blackLists(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlackList]!
+  blackListsConnection(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlackListConnection!
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
@@ -1897,6 +2007,7 @@ input ReviewWhereUniqueInput {
 }
 
 type Subscription {
+  blackList(where: BlackListSubscriptionWhereInput): BlackListSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   hate(where: HateSubscriptionWhereInput): HateSubscriptionPayload
   like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
