@@ -3,6 +3,6 @@ type Mutation {
     nickName: String!
     phone: String!
     email: String!
-    bio: Boolean!
+    bio: Boolean
   ): Boolean!
 }
