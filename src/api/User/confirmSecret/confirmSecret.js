@@ -1,5 +1,4 @@
 import { prisma } from "../../../../generated/prisma-client";
-import { generateToken } from "../../../utills";
 
 export default {
   Mutation: {
@@ -11,7 +10,7 @@ export default {
           where: { id: user.id },
           data: { loginSecret: "CONFIRM" }
         });
-        return generateToken(user.id);
+        return true;
       } else {
         throw Error("Wrong email/secret");
       }
