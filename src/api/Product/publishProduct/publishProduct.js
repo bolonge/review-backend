@@ -7,22 +7,25 @@ export default {
       const { id } = args;
       const { user } = request;
       const admin = await prisma.user({ id: user.id }).admin();
-      try {
-        if (admin) {
-          await prisma.updateProduct({
-            where: { id },
-            data: { isPublished: false }
-          });
-          return true;
-        } else {
+      const publishCheck = await prisma.products({
+        where: {
+          AND: [{ id }, { OR: [{ isPublished: false }, { isPublished: true }] }]
+        }
+      });
+      if (admin) {
+        if (publishCheck[0].isPublished === false) {
           await prisma.updateProduct({
             where: { id },
             data: { isPublished: true }
           });
-          return true;
+        } else {
+          await prisma.updateProduct({
+            where: { id },
+            data: { isPublished: false }
+          });
         }
-      } catch (e) {
-        console.log(e);
+        return true;
+      } else {
         return false;
       }
     }
