@@ -2184,6 +2184,7 @@ type User {
   myProduct(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
   myLike(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   myHate(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
+  admin: Boolean!
   loginSecret: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -2206,6 +2207,7 @@ input UserCreateInput {
   myProduct: ProductCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2239,6 +2241,7 @@ input UserCreateWithoutMyHateInput {
   myReview: ReviewCreateManyWithoutUserInput
   myProduct: ProductCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2252,6 +2255,7 @@ input UserCreateWithoutMyLikeInput {
   myReview: ReviewCreateManyWithoutUserInput
   myProduct: ProductCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2265,6 +2269,7 @@ input UserCreateWithoutMyProductInput {
   myReview: ReviewCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2278,6 +2283,7 @@ input UserCreateWithoutMyReviewInput {
   myProduct: ProductCreateManyWithoutUserInput
   myLike: LikeCreateManyWithoutUserInput
   myHate: HateCreateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2299,6 +2305,8 @@ enum UserOrderByInput {
   email_DESC
   bio_ASC
   bio_DESC
+  admin_ASC
+  admin_DESC
   loginSecret_ASC
   loginSecret_DESC
   createdAt_ASC
@@ -2314,6 +2322,7 @@ type UserPreviousValues {
   phone: String!
   email: String!
   bio: Boolean!
+  admin: Boolean!
   loginSecret: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -2347,6 +2356,7 @@ input UserUpdateInput {
   myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2356,6 +2366,7 @@ input UserUpdateManyMutationInput {
   phone: String
   email: String
   bio: Boolean
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2404,6 +2415,7 @@ input UserUpdateWithoutMyHateDataInput {
   myReview: ReviewUpdateManyWithoutUserInput
   myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2416,6 +2428,7 @@ input UserUpdateWithoutMyLikeDataInput {
   myReview: ReviewUpdateManyWithoutUserInput
   myProduct: ProductUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2428,6 +2441,7 @@ input UserUpdateWithoutMyProductDataInput {
   myReview: ReviewUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2440,6 +2454,7 @@ input UserUpdateWithoutMyReviewDataInput {
   myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+  admin: Boolean
   loginSecret: String
 }
 
@@ -2548,6 +2563,8 @@ input UserWhereInput {
   myHate_every: HateWhereInput
   myHate_some: HateWhereInput
   myHate_none: HateWhereInput
+  admin: Boolean
+  admin_not: Boolean
   loginSecret: String
   loginSecret_not: String
   loginSecret_in: [String!]

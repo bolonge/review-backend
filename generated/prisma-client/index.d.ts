@@ -502,6 +502,8 @@ export type UserOrderByInput =
   | "email_DESC"
   | "bio_ASC"
   | "bio_DESC"
+  | "admin_ASC"
+  | "admin_DESC"
   | "loginSecret_ASC"
   | "loginSecret_DESC"
   | "createdAt_ASC"
@@ -784,6 +786,7 @@ export interface UserCreateWithoutMyHateInput {
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -872,6 +875,7 @@ export interface UserUpdateInput {
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -957,6 +961,7 @@ export interface UserUpdateWithoutMyProductDataInput {
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -1239,6 +1244,8 @@ export interface UserWhereInput {
   myHate_every?: Maybe<HateWhereInput>;
   myHate_some?: Maybe<HateWhereInput>;
   myHate_none?: Maybe<HateWhereInput>;
+  admin?: Maybe<Boolean>;
+  admin_not?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
   loginSecret_not?: Maybe<String>;
   loginSecret_in?: Maybe<String[] | String>;
@@ -1376,6 +1383,7 @@ export interface UserCreateWithoutMyProductInput {
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -1407,6 +1415,7 @@ export interface UserUpdateWithoutMyReviewDataInput {
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -1520,6 +1529,7 @@ export interface UserCreateWithoutMyReviewInput {
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -1592,6 +1602,7 @@ export interface UserCreateWithoutMyLikeInput {
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -1618,6 +1629,7 @@ export interface UserUpdateWithoutMyLikeDataInput {
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -1767,6 +1779,7 @@ export interface UserUpdateManyMutationInput {
   phone?: Maybe<String>;
   email?: Maybe<String>;
   bio?: Maybe<Boolean>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -2199,6 +2212,7 @@ export interface UserUpdateWithoutMyHateDataInput {
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -2213,6 +2227,7 @@ export interface UserCreateInput {
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
+  admin?: Maybe<Boolean>;
   loginSecret?: Maybe<String>;
 }
 
@@ -2654,6 +2669,7 @@ export interface UserPreviousValues {
   phone: String;
   email: String;
   bio: Boolean;
+  admin: Boolean;
   loginSecret?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -2668,6 +2684,7 @@ export interface UserPreviousValuesPromise
   phone: () => Promise<String>;
   email: () => Promise<String>;
   bio: () => Promise<Boolean>;
+  admin: () => Promise<Boolean>;
   loginSecret: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -2682,6 +2699,7 @@ export interface UserPreviousValuesSubscription
   phone: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<Boolean>>;
+  admin: () => Promise<AsyncIterator<Boolean>>;
   loginSecret: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -4014,6 +4032,7 @@ export interface User {
   phone: String;
   email: String;
   bio: Boolean;
+  admin: Boolean;
   loginSecret?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -4062,6 +4081,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  admin: () => Promise<Boolean>;
   loginSecret: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -4112,6 +4132,7 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  admin: () => Promise<AsyncIterator<Boolean>>;
   loginSecret: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -4162,6 +4183,7 @@ export interface UserNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  admin: () => Promise<Boolean>;
   loginSecret: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;

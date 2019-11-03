@@ -10,6 +10,7 @@ type User {
   myHate: [Hate!]!
   reviewCount: Int!
   isSelf: Boolean!
+  admin: Boolean!
   loginSecret: String
   createdAt: String!
   updatedAt: String!
