@@ -500,12 +500,10 @@ export type UserOrderByInput =
   | "phone_DESC"
   | "email_ASC"
   | "email_DESC"
-  | "bio_ASC"
-  | "bio_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "admin_ASC"
   | "admin_DESC"
-  | "loginSecret_ASC"
-  | "loginSecret_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -782,12 +780,11 @@ export interface UserCreateWithoutMyHateInput {
   nickName: String;
   phone: String;
   email: String;
-  bio?: Maybe<Boolean>;
+  password: String;
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface ReviewSubscriptionWhereInput {
@@ -870,13 +867,12 @@ export interface UserUpdateInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
   email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
+  password?: Maybe<String>;
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface CategoryUpdateInput {
@@ -957,12 +953,11 @@ export interface UserUpdateWithoutMyProductDataInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
   email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
+  password?: Maybe<String>;
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface SuperCategoryUpdateInput {
@@ -1230,8 +1225,20 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
-  bio?: Maybe<Boolean>;
-  bio_not?: Maybe<Boolean>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
   myReview_every?: Maybe<ReviewWhereInput>;
   myReview_some?: Maybe<ReviewWhereInput>;
   myReview_none?: Maybe<ReviewWhereInput>;
@@ -1246,20 +1253,6 @@ export interface UserWhereInput {
   myHate_none?: Maybe<HateWhereInput>;
   admin?: Maybe<Boolean>;
   admin_not?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
-  loginSecret_not?: Maybe<String>;
-  loginSecret_in?: Maybe<String[] | String>;
-  loginSecret_not_in?: Maybe<String[] | String>;
-  loginSecret_lt?: Maybe<String>;
-  loginSecret_lte?: Maybe<String>;
-  loginSecret_gt?: Maybe<String>;
-  loginSecret_gte?: Maybe<String>;
-  loginSecret_contains?: Maybe<String>;
-  loginSecret_not_contains?: Maybe<String>;
-  loginSecret_starts_with?: Maybe<String>;
-  loginSecret_not_starts_with?: Maybe<String>;
-  loginSecret_ends_with?: Maybe<String>;
-  loginSecret_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1379,12 +1372,11 @@ export interface UserCreateWithoutMyProductInput {
   nickName: String;
   phone: String;
   email: String;
-  bio?: Maybe<Boolean>;
+  password: String;
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutMyReviewInput {
@@ -1411,12 +1403,11 @@ export interface UserUpdateWithoutMyReviewDataInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
   email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
+  password?: Maybe<String>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface ProductCreateWithoutReviewsInput {
@@ -1525,12 +1516,11 @@ export interface UserCreateWithoutMyReviewInput {
   nickName: String;
   phone: String;
   email: String;
-  bio?: Maybe<Boolean>;
+  password: String;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface ReviewUpdateWithoutProductDataInput {
@@ -1598,12 +1588,11 @@ export interface UserCreateWithoutMyLikeInput {
   nickName: String;
   phone: String;
   email: String;
-  bio?: Maybe<Boolean>;
+  password: String;
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutMyLikeInput {
@@ -1625,12 +1614,11 @@ export interface UserUpdateWithoutMyLikeDataInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
   email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
+  password?: Maybe<String>;
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface ReviewCreateWithoutHatesInput {
@@ -1778,9 +1766,8 @@ export interface UserUpdateManyMutationInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
   email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
+  password?: Maybe<String>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface PhotoUpdateManyWithoutReviewInput {
@@ -2208,12 +2195,11 @@ export interface UserUpdateWithoutMyHateDataInput {
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
   email?: Maybe<String>;
-  bio?: Maybe<Boolean>;
+  password?: Maybe<String>;
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
   myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface UserCreateInput {
@@ -2222,13 +2208,12 @@ export interface UserCreateInput {
   nickName: String;
   phone: String;
   email: String;
-  bio?: Maybe<Boolean>;
+  password: String;
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
   admin?: Maybe<Boolean>;
-  loginSecret?: Maybe<String>;
 }
 
 export interface LikeUpdateManyWithoutUserInput {
@@ -2668,9 +2653,8 @@ export interface UserPreviousValues {
   nickName: String;
   phone: String;
   email: String;
-  bio: Boolean;
+  password: String;
   admin: Boolean;
-  loginSecret?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2683,9 +2667,8 @@ export interface UserPreviousValuesPromise
   nickName: () => Promise<String>;
   phone: () => Promise<String>;
   email: () => Promise<String>;
-  bio: () => Promise<Boolean>;
+  password: () => Promise<String>;
   admin: () => Promise<Boolean>;
-  loginSecret: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2698,9 +2681,8 @@ export interface UserPreviousValuesSubscription
   nickName: () => Promise<AsyncIterator<String>>;
   phone: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  bio: () => Promise<AsyncIterator<Boolean>>;
+  password: () => Promise<AsyncIterator<String>>;
   admin: () => Promise<AsyncIterator<Boolean>>;
-  loginSecret: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -4031,9 +4013,8 @@ export interface User {
   nickName: String;
   phone: String;
   email: String;
-  bio: Boolean;
+  password: String;
   admin: Boolean;
-  loginSecret?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -4044,7 +4025,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   nickName: () => Promise<String>;
   phone: () => Promise<String>;
   email: () => Promise<String>;
-  bio: () => Promise<Boolean>;
+  password: () => Promise<String>;
   myReview: <T = FragmentableArray<Review>>(args?: {
     where?: ReviewWhereInput;
     orderBy?: ReviewOrderByInput;
@@ -4082,7 +4063,6 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     last?: Int;
   }) => T;
   admin: () => Promise<Boolean>;
-  loginSecret: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -4095,7 +4075,7 @@ export interface UserSubscription
   nickName: () => Promise<AsyncIterator<String>>;
   phone: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  bio: () => Promise<AsyncIterator<Boolean>>;
+  password: () => Promise<AsyncIterator<String>>;
   myReview: <T = Promise<AsyncIterator<ReviewSubscription>>>(args?: {
     where?: ReviewWhereInput;
     orderBy?: ReviewOrderByInput;
@@ -4133,7 +4113,6 @@ export interface UserSubscription
     last?: Int;
   }) => T;
   admin: () => Promise<AsyncIterator<Boolean>>;
-  loginSecret: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -4146,7 +4125,7 @@ export interface UserNullablePromise
   nickName: () => Promise<String>;
   phone: () => Promise<String>;
   email: () => Promise<String>;
-  bio: () => Promise<Boolean>;
+  password: () => Promise<String>;
   myReview: <T = FragmentableArray<Review>>(args?: {
     where?: ReviewWhereInput;
     orderBy?: ReviewOrderByInput;
@@ -4184,7 +4163,6 @@ export interface UserNullablePromise
     last?: Int;
   }) => T;
   admin: () => Promise<Boolean>;
-  loginSecret: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }

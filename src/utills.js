@@ -1,11 +1,9 @@
-import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import sgTransport from "nodemailer-sendgrid-transport";
 import jwt from "jsonwebtoken";
 
 export const secretThings = () => {
   const randomNumber = Math.floor(Math.random() * 1000000);
-  // const randomHash = bcrypt.hashSync(`${randomNumber}`, 10);
   return `${randomNumber}`;
 };
 
