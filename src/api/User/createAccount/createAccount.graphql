@@ -1,3 +1,8 @@
 type Mutation {
-  createAccount(nickName: String!, phone: String!, email: String!): Boolean!
+  createAccount(
+    nickName: String!
+    phone: String!
+    email: String!
+    password: String!
+  ): Boolean!
 }
