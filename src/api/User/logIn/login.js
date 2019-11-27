@@ -1,17 +1,20 @@
 import { generateToken } from "../../../utills";
 import { prisma } from "../../../../generated/prisma-client";
+import * as bcrypt from "bcryptjs";
 
 export default {
   Mutation: {
     login: async (_, args) => {
-      const { email, bio } = args;
+      const { email, password } = args;
       const user = await prisma.user({ email });
-      if (bio === true) {
-        await prisma.updateUser({ where: { id: user.id }, data: { bio } });
-        return generateToken(user.id);
-      } else {
-        throw Error("로그인할수없습니다");
+      if (!user) {
+        throw Error("이메일이 없습니다");
       }
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+        throw Error("비밀번호 오류");
+      }
+      return generateToken(user.id);
     }
   }
 };
