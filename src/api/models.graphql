@@ -10,7 +10,6 @@ type User {
   myHate: [Hate!]!
   reviewCount: Int!
   isSelf: Boolean!
-  admin: Boolean!
   createdAt: String!
   updatedAt: String!
 }

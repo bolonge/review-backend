@@ -9,7 +9,6 @@ type User {
   myProduct: [Product!]!
   myLike: [Like!]!
   myHate: [Hate!]!
-  admin: Boolean! @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
