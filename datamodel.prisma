@@ -84,3 +84,4 @@ type BlackList {
   id: ID! @id
   email: String!
 }
+
