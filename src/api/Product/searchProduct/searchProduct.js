@@ -4,7 +4,9 @@ export default {
   Query: {
     searchProduct: async (_, args) =>
       await prisma.products({
-        where: { productName_contains: args.term }
+        where: {
+          AND: [{ isPublished: true }, { productName_contains: args.term }]
+        }
       })
   }
 };
