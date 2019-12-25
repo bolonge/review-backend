@@ -25,6 +25,14 @@ type Product {
   updatedAt: DateTime! @updatedAt
 }
 
+type Keyword {
+  id: ID! @id
+  search: String!
+  count: Int! @default(value: 0)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
 type Review {
   id: ID! @id
   user: User
@@ -84,4 +92,3 @@ type BlackList {
   id: ID! @id
   email: String!
 }
-

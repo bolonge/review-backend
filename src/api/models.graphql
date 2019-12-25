@@ -28,6 +28,14 @@ type Product {
   updatedAt: String!
 }
 
+type Keyword {
+  id: ID!
+  search: String!
+  count: Int!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Review {
   id: ID!
   user: User

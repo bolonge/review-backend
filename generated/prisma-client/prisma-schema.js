@@ -15,6 +15,10 @@ type AggregateHate {
   count: Int!
 }
 
+type AggregateKeyword {
+  count: Int!
+}
+
 type AggregateLike {
   count: Int!
 }
@@ -612,6 +616,142 @@ input HateWhereUniqueInput {
   id: ID
 }
 
+type Keyword {
+  id: ID!
+  search: String!
+  count: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type KeywordConnection {
+  pageInfo: PageInfo!
+  edges: [KeywordEdge]!
+  aggregate: AggregateKeyword!
+}
+
+input KeywordCreateInput {
+  id: ID
+  search: String!
+  count: Int
+}
+
+type KeywordEdge {
+  node: Keyword!
+  cursor: String!
+}
+
+enum KeywordOrderByInput {
+  id_ASC
+  id_DESC
+  search_ASC
+  search_DESC
+  count_ASC
+  count_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type KeywordPreviousValues {
+  id: ID!
+  search: String!
+  count: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type KeywordSubscriptionPayload {
+  mutation: MutationType!
+  node: Keyword
+  updatedFields: [String!]
+  previousValues: KeywordPreviousValues
+}
+
+input KeywordSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: KeywordWhereInput
+  AND: [KeywordSubscriptionWhereInput!]
+  OR: [KeywordSubscriptionWhereInput!]
+  NOT: [KeywordSubscriptionWhereInput!]
+}
+
+input KeywordUpdateInput {
+  search: String
+  count: Int
+}
+
+input KeywordUpdateManyMutationInput {
+  search: String
+  count: Int
+}
+
+input KeywordWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  search: String
+  search_not: String
+  search_in: [String!]
+  search_not_in: [String!]
+  search_lt: String
+  search_lte: String
+  search_gt: String
+  search_gte: String
+  search_contains: String
+  search_not_contains: String
+  search_starts_with: String
+  search_not_starts_with: String
+  search_ends_with: String
+  search_not_ends_with: String
+  count: Int
+  count_not: Int
+  count_in: [Int!]
+  count_not_in: [Int!]
+  count_lt: Int
+  count_lte: Int
+  count_gt: Int
+  count_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [KeywordWhereInput!]
+  OR: [KeywordWhereInput!]
+  NOT: [KeywordWhereInput!]
+}
+
+input KeywordWhereUniqueInput {
+  id: ID
+}
+
 type Like {
   id: ID!
   user: User
@@ -845,6 +985,12 @@ type Mutation {
   upsertHate(where: HateWhereUniqueInput!, create: HateCreateInput!, update: HateUpdateInput!): Hate!
   deleteHate(where: HateWhereUniqueInput!): Hate
   deleteManyHates(where: HateWhereInput): BatchPayload!
+  createKeyword(data: KeywordCreateInput!): Keyword!
+  updateKeyword(data: KeywordUpdateInput!, where: KeywordWhereUniqueInput!): Keyword
+  updateManyKeywords(data: KeywordUpdateManyMutationInput!, where: KeywordWhereInput): BatchPayload!
+  upsertKeyword(where: KeywordWhereUniqueInput!, create: KeywordCreateInput!, update: KeywordUpdateInput!): Keyword!
+  deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
+  deleteManyKeywords(where: KeywordWhereInput): BatchPayload!
   createLike(data: LikeCreateInput!): Like!
   updateLike(data: LikeUpdateInput!, where: LikeWhereUniqueInput!): Like
   upsertLike(where: LikeWhereUniqueInput!, create: LikeCreateInput!, update: LikeUpdateInput!): Like!
@@ -1547,6 +1693,9 @@ type Query {
   hate(where: HateWhereUniqueInput!): Hate
   hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate]!
   hatesConnection(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HateConnection!
+  keyword(where: KeywordWhereUniqueInput!): Keyword
+  keywords(where: KeywordWhereInput, orderBy: KeywordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Keyword]!
+  keywordsConnection(where: KeywordWhereInput, orderBy: KeywordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): KeywordConnection!
   like(where: LikeWhereUniqueInput!): Like
   likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like]!
   likesConnection(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LikeConnection!
@@ -2010,6 +2159,7 @@ type Subscription {
   blackList(where: BlackListSubscriptionWhereInput): BlackListSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   hate(where: HateSubscriptionWhereInput): HateSubscriptionPayload
+  keyword(where: KeywordSubscriptionWhereInput): KeywordSubscriptionPayload
   like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
   photo(where: PhotoSubscriptionWhereInput): PhotoSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
