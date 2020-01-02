@@ -750,6 +750,7 @@ input KeywordWhereInput {
 
 input KeywordWhereUniqueInput {
   id: ID
+  search: String
 }
 
 type Like {

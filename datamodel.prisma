@@ -27,8 +27,8 @@ type Product {
 
 type Keyword {
   id: ID! @id
-  search: String!
-  count: Int! @default(value: 0)
+  search: String! @unique
+  count: Int! @default(value: 1)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

@@ -1088,6 +1088,7 @@ export type HateWhereUniqueInput = AtLeastOne<{
 
 export type KeywordWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  search?: Maybe<String>;
 }>;
 
 export interface KeywordWhereInput {
