@@ -11,6 +11,10 @@ type AggregateCategory {
   count: Int!
 }
 
+type AggregateComment {
+  count: Int!
+}
+
 type AggregateHate {
   count: Int!
 }
@@ -398,6 +402,111 @@ input CategoryWhereInput {
 }
 
 input CategoryWhereUniqueInput {
+  id: ID
+}
+
+type Comment {
+  id: ID!
+  user: User!
+  review: Review!
+  text: String!
+}
+
+type CommentConnection {
+  pageInfo: PageInfo!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+input CommentCreateInput {
+  id: ID
+  user: UserCreateOneInput!
+  review: ReviewCreateOneInput!
+  text: String!
+}
+
+type CommentEdge {
+  node: Comment!
+  cursor: String!
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+}
+
+type CommentPreviousValues {
+  id: ID!
+  text: String!
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+  updatedFields: [String!]
+  previousValues: CommentPreviousValues
+}
+
+input CommentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CommentWhereInput
+  AND: [CommentSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
+}
+
+input CommentUpdateInput {
+  user: UserUpdateOneRequiredInput
+  review: ReviewUpdateOneRequiredInput
+  text: String
+}
+
+input CommentUpdateManyMutationInput {
+  text: String
+}
+
+input CommentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  review: ReviewWhereInput
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [CommentWhereInput!]
+  OR: [CommentWhereInput!]
+  NOT: [CommentWhereInput!]
+}
+
+input CommentWhereUniqueInput {
   id: ID
 }
 
@@ -981,6 +1090,12 @@ type Mutation {
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  createComment(data: CommentCreateInput!): Comment!
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
+  deleteComment(where: CommentWhereUniqueInput!): Comment
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
   createHate(data: HateCreateInput!): Hate!
   updateHate(data: HateUpdateInput!, where: HateWhereUniqueInput!): Hate
   upsertHate(where: HateWhereUniqueInput!, create: HateCreateInput!, update: HateUpdateInput!): Hate!
@@ -1691,6 +1806,9 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  comment(where: CommentWhereUniqueInput!): Comment
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   hate(where: HateWhereUniqueInput!): Hate
   hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate]!
   hatesConnection(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HateConnection!
@@ -1720,7 +1838,7 @@ type Query {
 
 type Review {
   id: ID!
-  user: User
+  user: User!
   product: Product!
   text: String!
   rating: Int!
@@ -1739,7 +1857,7 @@ type ReviewConnection {
 
 input ReviewCreateInput {
   id: ID
-  user: UserCreateOneWithoutMyReviewInput
+  user: UserCreateOneWithoutMyReviewInput!
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -1756,6 +1874,11 @@ input ReviewCreateManyWithoutProductInput {
 input ReviewCreateManyWithoutUserInput {
   create: [ReviewCreateWithoutUserInput!]
   connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateOneInput {
+  create: ReviewCreateInput
+  connect: ReviewWhereUniqueInput
 }
 
 input ReviewCreateOneWithoutHatesInput {
@@ -1775,7 +1898,7 @@ input ReviewCreateOneWithoutReviewPhotosInput {
 
 input ReviewCreateWithoutHatesInput {
   id: ID
-  user: UserCreateOneWithoutMyReviewInput
+  user: UserCreateOneWithoutMyReviewInput!
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -1785,7 +1908,7 @@ input ReviewCreateWithoutHatesInput {
 
 input ReviewCreateWithoutLikesInput {
   id: ID
-  user: UserCreateOneWithoutMyReviewInput
+  user: UserCreateOneWithoutMyReviewInput!
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -1795,7 +1918,7 @@ input ReviewCreateWithoutLikesInput {
 
 input ReviewCreateWithoutProductInput {
   id: ID
-  user: UserCreateOneWithoutMyReviewInput
+  user: UserCreateOneWithoutMyReviewInput!
   text: String!
   rating: Int!
   likes: LikeCreateManyWithoutReviewInput
@@ -1805,7 +1928,7 @@ input ReviewCreateWithoutProductInput {
 
 input ReviewCreateWithoutReviewPhotosInput {
   id: ID
-  user: UserCreateOneWithoutMyReviewInput
+  user: UserCreateOneWithoutMyReviewInput!
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -1925,8 +2048,18 @@ input ReviewSubscriptionWhereInput {
   NOT: [ReviewSubscriptionWhereInput!]
 }
 
+input ReviewUpdateDataInput {
+  user: UserUpdateOneRequiredWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  text: String
+  rating: Int
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
+}
+
 input ReviewUpdateInput {
-  user: UserUpdateOneWithoutMyReviewInput
+  user: UserUpdateOneRequiredWithoutMyReviewInput
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -1974,6 +2107,13 @@ input ReviewUpdateManyWithWhereNestedInput {
   data: ReviewUpdateManyDataInput!
 }
 
+input ReviewUpdateOneRequiredInput {
+  create: ReviewCreateInput
+  update: ReviewUpdateDataInput
+  upsert: ReviewUpsertNestedInput
+  connect: ReviewWhereUniqueInput
+}
+
 input ReviewUpdateOneWithoutHatesInput {
   create: ReviewCreateWithoutHatesInput
   update: ReviewUpdateWithoutHatesDataInput
@@ -2002,7 +2142,7 @@ input ReviewUpdateOneWithoutReviewPhotosInput {
 }
 
 input ReviewUpdateWithoutHatesDataInput {
-  user: UserUpdateOneWithoutMyReviewInput
+  user: UserUpdateOneRequiredWithoutMyReviewInput
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2011,7 +2151,7 @@ input ReviewUpdateWithoutHatesDataInput {
 }
 
 input ReviewUpdateWithoutLikesDataInput {
-  user: UserUpdateOneWithoutMyReviewInput
+  user: UserUpdateOneRequiredWithoutMyReviewInput
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2020,7 +2160,7 @@ input ReviewUpdateWithoutLikesDataInput {
 }
 
 input ReviewUpdateWithoutProductDataInput {
-  user: UserUpdateOneWithoutMyReviewInput
+  user: UserUpdateOneRequiredWithoutMyReviewInput
   text: String
   rating: Int
   likes: LikeUpdateManyWithoutReviewInput
@@ -2029,7 +2169,7 @@ input ReviewUpdateWithoutProductDataInput {
 }
 
 input ReviewUpdateWithoutReviewPhotosDataInput {
-  user: UserUpdateOneWithoutMyReviewInput
+  user: UserUpdateOneRequiredWithoutMyReviewInput
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2054,6 +2194,11 @@ input ReviewUpdateWithWhereUniqueWithoutProductInput {
 input ReviewUpdateWithWhereUniqueWithoutUserInput {
   where: ReviewWhereUniqueInput!
   data: ReviewUpdateWithoutUserDataInput!
+}
+
+input ReviewUpsertNestedInput {
+  update: ReviewUpdateDataInput!
+  create: ReviewCreateInput!
 }
 
 input ReviewUpsertWithoutHatesInput {
@@ -2159,6 +2304,7 @@ input ReviewWhereUniqueInput {
 type Subscription {
   blackList(where: BlackListSubscriptionWhereInput): BlackListSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   hate(where: HateSubscriptionWhereInput): HateSubscriptionPayload
   keyword(where: KeywordSubscriptionWhereInput): KeywordSubscriptionPayload
   like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
@@ -2358,6 +2504,11 @@ input UserCreateInput {
   myHate: HateCreateManyWithoutUserInput
 }
 
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutMyHateInput {
   create: UserCreateWithoutMyHateInput
   connect: UserWhereUniqueInput
@@ -2479,6 +2630,18 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  avatar: String
+  nickName: String
+  phone: String
+  email: String
+  password: String
+  myReview: ReviewUpdateManyWithoutUserInput
+  myProduct: ProductUpdateManyWithoutUserInput
+  myLike: LikeUpdateManyWithoutUserInput
+  myHate: HateUpdateManyWithoutUserInput
+}
+
 input UserUpdateInput {
   avatar: String
   nickName: String
@@ -2497,6 +2660,20 @@ input UserUpdateManyMutationInput {
   phone: String
   email: String
   password: String
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredWithoutMyReviewInput {
+  create: UserCreateWithoutMyReviewInput
+  update: UserUpdateWithoutMyReviewDataInput
+  upsert: UserUpsertWithoutMyReviewInput
+  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneWithoutMyHateInput {
@@ -2521,15 +2698,6 @@ input UserUpdateOneWithoutMyProductInput {
   create: UserCreateWithoutMyProductInput
   update: UserUpdateWithoutMyProductDataInput
   upsert: UserUpsertWithoutMyProductInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UserWhereUniqueInput
-}
-
-input UserUpdateOneWithoutMyReviewInput {
-  create: UserCreateWithoutMyReviewInput
-  update: UserUpdateWithoutMyReviewDataInput
-  upsert: UserUpsertWithoutMyReviewInput
   delete: Boolean
   disconnect: Boolean
   connect: UserWhereUniqueInput
@@ -2577,6 +2745,11 @@ input UserUpdateWithoutMyReviewDataInput {
   myProduct: ProductUpdateManyWithoutUserInput
   myLike: LikeUpdateManyWithoutUserInput
   myHate: HateUpdateManyWithoutUserInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutMyHateInput {

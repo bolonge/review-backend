@@ -18,6 +18,7 @@ export type Maybe<T> = T | undefined | null;
 export interface Exists {
   blackList: (where?: BlackListWhereInput) => Promise<boolean>;
   category: (where?: CategoryWhereInput) => Promise<boolean>;
+  comment: (where?: CommentWhereInput) => Promise<boolean>;
   hate: (where?: HateWhereInput) => Promise<boolean>;
   keyword: (where?: KeywordWhereInput) => Promise<boolean>;
   like: (where?: LikeWhereInput) => Promise<boolean>;
@@ -85,6 +86,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CategoryConnectionPromise;
+  comment: (where: CommentWhereUniqueInput) => CommentNullablePromise;
+  comments: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Comment>;
+  commentsConnection: (args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CommentConnectionPromise;
   hate: (where: HateWhereUniqueInput) => HateNullablePromise;
   hates: (args?: {
     where?: HateWhereInput;
@@ -277,6 +297,22 @@ export interface Prisma {
   }) => CategoryPromise;
   deleteCategory: (where: CategoryWhereUniqueInput) => CategoryPromise;
   deleteManyCategories: (where?: CategoryWhereInput) => BatchPayloadPromise;
+  createComment: (data: CommentCreateInput) => CommentPromise;
+  updateComment: (args: {
+    data: CommentUpdateInput;
+    where: CommentWhereUniqueInput;
+  }) => CommentPromise;
+  updateManyComments: (args: {
+    data: CommentUpdateManyMutationInput;
+    where?: CommentWhereInput;
+  }) => BatchPayloadPromise;
+  upsertComment: (args: {
+    where: CommentWhereUniqueInput;
+    create: CommentCreateInput;
+    update: CommentUpdateInput;
+  }) => CommentPromise;
+  deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
+  deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
   createHate: (data: HateCreateInput) => HatePromise;
   updateHate: (args: {
     data: HateUpdateInput;
@@ -416,6 +452,9 @@ export interface Subscription {
   category: (
     where?: CategorySubscriptionWhereInput
   ) => CategorySubscriptionPayloadSubscription;
+  comment: (
+    where?: CommentSubscriptionWhereInput
+  ) => CommentSubscriptionPayloadSubscription;
   hate: (
     where?: HateSubscriptionWhereInput
   ) => HateSubscriptionPayloadSubscription;
@@ -515,6 +554,12 @@ export type CategoryOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
+
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC";
 
 export type KeywordOrderByInput =
   | "id_ASC"
@@ -1082,6 +1127,46 @@ export interface SuperCategoryWhereInput {
   NOT?: Maybe<SuperCategoryWhereInput[] | SuperCategoryWhereInput>;
 }
 
+export type CommentWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface CommentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  review?: Maybe<ReviewWhereInput>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+}
+
 export type HateWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -1299,7 +1384,7 @@ export interface ReviewCreateOneWithoutReviewPhotosInput {
 
 export interface ReviewCreateWithoutReviewPhotosInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  user: UserCreateOneWithoutMyReviewInput;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1349,7 +1434,7 @@ export interface ReviewCreateManyWithoutProductInput {
 
 export interface ReviewCreateWithoutProductInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  user: UserCreateOneWithoutMyReviewInput;
   text: String;
   rating: Int;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
@@ -1401,7 +1486,7 @@ export interface ReviewCreateOneWithoutHatesInput {
 
 export interface ReviewCreateWithoutHatesInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  user: UserCreateOneWithoutMyReviewInput;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1480,7 +1565,7 @@ export interface ReviewCreateOneWithoutLikesInput {
 
 export interface ReviewCreateWithoutLikesInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
+  user: UserCreateOneWithoutMyReviewInput;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1677,7 +1762,7 @@ export interface ReviewUpdateOneWithoutReviewPhotosInput {
 }
 
 export interface ReviewUpdateWithoutReviewPhotosDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -1685,12 +1770,10 @@ export interface ReviewUpdateWithoutReviewPhotosDataInput {
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
 }
 
-export interface UserUpdateOneWithoutMyReviewInput {
+export interface UserUpdateOneRequiredWithoutMyReviewInput {
   create?: Maybe<UserCreateWithoutMyReviewInput>;
   update?: Maybe<UserUpdateWithoutMyReviewDataInput>;
   upsert?: Maybe<UserUpsertWithoutMyReviewInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -1770,7 +1853,7 @@ export interface ReviewUpdateWithWhereUniqueWithoutProductInput {
 }
 
 export interface ReviewUpdateWithoutProductDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
@@ -1860,7 +1943,7 @@ export interface ReviewUpdateOneWithoutHatesInput {
 }
 
 export interface ReviewUpdateWithoutHatesDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2163,7 +2246,7 @@ export interface ReviewUpdateOneWithoutLikesInput {
 }
 
 export interface ReviewUpdateWithoutLikesDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2377,6 +2460,103 @@ export interface CategoryUpdateManyMutationInput {
   categoryName?: Maybe<String>;
 }
 
+export interface CommentCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  review: ReviewCreateOneInput;
+  text: String;
+}
+
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  avatar?: Maybe<String>;
+  nickName: String;
+  phone: String;
+  email: String;
+  password: String;
+  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
+  myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
+  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
+  myHate?: Maybe<HateCreateManyWithoutUserInput>;
+}
+
+export interface ReviewCreateOneInput {
+  create?: Maybe<ReviewCreateInput>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
+}
+
+export interface ReviewCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneWithoutMyReviewInput;
+  product: ProductCreateOneWithoutReviewsInput;
+  text: String;
+  rating: Int;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+}
+
+export interface CommentUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  review?: Maybe<ReviewUpdateOneRequiredInput>;
+  text?: Maybe<String>;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
+  avatar?: Maybe<String>;
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
+  myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
+  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
+  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface ReviewUpdateOneRequiredInput {
+  create?: Maybe<ReviewCreateInput>;
+  update?: Maybe<ReviewUpdateDataInput>;
+  upsert?: Maybe<ReviewUpsertNestedInput>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
+}
+
+export interface ReviewUpdateDataInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  text?: Maybe<String>;
+  rating?: Maybe<Int>;
+  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
+  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+}
+
+export interface ReviewUpsertNestedInput {
+  update: ReviewUpdateDataInput;
+  create: ReviewCreateInput;
+}
+
+export interface CommentUpdateManyMutationInput {
+  text?: Maybe<String>;
+}
+
 export interface HateCreateInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyHateInput>;
@@ -2456,19 +2636,8 @@ export interface ProductUpdateManyMutationInput {
   isPublished?: Maybe<Boolean>;
 }
 
-export interface ReviewCreateInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyReviewInput>;
-  product: ProductCreateOneWithoutReviewsInput;
-  text: String;
-  rating: Int;
-  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
-  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
-}
-
 export interface ReviewUpdateInput {
-  user?: Maybe<UserUpdateOneWithoutMyReviewInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2610,19 +2779,6 @@ export interface SuperCategoryUpdateManyMutationInput {
   superCategoryName?: Maybe<String>;
 }
 
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  avatar?: Maybe<String>;
-  nickName: String;
-  phone: String;
-  email: String;
-  password: String;
-  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
-  myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
-  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
-  myHate?: Maybe<HateCreateManyWithoutUserInput>;
-}
-
 export interface UserUpdateInput {
   avatar?: Maybe<String>;
   nickName?: Maybe<String>;
@@ -2673,6 +2829,17 @@ export interface CategorySubscriptionWhereInput {
   NOT?: Maybe<
     CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
   >;
+}
+
+export interface CommentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CommentWhereInput>;
+  AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+  NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
 }
 
 export interface HateSubscriptionWhereInput {
@@ -3536,6 +3703,90 @@ export interface AggregateCategorySubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface Comment {
+  id: ID_Output;
+  text: String;
+}
+
+export interface CommentPromise extends Promise<Comment>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  review: <T = ReviewPromise>() => T;
+  text: () => Promise<String>;
+}
+
+export interface CommentSubscription
+  extends Promise<AsyncIterator<Comment>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  review: <T = ReviewSubscription>() => T;
+  text: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommentNullablePromise
+  extends Promise<Comment | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  review: <T = ReviewPromise>() => T;
+  text: () => Promise<String>;
+}
+
+export interface CommentConnection {
+  pageInfo: PageInfo;
+  edges: CommentEdge[];
+}
+
+export interface CommentConnectionPromise
+  extends Promise<CommentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CommentEdge>>() => T;
+  aggregate: <T = AggregateCommentPromise>() => T;
+}
+
+export interface CommentConnectionSubscription
+  extends Promise<AsyncIterator<CommentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommentSubscription>() => T;
+}
+
+export interface CommentEdge {
+  node: Comment;
+  cursor: String;
+}
+
+export interface CommentEdgePromise extends Promise<CommentEdge>, Fragmentable {
+  node: <T = CommentPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CommentEdgeSubscription
+  extends Promise<AsyncIterator<CommentEdge>>,
+    Fragmentable {
+  node: <T = CommentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateComment {
+  count: Int;
+}
+
+export interface AggregateCommentPromise
+  extends Promise<AggregateComment>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCommentSubscription
+  extends Promise<AsyncIterator<AggregateComment>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface HateConnection {
   pageInfo: PageInfo;
   edges: HateEdge[];
@@ -4116,6 +4367,50 @@ export interface CategoryPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface CommentSubscriptionPayload {
+  mutation: MutationType;
+  node: Comment;
+  updatedFields: String[];
+  previousValues: CommentPreviousValues;
+}
+
+export interface CommentSubscriptionPayloadPromise
+  extends Promise<CommentSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CommentPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CommentPreviousValuesPromise>() => T;
+}
+
+export interface CommentSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CommentSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CommentSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CommentPreviousValuesSubscription>() => T;
+}
+
+export interface CommentPreviousValues {
+  id: ID_Output;
+  text: String;
+}
+
+export interface CommentPreviousValuesPromise
+  extends Promise<CommentPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+}
+
+export interface CommentPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommentPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+}
+
 export interface HateSubscriptionPayload {
   mutation: MutationType;
   node: Hate;
@@ -4583,6 +4878,10 @@ export const models: Model[] = [
   },
   {
     name: "Review",
+    embedded: false
+  },
+  {
+    name: "Comment",
     embedded: false
   },
   {

@@ -52,6 +52,13 @@ type Review {
   updatedAt: String!
 }
 
+type Comment {
+  id: ID!
+  user: User!
+  review: Review!
+  text: String!
+}
+
 type Like {
   id: ID!
   user: User
