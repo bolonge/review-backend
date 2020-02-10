@@ -10,6 +10,7 @@ type User {
   myLike: [Like!]!
   myHate: [Hate!]!
   reviewCount: Int!
+  productCount: Int!
   isSelf: Boolean!
   createdAt: String!
   updatedAt: String!

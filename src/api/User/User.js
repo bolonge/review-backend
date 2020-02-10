@@ -11,6 +11,11 @@ export default {
         .reviewsConnection({ where: { user: { id } } })
         .aggregate()
         .count(),
+    productCount: ({ id }) =>
+      prisma
+        .productsConnection({ where: { user: { id } } })
+        .aggregate()
+        .count(),
     isSelf: (parent, _, { request }) => {
       const { user } = request;
       const { id: parentId } = parent;
