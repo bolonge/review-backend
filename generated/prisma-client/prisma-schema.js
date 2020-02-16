@@ -421,7 +421,18 @@ type CommentConnection {
 input CommentCreateInput {
   id: ID
   user: UserCreateOneInput!
-  review: ReviewCreateOneInput!
+  review: ReviewCreateOneWithoutCommentsInput!
+  text: String!
+}
+
+input CommentCreateManyWithoutReviewInput {
+  create: [CommentCreateWithoutReviewInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutReviewInput {
+  id: ID
+  user: UserCreateOneInput!
   text: String!
 }
 
@@ -440,6 +451,40 @@ enum CommentOrderByInput {
 type CommentPreviousValues {
   id: ID!
   text: String!
+}
+
+input CommentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
 }
 
 type CommentSubscriptionPayload {
@@ -462,12 +507,49 @@ input CommentSubscriptionWhereInput {
 
 input CommentUpdateInput {
   user: UserUpdateOneRequiredInput
-  review: ReviewUpdateOneRequiredInput
+  review: ReviewUpdateOneRequiredWithoutCommentsInput
+  text: String
+}
+
+input CommentUpdateManyDataInput {
   text: String
 }
 
 input CommentUpdateManyMutationInput {
   text: String
+}
+
+input CommentUpdateManyWithoutReviewInput {
+  create: [CommentCreateWithoutReviewInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutReviewInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutReviewInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
+}
+
+input CommentUpdateWithoutReviewDataInput {
+  user: UserUpdateOneRequiredInput
+  text: String
+}
+
+input CommentUpdateWithWhereUniqueWithoutReviewInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutReviewDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutReviewInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutReviewDataInput!
+  create: CommentCreateWithoutReviewInput!
 }
 
 input CommentWhereInput {
@@ -1842,6 +1924,7 @@ type Review {
   product: Product!
   text: String!
   rating: Int!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
   reviewPhotos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
@@ -1861,6 +1944,7 @@ input ReviewCreateInput {
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
+  comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
@@ -1876,8 +1960,8 @@ input ReviewCreateManyWithoutUserInput {
   connect: [ReviewWhereUniqueInput!]
 }
 
-input ReviewCreateOneInput {
-  create: ReviewCreateInput
+input ReviewCreateOneWithoutCommentsInput {
+  create: ReviewCreateWithoutCommentsInput
   connect: ReviewWhereUniqueInput
 }
 
@@ -1896,12 +1980,24 @@ input ReviewCreateOneWithoutReviewPhotosInput {
   connect: ReviewWhereUniqueInput
 }
 
+input ReviewCreateWithoutCommentsInput {
+  id: ID
+  user: UserCreateOneWithoutMyReviewInput!
+  product: ProductCreateOneWithoutReviewsInput!
+  text: String!
+  rating: Int!
+  likes: LikeCreateManyWithoutReviewInput
+  hates: HateCreateManyWithoutReviewInput
+  reviewPhotos: PhotoCreateManyWithoutReviewInput
+}
+
 input ReviewCreateWithoutHatesInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
+  comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
 }
@@ -1912,6 +2008,7 @@ input ReviewCreateWithoutLikesInput {
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
+  comments: CommentCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
 }
@@ -1921,6 +2018,7 @@ input ReviewCreateWithoutProductInput {
   user: UserCreateOneWithoutMyReviewInput!
   text: String!
   rating: Int!
+  comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
@@ -1932,6 +2030,7 @@ input ReviewCreateWithoutReviewPhotosInput {
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
+  comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
 }
@@ -1941,6 +2040,7 @@ input ReviewCreateWithoutUserInput {
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
+  comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
@@ -2048,21 +2148,12 @@ input ReviewSubscriptionWhereInput {
   NOT: [ReviewSubscriptionWhereInput!]
 }
 
-input ReviewUpdateDataInput {
-  user: UserUpdateOneRequiredWithoutMyReviewInput
-  product: ProductUpdateOneRequiredWithoutReviewsInput
-  text: String
-  rating: Int
-  likes: LikeUpdateManyWithoutReviewInput
-  hates: HateUpdateManyWithoutReviewInput
-  reviewPhotos: PhotoUpdateManyWithoutReviewInput
-}
-
 input ReviewUpdateInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
+  comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
@@ -2107,10 +2198,10 @@ input ReviewUpdateManyWithWhereNestedInput {
   data: ReviewUpdateManyDataInput!
 }
 
-input ReviewUpdateOneRequiredInput {
-  create: ReviewCreateInput
-  update: ReviewUpdateDataInput
-  upsert: ReviewUpsertNestedInput
+input ReviewUpdateOneRequiredWithoutCommentsInput {
+  create: ReviewCreateWithoutCommentsInput
+  update: ReviewUpdateWithoutCommentsDataInput
+  upsert: ReviewUpsertWithoutCommentsInput
   connect: ReviewWhereUniqueInput
 }
 
@@ -2141,11 +2232,22 @@ input ReviewUpdateOneWithoutReviewPhotosInput {
   connect: ReviewWhereUniqueInput
 }
 
+input ReviewUpdateWithoutCommentsDataInput {
+  user: UserUpdateOneRequiredWithoutMyReviewInput
+  product: ProductUpdateOneRequiredWithoutReviewsInput
+  text: String
+  rating: Int
+  likes: LikeUpdateManyWithoutReviewInput
+  hates: HateUpdateManyWithoutReviewInput
+  reviewPhotos: PhotoUpdateManyWithoutReviewInput
+}
+
 input ReviewUpdateWithoutHatesDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
+  comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
 }
@@ -2155,6 +2257,7 @@ input ReviewUpdateWithoutLikesDataInput {
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
+  comments: CommentUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
 }
@@ -2163,6 +2266,7 @@ input ReviewUpdateWithoutProductDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
   text: String
   rating: Int
+  comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
@@ -2173,6 +2277,7 @@ input ReviewUpdateWithoutReviewPhotosDataInput {
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
+  comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
 }
@@ -2181,6 +2286,7 @@ input ReviewUpdateWithoutUserDataInput {
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
+  comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
@@ -2196,9 +2302,9 @@ input ReviewUpdateWithWhereUniqueWithoutUserInput {
   data: ReviewUpdateWithoutUserDataInput!
 }
 
-input ReviewUpsertNestedInput {
-  update: ReviewUpdateDataInput!
-  create: ReviewCreateInput!
+input ReviewUpsertWithoutCommentsInput {
+  update: ReviewUpdateWithoutCommentsDataInput!
+  create: ReviewCreateWithoutCommentsInput!
 }
 
 input ReviewUpsertWithoutHatesInput {
@@ -2267,6 +2373,9 @@ input ReviewWhereInput {
   rating_lte: Int
   rating_gt: Int
   rating_gte: Int
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   likes_every: LikeWhereInput
   likes_some: LikeWhereInput
   likes_none: LikeWhereInput

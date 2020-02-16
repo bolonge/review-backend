@@ -519,6 +519,12 @@ export type ReviewOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type CommentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC";
+
 export type LikeOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -554,12 +560,6 @@ export type CategoryOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
-
-export type CommentOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "text_ASC"
-  | "text_DESC";
 
 export type KeywordOrderByInput =
   | "id_ASC"
@@ -862,6 +862,9 @@ export interface ReviewWhereInput {
   rating_lte?: Maybe<Int>;
   rating_gt?: Maybe<Int>;
   rating_gte?: Maybe<Int>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
   likes_every?: Maybe<LikeWhereInput>;
   likes_some?: Maybe<LikeWhereInput>;
   likes_none?: Maybe<LikeWhereInput>;
@@ -890,6 +893,42 @@ export interface ReviewWhereInput {
   AND?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
   OR?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
   NOT?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
+}
+
+export interface CommentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  review?: Maybe<ReviewWhereInput>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
+  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
 }
 
 export interface LikeWhereInput {
@@ -1131,42 +1170,6 @@ export type CommentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface CommentWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  user?: Maybe<UserWhereInput>;
-  review?: Maybe<ReviewWhereInput>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  AND?: Maybe<CommentWhereInput[] | CommentWhereInput>;
-  OR?: Maybe<CommentWhereInput[] | CommentWhereInput>;
-  NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
-}
-
 export type HateWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -1324,6 +1327,7 @@ export interface ReviewCreateWithoutUserInput {
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
+  comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
@@ -1388,6 +1392,7 @@ export interface ReviewCreateWithoutReviewPhotosInput {
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
+  comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
 }
@@ -1437,27 +1442,31 @@ export interface ReviewCreateWithoutProductInput {
   user: UserCreateOneWithoutMyReviewInput;
   text: String;
   rating: Int;
+  comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
 }
 
-export interface LikeCreateManyWithoutReviewInput {
-  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
-  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+export interface CommentCreateManyWithoutReviewInput {
+  create?: Maybe<
+    CommentCreateWithoutReviewInput[] | CommentCreateWithoutReviewInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
 }
 
-export interface LikeCreateWithoutReviewInput {
+export interface CommentCreateWithoutReviewInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyLikeInput>;
+  user: UserCreateOneInput;
+  text: String;
 }
 
-export interface UserCreateOneWithoutMyLikeInput {
-  create?: Maybe<UserCreateWithoutMyLikeInput>;
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutMyLikeInput {
+export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   avatar?: Maybe<String>;
   nickName: String;
@@ -1466,59 +1475,34 @@ export interface UserCreateWithoutMyLikeInput {
   password: String;
   myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
   myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
+  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
   myHate?: Maybe<HateCreateManyWithoutUserInput>;
 }
 
-export interface HateCreateManyWithoutUserInput {
-  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
-  connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+export interface LikeCreateManyWithoutUserInput {
+  create?: Maybe<LikeCreateWithoutUserInput[] | LikeCreateWithoutUserInput>;
+  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
 }
 
-export interface HateCreateWithoutUserInput {
+export interface LikeCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
-  review?: Maybe<ReviewCreateOneWithoutHatesInput>;
+  review?: Maybe<ReviewCreateOneWithoutLikesInput>;
 }
 
-export interface ReviewCreateOneWithoutHatesInput {
-  create?: Maybe<ReviewCreateWithoutHatesInput>;
+export interface ReviewCreateOneWithoutLikesInput {
+  create?: Maybe<ReviewCreateWithoutLikesInput>;
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export interface ReviewCreateWithoutHatesInput {
+export interface ReviewCreateWithoutLikesInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
-  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  comments?: Maybe<CommentCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
-}
-
-export interface PhotoCreateManyWithoutReviewInput {
-  create?: Maybe<
-    PhotoCreateWithoutReviewInput[] | PhotoCreateWithoutReviewInput
-  >;
-  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-}
-
-export interface PhotoCreateWithoutReviewInput {
-  id?: Maybe<ID_Input>;
-  url: String;
-  product?: Maybe<ProductCreateOneWithoutProductPhotosInput>;
-}
-
-export interface ProductCreateOneWithoutProductPhotosInput {
-  create?: Maybe<ProductCreateWithoutProductPhotosInput>;
-  connect?: Maybe<ProductWhereUniqueInput>;
-}
-
-export interface ProductCreateWithoutProductPhotosInput {
-  id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutMyProductInput>;
-  productName: String;
-  category: CategoryCreateOneWithoutProductInput;
-  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
-  isPublished?: Maybe<Boolean>;
 }
 
 export interface HateCreateManyWithoutReviewInput {
@@ -1548,29 +1532,84 @@ export interface UserCreateWithoutMyHateInput {
   myLike?: Maybe<LikeCreateManyWithoutUserInput>;
 }
 
-export interface LikeCreateManyWithoutUserInput {
-  create?: Maybe<LikeCreateWithoutUserInput[] | LikeCreateWithoutUserInput>;
-  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+export interface PhotoCreateManyWithoutReviewInput {
+  create?: Maybe<
+    PhotoCreateWithoutReviewInput[] | PhotoCreateWithoutReviewInput
+  >;
+  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
 }
 
-export interface LikeCreateWithoutUserInput {
+export interface PhotoCreateWithoutReviewInput {
   id?: Maybe<ID_Input>;
-  review?: Maybe<ReviewCreateOneWithoutLikesInput>;
+  url: String;
+  product?: Maybe<ProductCreateOneWithoutProductPhotosInput>;
 }
 
-export interface ReviewCreateOneWithoutLikesInput {
-  create?: Maybe<ReviewCreateWithoutLikesInput>;
+export interface ProductCreateOneWithoutProductPhotosInput {
+  create?: Maybe<ProductCreateWithoutProductPhotosInput>;
+  connect?: Maybe<ProductWhereUniqueInput>;
+}
+
+export interface ProductCreateWithoutProductPhotosInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyProductInput>;
+  productName: String;
+  category: CategoryCreateOneWithoutProductInput;
+  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+}
+
+export interface HateCreateManyWithoutUserInput {
+  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
+  connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+}
+
+export interface HateCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  review?: Maybe<ReviewCreateOneWithoutHatesInput>;
+}
+
+export interface ReviewCreateOneWithoutHatesInput {
+  create?: Maybe<ReviewCreateWithoutHatesInput>;
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export interface ReviewCreateWithoutLikesInput {
+export interface ReviewCreateWithoutHatesInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
-  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  comments?: Maybe<CommentCreateManyWithoutReviewInput>;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+}
+
+export interface LikeCreateManyWithoutReviewInput {
+  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
+  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+}
+
+export interface LikeCreateWithoutReviewInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyLikeInput>;
+}
+
+export interface UserCreateOneWithoutMyLikeInput {
+  create?: Maybe<UserCreateWithoutMyLikeInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutMyLikeInput {
+  id?: Maybe<ID_Input>;
+  avatar?: Maybe<String>;
+  nickName: String;
+  phone: String;
+  email: String;
+  password: String;
+  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
+  myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
+  myHate?: Maybe<HateCreateManyWithoutUserInput>;
 }
 
 export interface CategoryUpdateInput {
@@ -1665,6 +1704,7 @@ export interface ReviewUpdateWithoutUserDataInput {
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
+  comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
@@ -1766,6 +1806,7 @@ export interface ReviewUpdateWithoutReviewPhotosDataInput {
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
+  comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
 }
@@ -1856,47 +1897,53 @@ export interface ReviewUpdateWithoutProductDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
+  comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
 }
 
-export interface LikeUpdateManyWithoutReviewInput {
-  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
-  delete?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  set?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  disconnect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+export interface CommentUpdateManyWithoutReviewInput {
+  create?: Maybe<
+    CommentCreateWithoutReviewInput[] | CommentCreateWithoutReviewInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
   update?: Maybe<
-    | LikeUpdateWithWhereUniqueWithoutReviewInput[]
-    | LikeUpdateWithWhereUniqueWithoutReviewInput
+    | CommentUpdateWithWhereUniqueWithoutReviewInput[]
+    | CommentUpdateWithWhereUniqueWithoutReviewInput
   >;
   upsert?: Maybe<
-    | LikeUpsertWithWhereUniqueWithoutReviewInput[]
-    | LikeUpsertWithWhereUniqueWithoutReviewInput
+    | CommentUpsertWithWhereUniqueWithoutReviewInput[]
+    | CommentUpsertWithWhereUniqueWithoutReviewInput
   >;
-  deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface LikeUpdateWithWhereUniqueWithoutReviewInput {
-  where: LikeWhereUniqueInput;
-  data: LikeUpdateWithoutReviewDataInput;
+export interface CommentUpdateWithWhereUniqueWithoutReviewInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutReviewDataInput;
 }
 
-export interface LikeUpdateWithoutReviewDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyLikeInput>;
+export interface CommentUpdateWithoutReviewDataInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  text?: Maybe<String>;
 }
 
-export interface UserUpdateOneWithoutMyLikeInput {
-  create?: Maybe<UserCreateWithoutMyLikeInput>;
-  update?: Maybe<UserUpdateWithoutMyLikeDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMyLikeInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutMyLikeDataInput {
+export interface UserUpdateDataInput {
   avatar?: Maybe<String>;
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
@@ -1904,51 +1951,146 @@ export interface UserUpdateWithoutMyLikeDataInput {
   password?: Maybe<String>;
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
+  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
   myHate?: Maybe<HateUpdateManyWithoutUserInput>;
 }
 
-export interface HateUpdateManyWithoutUserInput {
-  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
-  delete?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
-  connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
-  set?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
-  disconnect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+export interface LikeUpdateManyWithoutUserInput {
+  create?: Maybe<LikeCreateWithoutUserInput[] | LikeCreateWithoutUserInput>;
+  delete?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  set?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  disconnect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
   update?: Maybe<
-    | HateUpdateWithWhereUniqueWithoutUserInput[]
-    | HateUpdateWithWhereUniqueWithoutUserInput
+    | LikeUpdateWithWhereUniqueWithoutUserInput[]
+    | LikeUpdateWithWhereUniqueWithoutUserInput
   >;
   upsert?: Maybe<
-    | HateUpsertWithWhereUniqueWithoutUserInput[]
-    | HateUpsertWithWhereUniqueWithoutUserInput
+    | LikeUpsertWithWhereUniqueWithoutUserInput[]
+    | LikeUpsertWithWhereUniqueWithoutUserInput
   >;
-  deleteMany?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+  deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
 }
 
-export interface HateUpdateWithWhereUniqueWithoutUserInput {
-  where: HateWhereUniqueInput;
-  data: HateUpdateWithoutUserDataInput;
+export interface LikeUpdateWithWhereUniqueWithoutUserInput {
+  where: LikeWhereUniqueInput;
+  data: LikeUpdateWithoutUserDataInput;
 }
 
-export interface HateUpdateWithoutUserDataInput {
-  review?: Maybe<ReviewUpdateOneWithoutHatesInput>;
+export interface LikeUpdateWithoutUserDataInput {
+  review?: Maybe<ReviewUpdateOneWithoutLikesInput>;
 }
 
-export interface ReviewUpdateOneWithoutHatesInput {
-  create?: Maybe<ReviewCreateWithoutHatesInput>;
-  update?: Maybe<ReviewUpdateWithoutHatesDataInput>;
-  upsert?: Maybe<ReviewUpsertWithoutHatesInput>;
+export interface ReviewUpdateOneWithoutLikesInput {
+  create?: Maybe<ReviewCreateWithoutLikesInput>;
+  update?: Maybe<ReviewUpdateWithoutLikesDataInput>;
+  upsert?: Maybe<ReviewUpsertWithoutLikesInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export interface ReviewUpdateWithoutHatesDataInput {
+export interface ReviewUpdateWithoutLikesDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
-  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
+  comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
+  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+}
+
+export interface HateUpdateManyWithoutReviewInput {
+  create?: Maybe<HateCreateWithoutReviewInput[] | HateCreateWithoutReviewInput>;
+  delete?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  set?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  disconnect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
+  update?: Maybe<
+    | HateUpdateWithWhereUniqueWithoutReviewInput[]
+    | HateUpdateWithWhereUniqueWithoutReviewInput
+  >;
+  upsert?: Maybe<
+    | HateUpsertWithWhereUniqueWithoutReviewInput[]
+    | HateUpsertWithWhereUniqueWithoutReviewInput
+  >;
+  deleteMany?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+}
+
+export interface HateUpdateWithWhereUniqueWithoutReviewInput {
+  where: HateWhereUniqueInput;
+  data: HateUpdateWithoutReviewDataInput;
+}
+
+export interface HateUpdateWithoutReviewDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyHateInput>;
+}
+
+export interface UserUpdateOneWithoutMyHateInput {
+  create?: Maybe<UserCreateWithoutMyHateInput>;
+  update?: Maybe<UserUpdateWithoutMyHateDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMyHateInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutMyHateDataInput {
+  avatar?: Maybe<String>;
+  nickName?: Maybe<String>;
+  phone?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
+  myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
+  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
+}
+
+export interface UserUpsertWithoutMyHateInput {
+  update: UserUpdateWithoutMyHateDataInput;
+  create: UserCreateWithoutMyHateInput;
+}
+
+export interface HateUpsertWithWhereUniqueWithoutReviewInput {
+  where: HateWhereUniqueInput;
+  update: HateUpdateWithoutReviewDataInput;
+  create: HateCreateWithoutReviewInput;
+}
+
+export interface HateScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+  OR?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
+  NOT?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
 }
 
 export interface PhotoUpdateManyWithoutReviewInput {
@@ -2070,62 +2212,15 @@ export interface PhotoUpdateManyDataInput {
   url?: Maybe<String>;
 }
 
-export interface ReviewUpsertWithoutHatesInput {
-  update: ReviewUpdateWithoutHatesDataInput;
-  create: ReviewCreateWithoutHatesInput;
+export interface ReviewUpsertWithoutLikesInput {
+  update: ReviewUpdateWithoutLikesDataInput;
+  create: ReviewCreateWithoutLikesInput;
 }
 
-export interface HateUpsertWithWhereUniqueWithoutUserInput {
-  where: HateWhereUniqueInput;
-  update: HateUpdateWithoutUserDataInput;
-  create: HateCreateWithoutUserInput;
-}
-
-export interface HateScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
-  OR?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
-  NOT?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
-}
-
-export interface UserUpsertWithoutMyLikeInput {
-  update: UserUpdateWithoutMyLikeDataInput;
-  create: UserCreateWithoutMyLikeInput;
-}
-
-export interface LikeUpsertWithWhereUniqueWithoutReviewInput {
+export interface LikeUpsertWithWhereUniqueWithoutUserInput {
   where: LikeWhereUniqueInput;
-  update: LikeUpdateWithoutReviewDataInput;
-  create: LikeCreateWithoutReviewInput;
+  update: LikeUpdateWithoutUserDataInput;
+  create: LikeCreateWithoutUserInput;
 }
 
 export interface LikeScalarWhereInput {
@@ -2164,42 +2259,87 @@ export interface LikeScalarWhereInput {
   NOT?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
 }
 
-export interface HateUpdateManyWithoutReviewInput {
-  create?: Maybe<HateCreateWithoutReviewInput[] | HateCreateWithoutReviewInput>;
+export interface HateUpdateManyWithoutUserInput {
+  create?: Maybe<HateCreateWithoutUserInput[] | HateCreateWithoutUserInput>;
   delete?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   connect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   set?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   disconnect?: Maybe<HateWhereUniqueInput[] | HateWhereUniqueInput>;
   update?: Maybe<
-    | HateUpdateWithWhereUniqueWithoutReviewInput[]
-    | HateUpdateWithWhereUniqueWithoutReviewInput
+    | HateUpdateWithWhereUniqueWithoutUserInput[]
+    | HateUpdateWithWhereUniqueWithoutUserInput
   >;
   upsert?: Maybe<
-    | HateUpsertWithWhereUniqueWithoutReviewInput[]
-    | HateUpsertWithWhereUniqueWithoutReviewInput
+    | HateUpsertWithWhereUniqueWithoutUserInput[]
+    | HateUpsertWithWhereUniqueWithoutUserInput
   >;
   deleteMany?: Maybe<HateScalarWhereInput[] | HateScalarWhereInput>;
 }
 
-export interface HateUpdateWithWhereUniqueWithoutReviewInput {
+export interface HateUpdateWithWhereUniqueWithoutUserInput {
   where: HateWhereUniqueInput;
-  data: HateUpdateWithoutReviewDataInput;
+  data: HateUpdateWithoutUserDataInput;
 }
 
-export interface HateUpdateWithoutReviewDataInput {
-  user?: Maybe<UserUpdateOneWithoutMyHateInput>;
+export interface HateUpdateWithoutUserDataInput {
+  review?: Maybe<ReviewUpdateOneWithoutHatesInput>;
 }
 
-export interface UserUpdateOneWithoutMyHateInput {
-  create?: Maybe<UserCreateWithoutMyHateInput>;
-  update?: Maybe<UserUpdateWithoutMyHateDataInput>;
-  upsert?: Maybe<UserUpsertWithoutMyHateInput>;
+export interface ReviewUpdateOneWithoutHatesInput {
+  create?: Maybe<ReviewCreateWithoutHatesInput>;
+  update?: Maybe<ReviewUpdateWithoutHatesDataInput>;
+  upsert?: Maybe<ReviewUpsertWithoutHatesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ReviewWhereUniqueInput>;
+}
+
+export interface ReviewUpdateWithoutHatesDataInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  text?: Maybe<String>;
+  rating?: Maybe<Int>;
+  comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
+  likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
+}
+
+export interface LikeUpdateManyWithoutReviewInput {
+  create?: Maybe<LikeCreateWithoutReviewInput[] | LikeCreateWithoutReviewInput>;
+  delete?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  set?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  disconnect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
+  update?: Maybe<
+    | LikeUpdateWithWhereUniqueWithoutReviewInput[]
+    | LikeUpdateWithWhereUniqueWithoutReviewInput
+  >;
+  upsert?: Maybe<
+    | LikeUpsertWithWhereUniqueWithoutReviewInput[]
+    | LikeUpsertWithWhereUniqueWithoutReviewInput
+  >;
+  deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+}
+
+export interface LikeUpdateWithWhereUniqueWithoutReviewInput {
+  where: LikeWhereUniqueInput;
+  data: LikeUpdateWithoutReviewDataInput;
+}
+
+export interface LikeUpdateWithoutReviewDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyLikeInput>;
+}
+
+export interface UserUpdateOneWithoutMyLikeInput {
+  create?: Maybe<UserCreateWithoutMyLikeInput>;
+  update?: Maybe<UserUpdateWithoutMyLikeDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMyLikeInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutMyHateDataInput {
+export interface UserUpdateWithoutMyLikeDataInput {
   avatar?: Maybe<String>;
   nickName?: Maybe<String>;
   phone?: Maybe<String>;
@@ -2207,73 +2347,83 @@ export interface UserUpdateWithoutMyHateDataInput {
   password?: Maybe<String>;
   myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
   myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
-  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
+  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
 }
 
-export interface LikeUpdateManyWithoutUserInput {
-  create?: Maybe<LikeCreateWithoutUserInput[] | LikeCreateWithoutUserInput>;
-  delete?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  connect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  set?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  disconnect?: Maybe<LikeWhereUniqueInput[] | LikeWhereUniqueInput>;
-  update?: Maybe<
-    | LikeUpdateWithWhereUniqueWithoutUserInput[]
-    | LikeUpdateWithWhereUniqueWithoutUserInput
-  >;
-  upsert?: Maybe<
-    | LikeUpsertWithWhereUniqueWithoutUserInput[]
-    | LikeUpsertWithWhereUniqueWithoutUserInput
-  >;
-  deleteMany?: Maybe<LikeScalarWhereInput[] | LikeScalarWhereInput>;
+export interface UserUpsertWithoutMyLikeInput {
+  update: UserUpdateWithoutMyLikeDataInput;
+  create: UserCreateWithoutMyLikeInput;
 }
 
-export interface LikeUpdateWithWhereUniqueWithoutUserInput {
+export interface LikeUpsertWithWhereUniqueWithoutReviewInput {
   where: LikeWhereUniqueInput;
-  data: LikeUpdateWithoutUserDataInput;
+  update: LikeUpdateWithoutReviewDataInput;
+  create: LikeCreateWithoutReviewInput;
 }
 
-export interface LikeUpdateWithoutUserDataInput {
-  review?: Maybe<ReviewUpdateOneWithoutLikesInput>;
+export interface ReviewUpsertWithoutHatesInput {
+  update: ReviewUpdateWithoutHatesDataInput;
+  create: ReviewCreateWithoutHatesInput;
 }
 
-export interface ReviewUpdateOneWithoutLikesInput {
-  create?: Maybe<ReviewCreateWithoutLikesInput>;
-  update?: Maybe<ReviewUpdateWithoutLikesDataInput>;
-  upsert?: Maybe<ReviewUpsertWithoutLikesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ReviewWhereUniqueInput>;
-}
-
-export interface ReviewUpdateWithoutLikesDataInput {
-  user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
-  text?: Maybe<String>;
-  rating?: Maybe<Int>;
-  hates?: Maybe<HateUpdateManyWithoutReviewInput>;
-  reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
-}
-
-export interface ReviewUpsertWithoutLikesInput {
-  update: ReviewUpdateWithoutLikesDataInput;
-  create: ReviewCreateWithoutLikesInput;
-}
-
-export interface LikeUpsertWithWhereUniqueWithoutUserInput {
-  where: LikeWhereUniqueInput;
-  update: LikeUpdateWithoutUserDataInput;
-  create: LikeCreateWithoutUserInput;
-}
-
-export interface UserUpsertWithoutMyHateInput {
-  update: UserUpdateWithoutMyHateDataInput;
-  create: UserCreateWithoutMyHateInput;
-}
-
-export interface HateUpsertWithWhereUniqueWithoutReviewInput {
+export interface HateUpsertWithWhereUniqueWithoutUserInput {
   where: HateWhereUniqueInput;
-  update: HateUpdateWithoutReviewDataInput;
-  create: HateCreateWithoutReviewInput;
+  update: HateUpdateWithoutUserDataInput;
+  create: HateCreateWithoutUserInput;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutReviewInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutReviewDataInput;
+  create: CommentCreateWithoutReviewInput;
+}
+
+export interface CommentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  AND?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  OR?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  NOT?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+}
+
+export interface CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput;
+  data: CommentUpdateManyDataInput;
+}
+
+export interface CommentUpdateManyDataInput {
+  text?: Maybe<String>;
 }
 
 export interface ReviewUpsertWithWhereUniqueWithoutProductInput {
@@ -2463,34 +2613,16 @@ export interface CategoryUpdateManyMutationInput {
 export interface CommentCreateInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneInput;
-  review: ReviewCreateOneInput;
+  review: ReviewCreateOneWithoutCommentsInput;
   text: String;
 }
 
-export interface UserCreateOneInput {
-  create?: Maybe<UserCreateInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  avatar?: Maybe<String>;
-  nickName: String;
-  phone: String;
-  email: String;
-  password: String;
-  myReview?: Maybe<ReviewCreateManyWithoutUserInput>;
-  myProduct?: Maybe<ProductCreateManyWithoutUserInput>;
-  myLike?: Maybe<LikeCreateManyWithoutUserInput>;
-  myHate?: Maybe<HateCreateManyWithoutUserInput>;
-}
-
-export interface ReviewCreateOneInput {
-  create?: Maybe<ReviewCreateInput>;
+export interface ReviewCreateOneWithoutCommentsInput {
+  create?: Maybe<ReviewCreateWithoutCommentsInput>;
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export interface ReviewCreateInput {
+export interface ReviewCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
   product: ProductCreateOneWithoutReviewsInput;
@@ -2503,42 +2635,18 @@ export interface ReviewCreateInput {
 
 export interface CommentUpdateInput {
   user?: Maybe<UserUpdateOneRequiredInput>;
-  review?: Maybe<ReviewUpdateOneRequiredInput>;
+  review?: Maybe<ReviewUpdateOneRequiredWithoutCommentsInput>;
   text?: Maybe<String>;
 }
 
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateDataInput {
-  avatar?: Maybe<String>;
-  nickName?: Maybe<String>;
-  phone?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  myReview?: Maybe<ReviewUpdateManyWithoutUserInput>;
-  myProduct?: Maybe<ProductUpdateManyWithoutUserInput>;
-  myLike?: Maybe<LikeUpdateManyWithoutUserInput>;
-  myHate?: Maybe<HateUpdateManyWithoutUserInput>;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface ReviewUpdateOneRequiredInput {
-  create?: Maybe<ReviewCreateInput>;
-  update?: Maybe<ReviewUpdateDataInput>;
-  upsert?: Maybe<ReviewUpsertNestedInput>;
+export interface ReviewUpdateOneRequiredWithoutCommentsInput {
+  create?: Maybe<ReviewCreateWithoutCommentsInput>;
+  update?: Maybe<ReviewUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<ReviewUpsertWithoutCommentsInput>;
   connect?: Maybe<ReviewWhereUniqueInput>;
 }
 
-export interface ReviewUpdateDataInput {
+export interface ReviewUpdateWithoutCommentsDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
@@ -2548,9 +2656,9 @@ export interface ReviewUpdateDataInput {
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
 }
 
-export interface ReviewUpsertNestedInput {
-  update: ReviewUpdateDataInput;
-  create: ReviewCreateInput;
+export interface ReviewUpsertWithoutCommentsInput {
+  update: ReviewUpdateWithoutCommentsDataInput;
+  create: ReviewCreateWithoutCommentsInput;
 }
 
 export interface CommentUpdateManyMutationInput {
@@ -2636,11 +2744,24 @@ export interface ProductUpdateManyMutationInput {
   isPublished?: Maybe<Boolean>;
 }
 
+export interface ReviewCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneWithoutMyReviewInput;
+  product: ProductCreateOneWithoutReviewsInput;
+  text: String;
+  rating: Int;
+  comments?: Maybe<CommentCreateManyWithoutReviewInput>;
+  likes?: Maybe<LikeCreateManyWithoutReviewInput>;
+  hates?: Maybe<HateCreateManyWithoutReviewInput>;
+  reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
+}
+
 export interface ReviewUpdateInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
+  comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
@@ -3371,6 +3492,15 @@ export interface ReviewPromise extends Promise<Review>, Fragmentable {
   product: <T = ProductPromise>() => T;
   text: () => Promise<String>;
   rating: () => Promise<Int>;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   likes: <T = FragmentableArray<Like>>(args?: {
     where?: LikeWhereInput;
     orderBy?: LikeOrderByInput;
@@ -3410,6 +3540,15 @@ export interface ReviewSubscription
   product: <T = ProductSubscription>() => T;
   text: () => Promise<AsyncIterator<String>>;
   rating: () => Promise<AsyncIterator<Int>>;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   likes: <T = Promise<AsyncIterator<LikeSubscription>>>(args?: {
     where?: LikeWhereInput;
     orderBy?: LikeOrderByInput;
@@ -3449,6 +3588,15 @@ export interface ReviewNullablePromise
   product: <T = ProductPromise>() => T;
   text: () => Promise<String>;
   rating: () => Promise<Int>;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   likes: <T = FragmentableArray<Like>>(args?: {
     where?: LikeWhereInput;
     orderBy?: LikeOrderByInput;
@@ -3478,6 +3626,36 @@ export interface ReviewNullablePromise
   }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface Comment {
+  id: ID_Output;
+  text: String;
+}
+
+export interface CommentPromise extends Promise<Comment>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  review: <T = ReviewPromise>() => T;
+  text: () => Promise<String>;
+}
+
+export interface CommentSubscription
+  extends Promise<AsyncIterator<Comment>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  review: <T = ReviewSubscription>() => T;
+  text: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommentNullablePromise
+  extends Promise<Comment | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  review: <T = ReviewPromise>() => T;
+  text: () => Promise<String>;
 }
 
 export interface Like {
@@ -3701,36 +3879,6 @@ export interface AggregateCategorySubscription
   extends Promise<AsyncIterator<AggregateCategory>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Comment {
-  id: ID_Output;
-  text: String;
-}
-
-export interface CommentPromise extends Promise<Comment>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
-  review: <T = ReviewPromise>() => T;
-  text: () => Promise<String>;
-}
-
-export interface CommentSubscription
-  extends Promise<AsyncIterator<Comment>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
-  review: <T = ReviewSubscription>() => T;
-  text: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CommentNullablePromise
-  extends Promise<Comment | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
-  review: <T = ReviewPromise>() => T;
-  text: () => Promise<String>;
 }
 
 export interface CommentConnection {

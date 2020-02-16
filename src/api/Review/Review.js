@@ -17,6 +17,11 @@ export default {
       prisma
         .hatesConnection({ where: { review: { id: parent.id } } })
         .aggregate()
+        .count(),
+    commentCount: parent =>
+      prisma
+        .commentsConnection({ where: { review: { id: parent.id } } })
+        .aggregate()
         .count()
   }
 };

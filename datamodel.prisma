@@ -39,6 +39,7 @@ type Review {
   product: Product!
   text: String!
   rating: Int!
+  comments: [Comment!]!
   likes: [Like!]!
   hates: [Hate!]!
   reviewPhotos: [Photo!]
