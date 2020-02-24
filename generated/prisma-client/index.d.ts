@@ -1247,6 +1247,7 @@ export type PhotoWhereUniqueInput = AtLeastOne<{
 
 export type ProductWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  productName?: Maybe<String>;
 }>;
 
 export type ReviewWhereUniqueInput = AtLeastOne<{

@@ -16,7 +16,7 @@ type User {
 type Product {
   id: ID! @id
   user: User
-  productName: String!
+  productName: String! @unique
   category: Category!
   reviews: [Review!]!
   productPhotos: [Photo!]!

@@ -1879,6 +1879,7 @@ input ProductWhereInput {
 
 input ProductWhereUniqueInput {
   id: ID
+  productName: String
 }
 
 type Query {
