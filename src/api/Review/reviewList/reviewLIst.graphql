@@ -1,3 +1,3 @@
 type Query {
-  reviewList(id: String!): [Review!]!
+  reviewList(productName: String!): [Review!]!
 }
