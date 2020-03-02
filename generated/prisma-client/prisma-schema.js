@@ -1922,6 +1922,7 @@ type Query {
 type Review {
   id: ID!
   user: User!
+  title: String
   product: Product!
   text: String!
   rating: Int!
@@ -1942,6 +1943,7 @@ type ReviewConnection {
 input ReviewCreateInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
+  title: String
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -1984,6 +1986,7 @@ input ReviewCreateOneWithoutReviewPhotosInput {
 input ReviewCreateWithoutCommentsInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
+  title: String
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -1995,6 +1998,7 @@ input ReviewCreateWithoutCommentsInput {
 input ReviewCreateWithoutHatesInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
+  title: String
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -2006,6 +2010,7 @@ input ReviewCreateWithoutHatesInput {
 input ReviewCreateWithoutLikesInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
+  title: String
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -2017,6 +2022,7 @@ input ReviewCreateWithoutLikesInput {
 input ReviewCreateWithoutProductInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
+  title: String
   text: String!
   rating: Int!
   comments: CommentCreateManyWithoutReviewInput
@@ -2028,6 +2034,7 @@ input ReviewCreateWithoutProductInput {
 input ReviewCreateWithoutReviewPhotosInput {
   id: ID
   user: UserCreateOneWithoutMyReviewInput!
+  title: String
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -2038,6 +2045,7 @@ input ReviewCreateWithoutReviewPhotosInput {
 
 input ReviewCreateWithoutUserInput {
   id: ID
+  title: String
   product: ProductCreateOneWithoutReviewsInput!
   text: String!
   rating: Int!
@@ -2055,6 +2063,8 @@ type ReviewEdge {
 enum ReviewOrderByInput {
   id_ASC
   id_DESC
+  title_ASC
+  title_DESC
   text_ASC
   text_DESC
   rating_ASC
@@ -2067,6 +2077,7 @@ enum ReviewOrderByInput {
 
 type ReviewPreviousValues {
   id: ID!
+  title: String
   text: String!
   rating: Int!
   createdAt: DateTime!
@@ -2088,6 +2099,20 @@ input ReviewScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   text: String
   text_not: String
   text_in: [String!]
@@ -2151,6 +2176,7 @@ input ReviewSubscriptionWhereInput {
 
 input ReviewUpdateInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
+  title: String
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2161,11 +2187,13 @@ input ReviewUpdateInput {
 }
 
 input ReviewUpdateManyDataInput {
+  title: String
   text: String
   rating: Int
 }
 
 input ReviewUpdateManyMutationInput {
+  title: String
   text: String
   rating: Int
 }
@@ -2235,6 +2263,7 @@ input ReviewUpdateOneWithoutReviewPhotosInput {
 
 input ReviewUpdateWithoutCommentsDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
+  title: String
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2245,6 +2274,7 @@ input ReviewUpdateWithoutCommentsDataInput {
 
 input ReviewUpdateWithoutHatesDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
+  title: String
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2255,6 +2285,7 @@ input ReviewUpdateWithoutHatesDataInput {
 
 input ReviewUpdateWithoutLikesDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
+  title: String
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2265,6 +2296,7 @@ input ReviewUpdateWithoutLikesDataInput {
 
 input ReviewUpdateWithoutProductDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
+  title: String
   text: String
   rating: Int
   comments: CommentUpdateManyWithoutReviewInput
@@ -2275,6 +2307,7 @@ input ReviewUpdateWithoutProductDataInput {
 
 input ReviewUpdateWithoutReviewPhotosDataInput {
   user: UserUpdateOneRequiredWithoutMyReviewInput
+  title: String
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2284,6 +2317,7 @@ input ReviewUpdateWithoutReviewPhotosDataInput {
 }
 
 input ReviewUpdateWithoutUserDataInput {
+  title: String
   product: ProductUpdateOneRequiredWithoutReviewsInput
   text: String
   rating: Int
@@ -2351,6 +2385,20 @@ input ReviewWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   product: ProductWhereInput
   text: String
   text_not: String

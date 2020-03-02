@@ -8,6 +8,7 @@ export default {
     hates: ({ id }) => prisma.review({ id }).hates(),
     reviewPhotos: ({ id }) => prisma.review({ id }).reviewPhotos(),
     product: ({ id }) => prisma.review({ id }).product(),
+    comments: ({ id }) => prisma.review({ id }).comments(),
     likeCount: parent =>
       prisma
         .likesConnection({ where: { review: { id: parent.id } } })

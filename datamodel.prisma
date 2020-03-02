@@ -36,13 +36,14 @@ type Keyword {
 type Review {
   id: ID! @id
   user: User!
+  title: String
   product: Product!
   text: String!
   rating: Int!
   comments: [Comment!]!
   likes: [Like!]!
   hates: [Hate!]!
-  reviewPhotos: [Photo!]
+  reviewPhotos: [Photo!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

@@ -510,6 +510,8 @@ export type ProductOrderByInput =
 export type ReviewOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
   | "text_ASC"
   | "text_DESC"
   | "rating_ASC"
@@ -839,6 +841,20 @@ export interface ReviewWhereInput {
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
   user?: Maybe<UserWhereInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   product?: Maybe<ProductWhereInput>;
   text?: Maybe<String>;
   text_not?: Maybe<String>;
@@ -1325,6 +1341,7 @@ export interface ReviewCreateManyWithoutUserInput {
 
 export interface ReviewCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
+  title?: Maybe<String>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1390,6 +1407,7 @@ export interface ReviewCreateOneWithoutReviewPhotosInput {
 export interface ReviewCreateWithoutReviewPhotosInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
+  title?: Maybe<String>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1441,6 +1459,7 @@ export interface ReviewCreateManyWithoutProductInput {
 export interface ReviewCreateWithoutProductInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
+  title?: Maybe<String>;
   text: String;
   rating: Int;
   comments?: Maybe<CommentCreateManyWithoutReviewInput>;
@@ -1498,6 +1517,7 @@ export interface ReviewCreateOneWithoutLikesInput {
 export interface ReviewCreateWithoutLikesInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
+  title?: Maybe<String>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1578,6 +1598,7 @@ export interface ReviewCreateOneWithoutHatesInput {
 export interface ReviewCreateWithoutHatesInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
+  title?: Maybe<String>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -1702,6 +1723,7 @@ export interface ReviewUpdateWithWhereUniqueWithoutUserInput {
 }
 
 export interface ReviewUpdateWithoutUserDataInput {
+  title?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -1804,6 +1826,7 @@ export interface ReviewUpdateOneWithoutReviewPhotosInput {
 
 export interface ReviewUpdateWithoutReviewPhotosDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  title?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -1896,6 +1919,7 @@ export interface ReviewUpdateWithWhereUniqueWithoutProductInput {
 
 export interface ReviewUpdateWithoutProductDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
@@ -1993,6 +2017,7 @@ export interface ReviewUpdateOneWithoutLikesInput {
 
 export interface ReviewUpdateWithoutLikesDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  title?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2297,6 +2322,7 @@ export interface ReviewUpdateOneWithoutHatesInput {
 
 export interface ReviewUpdateWithoutHatesDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  title?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2448,6 +2474,20 @@ export interface ReviewScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   text?: Maybe<String>;
   text_not?: Maybe<String>;
   text_in?: Maybe<String[] | String>;
@@ -2497,6 +2537,7 @@ export interface ReviewUpdateManyWithWhereNestedInput {
 }
 
 export interface ReviewUpdateManyDataInput {
+  title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
 }
@@ -2626,6 +2667,7 @@ export interface ReviewCreateOneWithoutCommentsInput {
 export interface ReviewCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
+  title?: Maybe<String>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -2649,6 +2691,7 @@ export interface ReviewUpdateOneRequiredWithoutCommentsInput {
 
 export interface ReviewUpdateWithoutCommentsDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  title?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2748,6 +2791,7 @@ export interface ProductUpdateManyMutationInput {
 export interface ReviewCreateInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMyReviewInput;
+  title?: Maybe<String>;
   product: ProductCreateOneWithoutReviewsInput;
   text: String;
   rating: Int;
@@ -2759,6 +2803,7 @@ export interface ReviewCreateInput {
 
 export interface ReviewUpdateInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMyReviewInput>;
+  title?: Maybe<String>;
   product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
@@ -2769,6 +2814,7 @@ export interface ReviewUpdateInput {
 }
 
 export interface ReviewUpdateManyMutationInput {
+  title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Int>;
 }
@@ -3481,6 +3527,7 @@ export interface UserNullablePromise
 
 export interface Review {
   id: ID_Output;
+  title?: String;
   text: String;
   rating: Int;
   createdAt: DateTimeOutput;
@@ -3490,6 +3537,7 @@ export interface Review {
 export interface ReviewPromise extends Promise<Review>, Fragmentable {
   id: () => Promise<ID_Output>;
   user: <T = UserPromise>() => T;
+  title: () => Promise<String>;
   product: <T = ProductPromise>() => T;
   text: () => Promise<String>;
   rating: () => Promise<Int>;
@@ -3538,6 +3586,7 @@ export interface ReviewSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   user: <T = UserSubscription>() => T;
+  title: () => Promise<AsyncIterator<String>>;
   product: <T = ProductSubscription>() => T;
   text: () => Promise<AsyncIterator<String>>;
   rating: () => Promise<AsyncIterator<Int>>;
@@ -3586,6 +3635,7 @@ export interface ReviewNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   user: <T = UserPromise>() => T;
+  title: () => Promise<String>;
   product: <T = ProductPromise>() => T;
   text: () => Promise<String>;
   rating: () => Promise<Int>;
@@ -4837,6 +4887,7 @@ export interface ReviewSubscriptionPayloadSubscription
 
 export interface ReviewPreviousValues {
   id: ID_Output;
+  title?: String;
   text: String;
   rating: Int;
   createdAt: DateTimeOutput;
@@ -4847,6 +4898,7 @@ export interface ReviewPreviousValuesPromise
   extends Promise<ReviewPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
   text: () => Promise<String>;
   rating: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -4857,6 +4909,7 @@ export interface ReviewPreviousValuesSubscription
   extends Promise<AsyncIterator<ReviewPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
   text: () => Promise<AsyncIterator<String>>;
   rating: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
