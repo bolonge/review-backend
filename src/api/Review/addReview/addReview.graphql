@@ -1,5 +1,6 @@
 type Mutation {
   addReview(
+    title: String
     text: String!
     rating: Int!
     productId: String!

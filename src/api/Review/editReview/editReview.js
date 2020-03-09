@@ -7,7 +7,7 @@ export default {
   Mutation: {
     editReview: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const { text, rating, reviewId, action } = args;
+      const { title, text, rating, reviewId, action } = args;
       const { user } = request;
       const review = await prisma.$exists.review({
         id: reviewId,
@@ -17,7 +17,7 @@ export default {
         if (action === EDIT) {
           return await prisma.updateReview({
             where: { id: reviewId },
-            data: { text, rating }
+            data: { title, text, rating }
           });
         } else if (action === DELETE) {
           return await prisma.deleteReview({ id: reviewId });
