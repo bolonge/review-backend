@@ -4,6 +4,6 @@ type Mutation {
     text: String!
     rating: Float!
     productId: String!
-    photos: [String!]
+    photos: [String]
   ): Review!
 }
