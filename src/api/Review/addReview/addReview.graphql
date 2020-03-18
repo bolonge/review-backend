@@ -2,7 +2,7 @@ type Mutation {
   addReview(
     title: String
     text: String!
-    rating: Float!
+    rating: Int!
     productId: String!
     photos: [String]
   ): Review!
