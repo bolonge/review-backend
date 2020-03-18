@@ -29,6 +29,5 @@ export const uploadController = (req, res) => {
     const { location } = f;
     return location;
   });
-
   res.json(locations);
 };

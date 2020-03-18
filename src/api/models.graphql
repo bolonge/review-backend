@@ -40,6 +40,7 @@ type Keyword {
 type Review {
   id: ID!
   user: User
+  title: String
   product: Product!
   text: String!
   rating: Float!
