@@ -43,7 +43,7 @@ type Review {
   title: String
   product: Product!
   text: String!
-  rating: Int!
+  rating: Float!
   comments: [Comment!]!
   likes: [Like!]!
   hates: [Hate!]!

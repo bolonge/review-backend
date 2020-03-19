@@ -6,20 +6,21 @@ export default {
       isAuthenticated(request);
       const { title, text, rating, productId, photos } = args;
       const { user } = request;
-      if (title !== "" && photos !== "") {
-        const review = await prisma.createReview({
-          title,
-          user: {
-            connect: { id: user.id }
-          },
-          product: {
-            connect: {
-              id: productId
-            }
-          },
-          rating,
-          text
-        });
+
+      const review = await prisma.createReview({
+        title,
+        user: {
+          connect: { id: user.id }
+        },
+        product: {
+          connect: {
+            id: productId
+          }
+        },
+        rating,
+        text
+      });
+      if (photos) {
         photos.forEach(
           async photo =>
             await prisma.createPhoto({
@@ -31,20 +32,8 @@ export default {
               }
             })
         );
-      } else {
-        const review = await prisma.createReview({
-          user: {
-            connect: { id: user.id }
-          },
-          product: {
-            connect: {
-              id: productId
-            }
-          },
-          rating,
-          text
-        });
       }
+
       return review;
     }
   }
