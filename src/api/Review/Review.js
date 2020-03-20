@@ -3,6 +3,24 @@ import { prisma } from "../../../generated/prisma-client";
 export default {
   Review: {
     user: ({ id }) => prisma.review({ id }).user(),
+    isLiked: (parent, _, { request }) => {
+      const { user } = request;
+      const { id } = parent;
+      return prisma.$exists.like({
+        AND: [
+          {
+            user: {
+              id: user.id
+            }
+          },
+          {
+            review: {
+              id
+            }
+          }
+        ]
+      });
+    },
     likes: ({ id }) => prisma.review({ id }).likes(),
     hates: ({ id }) => prisma.review({ id }).hates(),
     reviewPhotos: ({ id }) => prisma.review({ id }).reviewPhotos(),
