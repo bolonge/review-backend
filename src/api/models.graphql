@@ -49,6 +49,7 @@ type Review {
   hates: [Hate!]!
   reviewPhotos: [Photo!]!
   isLiked: Boolean!
+  isHated: Boolean!
   likeCount: Int!
   hateCount: Int!
   commentCount: Int!

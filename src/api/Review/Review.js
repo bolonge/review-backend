@@ -21,6 +21,24 @@ export default {
         ]
       });
     },
+    isHated: (parent, _, { request }) => {
+      const { user } = request;
+      const { id } = parent;
+      return prisma.$exists.hate({
+        AND: [
+          {
+            user: {
+              id: user.id
+            }
+          },
+          {
+            review: {
+              id
+            }
+          }
+        ]
+      });
+    },
     likes: ({ id }) => prisma.review({ id }).likes(),
     hates: ({ id }) => prisma.review({ id }).hates(),
     reviewPhotos: ({ id }) => prisma.review({ id }).reviewPhotos(),
