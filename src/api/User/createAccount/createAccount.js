@@ -6,20 +6,17 @@ export default {
     createAccount: async (_, args) => {
       const { nickName, phone, email, password } = args;
       const hashedPassword = await bcrypt.hash(password, 10);
-      const exists = await prisma.$exists.user({
-        OR: [
-          {
-            nickName
-          },
-          { email }
-        ]
-      });
+      const emailExists = await prisma.$exists.user({ email });
+      const nickExists = await prisma.$exists.user({ nickName });
       const blackCheck = await prisma.$exists.blackList({ email });
-      if (exists) {
-        throw Error("This nickName / email is already taken");
+      if (emailExists) {
+        return "emailExists";
+      }
+      if (nickName) {
+        return "nickName";
       }
       if (blackCheck) {
-        throw Error("블랙리스트 회원");
+        return "blackList";
       }
       await prisma.createUser({
         nickName,
