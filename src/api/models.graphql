@@ -5,6 +5,7 @@ type User {
   phone: String!
   email: String!
   password: String!
+  keyword: [Keyword]
   myReview: [Review!]!
   myProduct: [Product!]!
   myLike: [Like!]!

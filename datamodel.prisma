@@ -4,6 +4,7 @@ type User {
   nickName: String! @unique
   phone: String! @unique
   email: String! @unique
+  keyword: [Keyword]
   password: String!
   myReview: [Review!]!
   myProduct: [Product!]!
