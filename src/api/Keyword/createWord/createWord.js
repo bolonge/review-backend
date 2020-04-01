@@ -15,18 +15,19 @@ export default {
           });
           return true;
         } else {
-          const keyword = await prisma.keyword({ search });
-          await prisma.updateKeyword({
-            where: { search },
-            data: { count: keyword.count + 1 }
-          });
+          const pKeyword = await prisma.keyword({ search });
           await prisma.updateUser({
             where: { id: user.id },
             data: { keyword: { connect: { search } } }
           });
+          await prisma.updateKeyword({
+            where: { search },
+            data: { count: pKeyword.count + 1 }
+          });
           return true;
         }
       } catch (error) {
+        console.log(error);
         return false;
       }
     }

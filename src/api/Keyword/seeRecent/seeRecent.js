@@ -4,7 +4,9 @@ export default {
   Query: {
     seeRecent: async (_, __, { request }) => {
       const { user } = request;
-      return await prisma.user({ id: user.id }).keyword();
+      return await prisma
+        .user({ id: user.id })
+        .keyword({ orderBy: "updatedAt_DESC" });
     }
   }
 };
