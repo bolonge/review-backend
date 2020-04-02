@@ -9,17 +9,9 @@ export default {
       try {
         if (!exists) {
           await prisma.createKeyword({ search });
-          await prisma.updateUser({
-            where: { id: user.id },
-            data: { keyword: { connect: { search } } }
-          });
           return true;
         } else {
           const pKeyword = await prisma.keyword({ search });
-          await prisma.updateUser({
-            where: { id: user.id },
-            data: { keyword: { connect: { search } } }
-          });
           await prisma.updateKeyword({
             where: { search },
             data: { count: pKeyword.count + 1 }
