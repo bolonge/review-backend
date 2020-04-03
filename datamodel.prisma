@@ -10,6 +10,7 @@ type User {
   myProduct: [Product!]!
   myLike: [Like!]!
   myHate: [Hate!]!
+  loginSecret: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

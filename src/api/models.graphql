@@ -13,6 +13,7 @@ type User {
   reviewCount: Int!
   productCount: Int!
   isSelf: Boolean!
+  loginSecret: String
   createdAt: String!
   updatedAt: String!
 }

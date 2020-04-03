@@ -12,7 +12,7 @@ export default {
       if (emailExists) {
         return "emailExists";
       }
-      if (nickName) {
+      if (nickExists) {
         return "nickName";
       }
       if (blackCheck) {
@@ -20,7 +20,6 @@ export default {
       }
       await prisma.createUser({
         nickName,
-        phone,
         email,
         password: hashedPassword
       });

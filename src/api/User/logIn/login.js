@@ -5,8 +5,8 @@ import * as bcrypt from "bcryptjs";
 export default {
   Mutation: {
     login: async (_, args) => {
-      const { email, password } = args;
-      const user = await prisma.user({ email });
+      const { nickName, password } = args;
+      const user = await prisma.user({ nickName });
       if (!user) {
         throw Error("이메일이 없습니다");
       }
