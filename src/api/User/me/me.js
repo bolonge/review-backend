@@ -1,4 +1,5 @@
 import { prisma } from "../../../../generated/prisma-client";
+import * as bcrypt from "bcryptjs";
 
 export default {
   Query: {
