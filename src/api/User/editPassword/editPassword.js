@@ -8,10 +8,15 @@ export default {
       const { password } = args;
       const { user } = request;
       const hashedPassword = await bcrypt.hash(password, 10);
-      return prisma.updateUser({
-        where: { id: user.id },
-        data: { password: hashedPassword }
-      });
+      try {
+        await prisma.updateUser({
+          where: { id: user.id },
+          data: { password: hashedPassword }
+        });
+        return true;
+      } catch (error) {
+        return false;
+      }
     }
   }
 };
