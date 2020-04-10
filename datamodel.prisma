@@ -1,6 +1,9 @@
 type User {
   id: ID! @id
   avatar: String
+    @default(
+      value: "https://review-photo.s3.ap-northeast-2.amazonaws.com/Group+39.png"
+    )
   nickName: String! @unique
   phone: String
   email: String! @unique

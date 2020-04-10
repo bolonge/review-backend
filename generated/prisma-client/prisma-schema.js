@@ -2733,7 +2733,7 @@ type User {
   id: ID!
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   keyword(where: KeywordWhereInput, orderBy: KeywordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Keyword!]
   password: String!
@@ -2756,7 +2756,7 @@ input UserCreateInput {
   id: ID
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   keyword: KeywordCreateManyInput
   password: String!
@@ -2796,7 +2796,7 @@ input UserCreateWithoutMyHateInput {
   id: ID
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   keyword: KeywordCreateManyInput
   password: String!
@@ -2810,7 +2810,7 @@ input UserCreateWithoutMyLikeInput {
   id: ID
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   keyword: KeywordCreateManyInput
   password: String!
@@ -2824,7 +2824,7 @@ input UserCreateWithoutMyProductInput {
   id: ID
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   keyword: KeywordCreateManyInput
   password: String!
@@ -2838,7 +2838,7 @@ input UserCreateWithoutMyReviewInput {
   id: ID
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   keyword: KeywordCreateManyInput
   password: String!
@@ -2878,7 +2878,7 @@ type UserPreviousValues {
   id: ID!
   avatar: String
   nickName: String!
-  phone: String!
+  phone: String
   email: String!
   password: String!
   loginSecret: String
@@ -3197,7 +3197,6 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   nickName: String
-  phone: String
   email: String
 }
 `

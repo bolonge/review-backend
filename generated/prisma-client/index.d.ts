@@ -1296,7 +1296,6 @@ export type SuperCategoryWhereUniqueInput = AtLeastOne<{
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   nickName?: Maybe<String>;
-  phone?: Maybe<String>;
   email?: Maybe<String>;
 }>;
 
@@ -1345,7 +1344,7 @@ export interface UserCreateWithoutMyProductInput {
   id?: Maybe<ID_Input>;
   avatar?: Maybe<String>;
   nickName: String;
-  phone: String;
+  phone?: Maybe<String>;
   email: String;
   keyword?: Maybe<KeywordCreateManyInput>;
   password: String;
@@ -1457,7 +1456,7 @@ export interface UserCreateWithoutMyReviewInput {
   id?: Maybe<ID_Input>;
   avatar?: Maybe<String>;
   nickName: String;
-  phone: String;
+  phone?: Maybe<String>;
   email: String;
   keyword?: Maybe<KeywordCreateManyInput>;
   password: String;
@@ -1524,7 +1523,7 @@ export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   avatar?: Maybe<String>;
   nickName: String;
-  phone: String;
+  phone?: Maybe<String>;
   email: String;
   keyword?: Maybe<KeywordCreateManyInput>;
   password: String;
@@ -1581,7 +1580,7 @@ export interface UserCreateWithoutMyHateInput {
   id?: Maybe<ID_Input>;
   avatar?: Maybe<String>;
   nickName: String;
-  phone: String;
+  phone?: Maybe<String>;
   email: String;
   keyword?: Maybe<KeywordCreateManyInput>;
   password: String;
@@ -1664,7 +1663,7 @@ export interface UserCreateWithoutMyLikeInput {
   id?: Maybe<ID_Input>;
   avatar?: Maybe<String>;
   nickName: String;
-  phone: String;
+  phone?: Maybe<String>;
   email: String;
   keyword?: Maybe<KeywordCreateManyInput>;
   password: String;
@@ -3525,7 +3524,7 @@ export interface User {
   id: ID_Output;
   avatar?: String;
   nickName: String;
-  phone: String;
+  phone?: String;
   email: String;
   password: String;
   loginSecret?: String;
@@ -5178,7 +5177,7 @@ export interface UserPreviousValues {
   id: ID_Output;
   avatar?: String;
   nickName: String;
-  phone: String;
+  phone?: String;
   email: String;
   password: String;
   loginSecret?: String;
