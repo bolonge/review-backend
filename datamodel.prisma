@@ -9,10 +9,11 @@ type User {
   email: String! @unique
   keyword: [Keyword]
   password: String!
-  myReview: [Review!]!
-  myProduct: [Product!]!
-  myLike: [Like!]!
-  myHate: [Hate!]!
+  myReview: [Review!]! @relation(name: "ReviewsOfUser", onDelete: CASCADE)
+  myProduct: [Product!]! @relation(name: "ProductsOfUser", onDelete: CASCADE)
+  myComment: [Comment!]! @relation(name: "CommentsOfUser", onDelete: CASCADE)
+  myLike: [Like!]! @relation(name: "LikesOfUser", onDelete: CASCADE)
+  myHate: [Hate!]! @relation(name: "HatesOfUser", onDelete: CASCADE)
   loginSecret: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -20,11 +21,11 @@ type User {
 
 type Product {
   id: ID! @id
-  user: User
+  user: User @relation(name: "ProductsOfUser")
   productName: String! @unique
-  category: Category!
-  reviews: [Review!]!
-  productPhotos: [Photo!]!
+  category: Category! @relation(name: "ProductOfCategory")
+  reviews: [Review!]! @relation(name: "ReviewsOfProduct", onDelete: CASCADE)
+  productPhotos: [Photo!]! @relation(name: "PhotosOfProduct", onDelete: CASCADE)
   isPublished: Boolean @default(value: false)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
@@ -40,38 +41,38 @@ type Keyword {
 
 type Review {
   id: ID! @id
-  user: User!
+  user: User! @relation(name: "ReviewsOfUser")
   title: String
-  product: Product!
   text: String!
   rating: Float!
-  comments: [Comment!]!
-  likes: [Like!]!
-  hates: [Hate!]!
-  reviewPhotos: [Photo!]!
+  product: Product! @relation(name: "ReviewsOfProduct")
+  comments: [Comment!]! @relation(name: "CommentsOfReview", onDelete: CASCADE)
+  likes: [Like!]! @relation(name: "LikesOfReview", onDelete: CASCADE)
+  hates: [Hate!]! @relation(name: "HatesOfReview", onDelete: CASCADE)
+  reviewPhotos: [Photo!]! @relation(name: "PhotosOfReview", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
 type Comment {
   id: ID! @id
-  user: User!
-  review: Review!
+  user: User! @relation(name: "CommentsOfUser")
+  review: Review! @relation(name: "CommentsOfReview")
   text: String!
 }
 
 type Like {
   id: ID! @id
-  user: User
-  review: Review
+  user: User @relation(name: "LikesOfUser")
+  review: Review @relation(name: "LikesOfReview")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
 type Hate {
   id: ID! @id
-  user: User
-  review: Review
+  user: User @relation(name: "HatesOfUser")
+  review: Review @relation(name: "HatesOfReview")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -79,8 +80,8 @@ type Hate {
 type Photo {
   id: ID! @id
   url: String!
-  review: Review
-  product: Product
+  review: Review @relation(name: "PhotosOfReview")
+  product: Product @relation(name: "PhotosOfProduct")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -88,8 +89,8 @@ type Photo {
 type Category {
   id: ID! @id
   categoryName: String!
-  product: [Product]
-  superCategory: SuperCategory
+  product: [Product] @relation(name: "ProductOfCategory", onDelete: CASCADE)
+  superCategory: SuperCategory @relation(name: "CategoriesOfSuperCategory")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -98,8 +99,17 @@ type SuperCategory {
   id: ID! @id
   superCategoryName: String!
   category: [Category]
+    @relation(name: "CategoriesOfSuperCategory", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Report {
+  id: ID! @id
+  user: User!
+  review: Review
+  comment: Comment
+  why: String!
 }
 
 type BlackList {

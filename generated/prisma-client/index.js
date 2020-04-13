@@ -45,6 +45,10 @@ var models = [
     embedded: false
   },
   {
+    name: "Report",
+    embedded: false
+  },
+  {
     name: "BlackList",
     embedded: false
   }
