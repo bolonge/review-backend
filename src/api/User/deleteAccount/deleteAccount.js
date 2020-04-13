@@ -3,7 +3,7 @@ import { isAuthenticated } from "../../../middlewares";
 
 export default {
   Mutation: {
-    deleteAccount: async (_, __, { request }) => {
+    deleteAccount: async (_, __, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const { user } = request;
       try {
@@ -13,6 +13,6 @@ export default {
         console.log(error);
         return false;
       }
-    }
-  }
+    },
+  },
 };

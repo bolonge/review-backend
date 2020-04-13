@@ -3,7 +3,7 @@ import { prisma } from "../../../../generated/prisma-client";
 
 export default {
   Mutation: {
-    delComment: async (_, args, { request }) => {
+    delComment: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const { id } = args;
       const { user } = request;
@@ -18,6 +18,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };

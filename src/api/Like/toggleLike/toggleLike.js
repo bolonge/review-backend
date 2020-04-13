@@ -3,7 +3,7 @@ import { prisma } from "../../../../generated/prisma-client";
 
 export default {
   Mutation: {
-    toggleLike: async (_, args, { request }) => {
+    toggleLike: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const { reviewId } = args;
       const { user } = request;
@@ -11,15 +11,15 @@ export default {
         AND: [
           {
             user: {
-              id: user.id
-            }
+              id: user.id,
+            },
           },
           {
             review: {
-              id: reviewId
-            }
-          }
-        ]
+              id: reviewId,
+            },
+          },
+        ],
       };
       try {
         const existingLike = await prisma.$exists.like(filterOptions);
@@ -30,20 +30,20 @@ export default {
           await prisma.createLike({
             user: {
               connect: {
-                id: user.id
-              }
+                id: user.id,
+              },
             },
             review: {
               connect: {
-                id: reviewId
-              }
-            }
+                id: reviewId,
+              },
+            },
           });
         }
         return true;
       } catch (e) {
         return false;
       }
-    }
-  }
+    },
+  },
 };

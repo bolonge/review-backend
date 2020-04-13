@@ -4,7 +4,7 @@ import * as bcrypt from "bcryptjs";
 
 export default {
   Mutation: {
-    changeAvatar: async (_, args) => {
+    changeAvatar: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const { email, password } = args;
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -13,7 +13,7 @@ export default {
         if (comfirmCheck === "CONFIRM") {
           await prisma.updateUser({
             where: { email },
-            data: { password: hashedPassword }
+            data: { password: hashedPassword },
           });
           return true;
         } else {
@@ -23,6 +23,6 @@ export default {
         console.log(error);
         return false;
       }
-    }
-  }
+    },
+  },
 };
