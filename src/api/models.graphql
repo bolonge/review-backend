@@ -108,6 +108,14 @@ type SuperCategory {
   updatedAt: String!
 }
 
+type Report {
+  id: ID!
+  user: User!
+  review: Review
+  comment: Comment
+  why: String!
+}
+
 type BlackList {
   id: ID!
   email: String!

@@ -532,7 +532,11 @@ export type BlackListOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "email_ASC"
-  | "email_DESC";
+  | "email_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type ProductOrderByInput =
   | "id_ASC"
@@ -614,7 +618,15 @@ export type CategoryOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type ReportOrderByInput = "id_ASC" | "id_DESC" | "why_ASC" | "why_DESC";
+export type ReportOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "why_ASC"
+  | "why_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type SuperCategoryOrderByInput =
   | "id_ASC"
@@ -681,6 +693,22 @@ export interface BlackListWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<BlackListWhereInput[] | BlackListWhereInput>;
   OR?: Maybe<BlackListWhereInput[] | BlackListWhereInput>;
   NOT?: Maybe<BlackListWhereInput[] | BlackListWhereInput>;
@@ -1365,6 +1393,22 @@ export interface ReportWhereInput {
   why_not_starts_with?: Maybe<String>;
   why_ends_with?: Maybe<String>;
   why_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<ReportWhereInput[] | ReportWhereInput>;
   OR?: Maybe<ReportWhereInput[] | ReportWhereInput>;
   NOT?: Maybe<ReportWhereInput[] | ReportWhereInput>;
@@ -3542,11 +3586,15 @@ export interface NodeNode {
 export interface BlackList {
   id: ID_Output;
   email: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface BlackListPromise extends Promise<BlackList>, Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface BlackListSubscription
@@ -3554,6 +3602,8 @@ export interface BlackListSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface BlackListNullablePromise
@@ -3561,6 +3611,8 @@ export interface BlackListNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface BlackListConnection {
@@ -4784,6 +4836,8 @@ export interface AggregateProductSubscription
 export interface Report {
   id: ID_Output;
   why: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface ReportPromise extends Promise<Report>, Fragmentable {
@@ -4792,6 +4846,8 @@ export interface ReportPromise extends Promise<Report>, Fragmentable {
   review: <T = ReviewPromise>() => T;
   comment: <T = CommentPromise>() => T;
   why: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface ReportSubscription
@@ -4802,6 +4858,8 @@ export interface ReportSubscription
   review: <T = ReviewSubscription>() => T;
   comment: <T = CommentSubscription>() => T;
   why: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface ReportNullablePromise
@@ -4812,6 +4870,8 @@ export interface ReportNullablePromise
   review: <T = ReviewPromise>() => T;
   comment: <T = CommentPromise>() => T;
   why: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface ReportConnection {
@@ -5076,6 +5136,8 @@ export interface BlackListSubscriptionPayloadSubscription
 export interface BlackListPreviousValues {
   id: ID_Output;
   email: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface BlackListPreviousValuesPromise
@@ -5083,6 +5145,8 @@ export interface BlackListPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   email: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface BlackListPreviousValuesSubscription
@@ -5090,6 +5154,8 @@ export interface BlackListPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface CategorySubscriptionPayload {
@@ -5464,6 +5530,8 @@ export interface ReportSubscriptionPayloadSubscription
 export interface ReportPreviousValues {
   id: ID_Output;
   why: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
 export interface ReportPreviousValuesPromise
@@ -5471,6 +5539,8 @@ export interface ReportPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   why: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface ReportPreviousValuesSubscription
@@ -5478,6 +5548,8 @@ export interface ReportPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   why: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface ReviewSubscriptionPayload {
@@ -5663,16 +5735,6 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -5681,6 +5743,16 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /*
 The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).

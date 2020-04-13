@@ -58,6 +58,8 @@ type BatchPayload {
 type BlackList {
   id: ID!
   email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type BlackListConnection {
@@ -81,11 +83,17 @@ enum BlackListOrderByInput {
   id_DESC
   email_ASC
   email_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type BlackListPreviousValues {
   id: ID!
   email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type BlackListSubscriptionPayload {
@@ -143,6 +151,22 @@ input BlackListWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [BlackListWhereInput!]
   OR: [BlackListWhereInput!]
   NOT: [BlackListWhereInput!]
@@ -2103,6 +2127,8 @@ type Report {
   review: Review
   comment: Comment
   why: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ReportConnection {
@@ -2129,11 +2155,17 @@ enum ReportOrderByInput {
   id_DESC
   why_ASC
   why_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ReportPreviousValues {
   id: ID!
   why: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ReportSubscriptionPayload {
@@ -2197,6 +2229,22 @@ input ReportWhereInput {
   why_not_starts_with: String
   why_ends_with: String
   why_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ReportWhereInput!]
   OR: [ReportWhereInput!]
   NOT: [ReportWhereInput!]

@@ -110,9 +110,13 @@ type Report {
   review: Review
   comment: Comment
   why: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type BlackList {
   id: ID! @id
   email: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
