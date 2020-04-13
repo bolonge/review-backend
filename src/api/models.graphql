@@ -114,6 +114,8 @@ type Report {
   review: Review
   comment: Comment
   why: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type BlackList {
