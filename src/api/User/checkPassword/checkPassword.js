@@ -5,7 +5,7 @@ export default {
     checkPassword: async (_, args, { request }) => {
       const { password } = args;
       const { user } = request;
-      return await bcrypt.compare(password, user.password);
-    }
-  }
+      return bcrypt.compare(password, user.password);
+    },
+  },
 };

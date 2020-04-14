@@ -11,12 +11,12 @@ export default {
       try {
         await prisma.updateUser({
           where: { id: user.id },
-          data: { password: hashedPassword }
+          data: { password: hashedPassword },
         });
         return true;
       } catch (error) {
         return false;
       }
-    }
-  }
+    },
+  },
 };

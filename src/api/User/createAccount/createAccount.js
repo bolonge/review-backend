@@ -18,12 +18,13 @@ export default {
       if (blackCheck) {
         return "blackList";
       }
+
       await prisma.createUser({
         nickName,
         email,
-        password: hashedPassword
+        password: hashedPassword,
       });
       return true;
-    }
-  }
+    },
+  },
 };

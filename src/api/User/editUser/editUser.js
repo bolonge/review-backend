@@ -4,7 +4,6 @@ import * as bcrypt from "bcryptjs";
 export default {
   Mutation: {
     editUser: async (_, args, { request, isAuthenticated }) => {
-      isAuthenticated(request);
       const { nickName, email } = args;
       const { user } = request;
       const exists = await prisma.user({ email });
@@ -13,8 +12,8 @@ export default {
       }
       return prisma.updateUser({
         where: { id: user.id },
-        data: { nickName, email }
+        data: { nickName, email },
       });
-    }
-  }
+    },
+  },
 };

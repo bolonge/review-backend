@@ -10,7 +10,7 @@ type User {
   keyword: [Keyword]
   password: String!
   myReview: [Review!]! @relation(name: "ReviewsOfUser", onDelete: CASCADE)
-  myProduct: [Product!]! @relation(name: "ProductsOfUser", onDelete: CASCADE)
+  myProduct: [Product!]! @relation(name: "ProductsOfUser")
   myComment: [Comment!]! @relation(name: "CommentsOfUser", onDelete: CASCADE)
   myLike: [Like!]! @relation(name: "LikesOfUser", onDelete: CASCADE)
   myHate: [Hate!]! @relation(name: "HatesOfUser", onDelete: CASCADE)

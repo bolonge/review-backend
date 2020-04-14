@@ -5,7 +5,7 @@ import aws from "aws-sdk";
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_KEY,
   secretAccessKey: process.env.AWS_SECRET,
-  region: "ap-northeast-2"
+  region: "ap-northeast-2",
 });
 
 const upload = multer({
@@ -17,15 +17,15 @@ const upload = multer({
     },
     key: function(req, file, cb) {
       cb(null, Date.now().toString());
-    }
-  })
+    },
+  }),
 });
 
 export const uploadMiddleware = upload.array("files", 3);
 
 export const uploadController = (req, res) => {
   const { files } = req;
-  const locations = files.map(f => {
+  const locations = files.map((f) => {
     const { location } = f;
     return location;
   });

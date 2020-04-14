@@ -12,6 +12,7 @@ export default {
           throw Error("이메일이 없습니다");
         }
         const passwordMatch = await bcrypt.compare(password, user.password);
+
         if (!passwordMatch) {
           throw Error("비밀번호 오류");
         }
@@ -19,7 +20,7 @@ export default {
       } else if (type === "NICKNAME") {
         const user = await prisma.user({ nickName: NameOrEmail });
         if (!user) {
-          throw Error("이메일이 없습니다");
+          throw Error("유저이름이 없습니다");
         }
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
@@ -27,6 +28,6 @@ export default {
         }
         return generateToken(user.id);
       }
-    }
-  }
+    },
+  },
 };
