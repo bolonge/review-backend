@@ -6,10 +6,15 @@ export default {
       isAuthenticated(request);
       const { avatar } = args;
       const { user } = request;
-      return await prisma.updateUser({
-        where: { id: user.id },
-        data: { avatar },
-      });
+      try {
+        await prisma.updateUser({
+          where: { id: user.id },
+          data: { avatar },
+        });
+        return true;
+      } catch (error) {
+        return false;
+      }
     },
   },
 };
