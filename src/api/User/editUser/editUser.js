@@ -7,14 +7,24 @@ export default {
       isAuthenticated(request);
       const { nickName, email } = args;
       const { user } = request;
-      const exists = await prisma.user({ email });
-      if (exists) {
-        return Error("이메일중복");
+      if (email === user.email && nickName !== user.nickName) {
+        return await prisma.updateUser({
+          where: { id: user.id },
+          data: { nickName },
+        });
+      } else if (email !== user.email && nickName === user.nickName) {
+        return await prisma.updateUser({
+          where: { id: user.id },
+          data: { email },
+        });
+      } else if (email !== user.email && nickName !== user.nickName) {
+        return await prisma.updateUser({
+          where: { id: user.id },
+          data: { email, nickName },
+        });
+      } else {
+        return await prisma.user({ id: user.id });
       }
-      return await prisma.updateUser({
-        where: { id: user.id },
-        data: { nickName, email },
-      });
     },
   },
 };
