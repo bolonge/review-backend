@@ -23,8 +23,8 @@ type Product {
   user: User
   productName: String!
   category: Category!
-  reviews: [Review!]!
-  productPhotos: [Photo!]!
+  reviews: [Review]
+  productPhotos: [Photo]
   isPublished: Boolean!
   reviewCount: Int!
   createdAt: String!
@@ -46,10 +46,10 @@ type Review {
   product: Product!
   text: String!
   rating: Float!
-  comments: [Comment!]!
+  comments: [Comment]
   likes: [Like!]!
   hates: [Hate!]!
-  reviewPhotos: [Photo!]!
+  reviewPhotos: [Photo]
   isLiked: Boolean!
   isHated: Boolean!
   likeCount: Int!
@@ -121,4 +121,6 @@ type Report {
 type BlackList {
   id: ID!
   email: String!
+  createdAt: String!
+  updatedAt: String!
 }

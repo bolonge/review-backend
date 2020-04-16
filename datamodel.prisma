@@ -23,7 +23,7 @@ type Product {
   id: ID! @id
   user: User @relation(name: "ProductsOfUser")
   productName: String! @unique
-  category: Category! @relation(name: "ProductOfCategory")
+  category: Category
   reviews: [Review] @relation(name: "ReviewsOfProduct", onDelete: CASCADE)
   productPhotos: [Photo] @relation(name: "PhotosOfProduct", onDelete: CASCADE)
   isPublished: Boolean @default(value: false)
@@ -45,7 +45,7 @@ type Review {
   title: String
   text: String!
   rating: Float!
-  product: Product! @relation(name: "ReviewsOfProduct")
+  product: Product @relation(name: "ReviewsOfProduct")
   comments: [Comment] @relation(name: "CommentsOfReview", onDelete: CASCADE)
   likes: [Like!]! @relation(name: "LikesOfReview", onDelete: CASCADE)
   hates: [Hate!]! @relation(name: "HatesOfReview", onDelete: CASCADE)
@@ -89,8 +89,8 @@ type Photo {
 type Category {
   id: ID! @id
   categoryName: String!
-  product: [Product] @relation(name: "ProductOfCategory", onDelete: CASCADE)
-  superCategory: SuperCategory @relation(name: "CategoriesOfSuperCategory")
+  product: [Product]
+  superCategory: SuperCategory
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -99,7 +99,6 @@ type SuperCategory {
   id: ID! @id
   superCategoryName: String!
   category: [Category]
-    @relation(name: "CategoriesOfSuperCategory", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

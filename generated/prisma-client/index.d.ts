@@ -1505,7 +1505,7 @@ export interface ReviewCreateWithoutUserInput {
   title?: Maybe<String>;
   text: String;
   rating: Float;
-  product: ProductCreateOneWithoutReviewsInput;
+  product?: Maybe<ProductCreateOneWithoutReviewsInput>;
   comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
@@ -1521,7 +1521,7 @@ export interface ProductCreateWithoutReviewsInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
-  category: CategoryCreateOneWithoutProductInput;
+  category?: Maybe<CategoryCreateOneWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
 }
@@ -1571,7 +1571,7 @@ export interface ReviewCreateWithoutReviewPhotosInput {
   title?: Maybe<String>;
   text: String;
   rating: Float;
-  product: ProductCreateOneWithoutReviewsInput;
+  product?: Maybe<ProductCreateOneWithoutReviewsInput>;
   comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
@@ -1607,7 +1607,7 @@ export interface ProductCreateManyWithoutUserInput {
 export interface ProductCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   productName: String;
-  category: CategoryCreateOneWithoutProductInput;
+  category?: Maybe<CategoryCreateOneWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
@@ -1686,7 +1686,7 @@ export interface ReviewCreateWithoutLikesInput {
   title?: Maybe<String>;
   text: String;
   rating: Float;
-  product: ProductCreateOneWithoutReviewsInput;
+  product?: Maybe<ProductCreateOneWithoutReviewsInput>;
   comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
@@ -1746,7 +1746,7 @@ export interface ReviewCreateWithoutCommentsInput {
   title?: Maybe<String>;
   text: String;
   rating: Float;
-  product: ProductCreateOneWithoutReviewsInput;
+  product?: Maybe<ProductCreateOneWithoutReviewsInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
@@ -1803,7 +1803,7 @@ export interface ReviewCreateWithoutHatesInput {
   title?: Maybe<String>;
   text: String;
   rating: Float;
-  product: ProductCreateOneWithoutReviewsInput;
+  product?: Maybe<ProductCreateOneWithoutReviewsInput>;
   comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoCreateManyWithoutReviewInput>;
@@ -1831,7 +1831,7 @@ export interface ProductCreateWithoutProductPhotosInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
-  category: CategoryCreateOneWithoutProductInput;
+  category?: Maybe<CategoryCreateOneWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
 }
@@ -2036,32 +2036,36 @@ export interface ReviewUpdateWithoutUserDataInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
 }
 
-export interface ProductUpdateOneRequiredWithoutReviewsInput {
+export interface ProductUpdateOneWithoutReviewsInput {
   create?: Maybe<ProductCreateWithoutReviewsInput>;
   update?: Maybe<ProductUpdateWithoutReviewsDataInput>;
   upsert?: Maybe<ProductUpsertWithoutReviewsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
   connect?: Maybe<ProductWhereUniqueInput>;
 }
 
 export interface ProductUpdateWithoutReviewsDataInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
+  category?: Maybe<CategoryUpdateOneWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
 }
 
-export interface CategoryUpdateOneRequiredWithoutProductInput {
+export interface CategoryUpdateOneWithoutProductInput {
   create?: Maybe<CategoryCreateWithoutProductInput>;
   update?: Maybe<CategoryUpdateWithoutProductDataInput>;
   upsert?: Maybe<CategoryUpsertWithoutProductInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
   connect?: Maybe<CategoryWhereUniqueInput>;
 }
 
@@ -2139,7 +2143,7 @@ export interface ReviewUpdateWithoutReviewPhotosDataInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
@@ -2196,7 +2200,7 @@ export interface ProductUpdateWithWhereUniqueWithoutUserInput {
 
 export interface ProductUpdateWithoutUserDataInput {
   productName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
+  category?: Maybe<CategoryUpdateOneWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
@@ -2335,7 +2339,7 @@ export interface ReviewUpdateWithoutLikesDataInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
@@ -2435,7 +2439,7 @@ export interface ReviewUpdateWithoutCommentsDataInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
@@ -2530,7 +2534,7 @@ export interface ReviewUpdateWithoutHatesDataInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   reviewPhotos?: Maybe<PhotoUpdateManyWithoutReviewInput>;
@@ -2580,7 +2584,7 @@ export interface ProductUpdateOneWithoutProductPhotosInput {
 export interface ProductUpdateWithoutProductPhotosDataInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
+  category?: Maybe<CategoryUpdateOneWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
 }
@@ -3105,7 +3109,7 @@ export interface ProductCreateInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
-  category: CategoryCreateOneWithoutProductInput;
+  category?: Maybe<CategoryCreateOneWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
@@ -3114,7 +3118,7 @@ export interface ProductCreateInput {
 export interface ProductUpdateInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
-  category?: Maybe<CategoryUpdateOneRequiredWithoutProductInput>;
+  category?: Maybe<CategoryUpdateOneWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
@@ -3165,7 +3169,7 @@ export interface ReviewCreateInput {
   title?: Maybe<String>;
   text: String;
   rating: Float;
-  product: ProductCreateOneWithoutReviewsInput;
+  product?: Maybe<ProductCreateOneWithoutReviewsInput>;
   comments?: Maybe<CommentCreateManyWithoutReviewInput>;
   likes?: Maybe<LikeCreateManyWithoutReviewInput>;
   hates?: Maybe<HateCreateManyWithoutReviewInput>;
@@ -3225,7 +3229,7 @@ export interface ReviewUpdateDataInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;
@@ -3266,7 +3270,7 @@ export interface ReviewUpdateInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
   rating?: Maybe<Float>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+  product?: Maybe<ProductUpdateOneWithoutReviewsInput>;
   comments?: Maybe<CommentUpdateManyWithoutReviewInput>;
   likes?: Maybe<LikeUpdateManyWithoutReviewInput>;
   hates?: Maybe<HateUpdateManyWithoutReviewInput>;

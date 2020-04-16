@@ -342,10 +342,12 @@ input CategoryUpdateManyWithWhereNestedInput {
   data: CategoryUpdateManyDataInput!
 }
 
-input CategoryUpdateOneRequiredWithoutProductInput {
+input CategoryUpdateOneWithoutProductInput {
   create: CategoryCreateWithoutProductInput
   update: CategoryUpdateWithoutProductDataInput
   upsert: CategoryUpsertWithoutProductInput
+  delete: Boolean
+  disconnect: Boolean
   connect: CategoryWhereUniqueInput
 }
 
@@ -1712,7 +1714,7 @@ type Product {
   id: ID!
   user: User
   productName: String!
-  category: Category!
+  category: Category
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   productPhotos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
   isPublished: Boolean
@@ -1730,7 +1732,7 @@ input ProductCreateInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
   productName: String!
-  category: CategoryCreateOneWithoutProductInput!
+  category: CategoryCreateOneWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
@@ -1769,7 +1771,7 @@ input ProductCreateWithoutProductPhotosInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
   productName: String!
-  category: CategoryCreateOneWithoutProductInput!
+  category: CategoryCreateOneWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1778,7 +1780,7 @@ input ProductCreateWithoutReviewsInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
   productName: String!
-  category: CategoryCreateOneWithoutProductInput!
+  category: CategoryCreateOneWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1786,7 +1788,7 @@ input ProductCreateWithoutReviewsInput {
 input ProductCreateWithoutUserInput {
   id: ID
   productName: String!
-  category: CategoryCreateOneWithoutProductInput!
+  category: CategoryCreateOneWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
@@ -1891,7 +1893,7 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
-  category: CategoryUpdateOneRequiredWithoutProductInput
+  category: CategoryUpdateOneWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
@@ -1936,17 +1938,19 @@ input ProductUpdateManyWithWhereNestedInput {
   data: ProductUpdateManyDataInput!
 }
 
-input ProductUpdateOneRequiredWithoutReviewsInput {
-  create: ProductCreateWithoutReviewsInput
-  update: ProductUpdateWithoutReviewsDataInput
-  upsert: ProductUpsertWithoutReviewsInput
-  connect: ProductWhereUniqueInput
-}
-
 input ProductUpdateOneWithoutProductPhotosInput {
   create: ProductCreateWithoutProductPhotosInput
   update: ProductUpdateWithoutProductPhotosDataInput
   upsert: ProductUpsertWithoutProductPhotosInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ProductWhereUniqueInput
+}
+
+input ProductUpdateOneWithoutReviewsInput {
+  create: ProductCreateWithoutReviewsInput
+  update: ProductUpdateWithoutReviewsDataInput
+  upsert: ProductUpsertWithoutReviewsInput
   delete: Boolean
   disconnect: Boolean
   connect: ProductWhereUniqueInput
@@ -1963,7 +1967,7 @@ input ProductUpdateWithoutCategoryDataInput {
 input ProductUpdateWithoutProductPhotosDataInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
-  category: CategoryUpdateOneRequiredWithoutProductInput
+  category: CategoryUpdateOneWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1971,14 +1975,14 @@ input ProductUpdateWithoutProductPhotosDataInput {
 input ProductUpdateWithoutReviewsDataInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
-  category: CategoryUpdateOneRequiredWithoutProductInput
+  category: CategoryUpdateOneWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
 }
 
 input ProductUpdateWithoutUserDataInput {
   productName: String
-  category: CategoryUpdateOneRequiredWithoutProductInput
+  category: CategoryUpdateOneWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
@@ -2260,7 +2264,7 @@ type Review {
   title: String
   text: String!
   rating: Float!
-  product: Product!
+  product: Product
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like!]
   hates(where: HateWhereInput, orderBy: HateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hate!]
@@ -2281,7 +2285,7 @@ input ReviewCreateInput {
   title: String
   text: String!
   rating: Float!
-  product: ProductCreateOneWithoutReviewsInput!
+  product: ProductCreateOneWithoutReviewsInput
   comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
@@ -2329,7 +2333,7 @@ input ReviewCreateWithoutCommentsInput {
   title: String
   text: String!
   rating: Float!
-  product: ProductCreateOneWithoutReviewsInput!
+  product: ProductCreateOneWithoutReviewsInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
@@ -2341,7 +2345,7 @@ input ReviewCreateWithoutHatesInput {
   title: String
   text: String!
   rating: Float!
-  product: ProductCreateOneWithoutReviewsInput!
+  product: ProductCreateOneWithoutReviewsInput
   comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
@@ -2353,7 +2357,7 @@ input ReviewCreateWithoutLikesInput {
   title: String
   text: String!
   rating: Float!
-  product: ProductCreateOneWithoutReviewsInput!
+  product: ProductCreateOneWithoutReviewsInput
   comments: CommentCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
   reviewPhotos: PhotoCreateManyWithoutReviewInput
@@ -2377,7 +2381,7 @@ input ReviewCreateWithoutReviewPhotosInput {
   title: String
   text: String!
   rating: Float!
-  product: ProductCreateOneWithoutReviewsInput!
+  product: ProductCreateOneWithoutReviewsInput
   comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
@@ -2388,7 +2392,7 @@ input ReviewCreateWithoutUserInput {
   title: String
   text: String!
   rating: Float!
-  product: ProductCreateOneWithoutReviewsInput!
+  product: ProductCreateOneWithoutReviewsInput
   comments: CommentCreateManyWithoutReviewInput
   likes: LikeCreateManyWithoutReviewInput
   hates: HateCreateManyWithoutReviewInput
@@ -2519,7 +2523,7 @@ input ReviewUpdateDataInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
@@ -2531,7 +2535,7 @@ input ReviewUpdateInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
@@ -2627,7 +2631,7 @@ input ReviewUpdateWithoutCommentsDataInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
@@ -2638,7 +2642,7 @@ input ReviewUpdateWithoutHatesDataInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
@@ -2649,7 +2653,7 @@ input ReviewUpdateWithoutLikesDataInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   comments: CommentUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
   reviewPhotos: PhotoUpdateManyWithoutReviewInput
@@ -2671,7 +2675,7 @@ input ReviewUpdateWithoutReviewPhotosDataInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
@@ -2681,7 +2685,7 @@ input ReviewUpdateWithoutUserDataInput {
   title: String
   text: String
   rating: Float
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+  product: ProductUpdateOneWithoutReviewsInput
   comments: CommentUpdateManyWithoutReviewInput
   likes: LikeUpdateManyWithoutReviewInput
   hates: HateUpdateManyWithoutReviewInput
