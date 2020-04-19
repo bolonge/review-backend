@@ -13,6 +13,11 @@ export default {
               category: {
                 categoryName_contains: args.term
               }
+            },
+            {
+              category: {
+                superCategory: { superCategoryName_contains: args.term }
+              }
             }
           ]
         }
