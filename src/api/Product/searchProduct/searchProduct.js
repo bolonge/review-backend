@@ -8,7 +8,12 @@ export default {
           AND: [
             { isPublished: true },
             { productName_contains: args.term },
-            { productName_starts_with: args.term }
+            { productName_starts_with: args.term },
+            {
+              category: {
+                categoryName_contains: args.term
+              }
+            }
           ]
         }
       })
