@@ -5,8 +5,8 @@ export default {
     searchProduct: async (_, args) => {
       const products = await prisma.products({
         where: {
-          AND: [{ isPublished: true }, { productName_contains: args.term }]
-        }
+          AND: [{ isPublished: true }, { productName_contains: args.term }],
+        },
       });
       if (products) {
         return (
@@ -17,16 +17,16 @@ export default {
                 { productName_starts_with: args.term },
                 {
                   category: {
-                    categoryName_contains: args.term
-                  }
+                    categoryName_contains: args.term,
+                  },
                 },
                 {
                   category: {
-                    superCategory: { superCategoryName_contains: args.term }
-                  }
-                }
-              ]
-            }
+                    superCategory: { superCategoryName_contains: args.term },
+                  },
+                },
+              ],
+            },
           })
         );
       } else {
@@ -36,18 +36,18 @@ export default {
               { productName_starts_with: args.term },
               {
                 category: {
-                  categoryName_contains: args.term
-                }
+                  categoryName_contains: args.term,
+                },
               },
               {
                 category: {
-                  superCategory: { superCategoryName_contains: args.term }
-                }
-              }
-            ]
-          }
+                  superCategory: { superCategoryName_contains: args.term },
+                },
+              },
+            ],
+          },
         });
       }
-    }
-  }
+    },
+  },
 };
