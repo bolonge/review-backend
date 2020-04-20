@@ -1,6 +1,6 @@
 # 리뷰 백엔드
 
-리뷰 프로젝트 GraphQL + Apollo + Prisma - 구본홍,함승한
+리뷰 프로젝트 GraphQL + Apollo + Prisma
 
 - [x] 계정 만들기
 - [x] 메일 인증 코드 발송
