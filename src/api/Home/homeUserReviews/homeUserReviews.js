@@ -25,7 +25,13 @@ export default {
           },
           first: 20,
         });
-        return [...reviews, ...secondReviews];
+        const mergeReivews = [...reviews, ...secondReviews];
+        const filterMergeReviews = mergeReivews.filter(
+          (item, index, self) =>
+            self.map((i) => i.id).indexOf(item.id) === index
+        ); //배열안에 오브젝트 중복제거
+
+        return filterMergeReviews;
       }
     },
   },
