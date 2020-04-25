@@ -9,40 +9,26 @@ export default {
         },
       });
       if (products) {
-        return (
-          products,
-          await prisma.products({
-            where: {
-              OR: [
-                { productName_starts_with: args.term },
-                {
-                  category: {
-                    categoryName_contains: args.term,
-                  },
-                },
-                {
-                  category: {
-                    superCategory: { superCategoryName_contains: args.term },
-                  },
-                },
-              ],
-            },
-          })
-        );
+        return products;
       } else {
-        await prisma.products({
+        return await prisma.products({
           where: {
-            OR: [
-              { productName_starts_with: args.term },
+            AND: [
+              { isPublished: true },
               {
-                category: {
-                  categoryName_contains: args.term,
-                },
-              },
-              {
-                category: {
-                  superCategory: { superCategoryName_contains: args.term },
-                },
+                OR: [
+                  { productName_starts_with: args.term },
+                  {
+                    category: {
+                      categoryName_contains: args.term,
+                    },
+                  },
+                  {
+                    category: {
+                      superCategory: { superCategoryName_contains: args.term },
+                    },
+                  },
+                ],
               },
             ],
           },
