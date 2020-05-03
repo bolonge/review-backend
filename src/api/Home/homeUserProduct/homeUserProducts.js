@@ -41,7 +41,15 @@ export default {
             self.map((i) => i.id).indexOf(item.id) === index
         ); //배열안에 오브젝트 중복제거
 
-        return filterMergeProducts;
+        if (filterMergeProducts.length === 0) {
+          return await prisma.products({
+            where: { AND: [{ isPublished: true }] },
+            orderBy: "createdAt_DESC",
+            first: 20,
+          });
+        } else {
+          return filterMergeProducts;
+        }
       }
     },
   },
