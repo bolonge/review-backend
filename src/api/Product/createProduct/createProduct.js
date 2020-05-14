@@ -13,7 +13,12 @@ export default {
         const product = await prisma.createProduct({
           user: { connect: { id: user.id } },
           productName,
-          category: { connect: { id: categoryId } },
+        });
+        categoryId.forEach(async (id) => {
+          await prisma.updateProduct({
+            where: { id: product.id },
+            data: { category: { connect: { id } } },
+          });
         });
         return product;
       } else {

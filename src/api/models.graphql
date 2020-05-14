@@ -22,7 +22,7 @@ type Product {
   id: ID!
   user: User
   productName: String!
-  category: Category!
+  category: [Category]!
   reviews: [Review]
   productPhotos: [Photo]
   isPublished: Boolean!

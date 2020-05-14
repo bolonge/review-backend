@@ -23,7 +23,7 @@ type Product {
   id: ID! @id
   user: User @relation(name: "ProductsOfUser")
   productName: String! @unique
-  category: Category
+  category: [Category]
   reviews: [Review] @relation(name: "ReviewsOfProduct", onDelete: CASCADE)
   productPhotos: [Photo] @relation(name: "PhotosOfProduct", onDelete: CASCADE)
   isPublished: Boolean @default(value: false)

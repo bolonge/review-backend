@@ -198,14 +198,14 @@ input CategoryCreateInput {
   superCategory: SuperCategoryCreateOneWithoutCategoryInput
 }
 
-input CategoryCreateManyWithoutSuperCategoryInput {
-  create: [CategoryCreateWithoutSuperCategoryInput!]
+input CategoryCreateManyWithoutProductInput {
+  create: [CategoryCreateWithoutProductInput!]
   connect: [CategoryWhereUniqueInput!]
 }
 
-input CategoryCreateOneWithoutProductInput {
-  create: CategoryCreateWithoutProductInput
-  connect: CategoryWhereUniqueInput
+input CategoryCreateManyWithoutSuperCategoryInput {
+  create: [CategoryCreateWithoutSuperCategoryInput!]
+  connect: [CategoryWhereUniqueInput!]
 }
 
 input CategoryCreateWithoutProductInput {
@@ -325,6 +325,18 @@ input CategoryUpdateManyMutationInput {
   categoryName: String
 }
 
+input CategoryUpdateManyWithoutProductInput {
+  create: [CategoryCreateWithoutProductInput!]
+  delete: [CategoryWhereUniqueInput!]
+  connect: [CategoryWhereUniqueInput!]
+  set: [CategoryWhereUniqueInput!]
+  disconnect: [CategoryWhereUniqueInput!]
+  update: [CategoryUpdateWithWhereUniqueWithoutProductInput!]
+  upsert: [CategoryUpsertWithWhereUniqueWithoutProductInput!]
+  deleteMany: [CategoryScalarWhereInput!]
+  updateMany: [CategoryUpdateManyWithWhereNestedInput!]
+}
+
 input CategoryUpdateManyWithoutSuperCategoryInput {
   create: [CategoryCreateWithoutSuperCategoryInput!]
   delete: [CategoryWhereUniqueInput!]
@@ -342,15 +354,6 @@ input CategoryUpdateManyWithWhereNestedInput {
   data: CategoryUpdateManyDataInput!
 }
 
-input CategoryUpdateOneWithoutProductInput {
-  create: CategoryCreateWithoutProductInput
-  update: CategoryUpdateWithoutProductDataInput
-  upsert: CategoryUpsertWithoutProductInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: CategoryWhereUniqueInput
-}
-
 input CategoryUpdateWithoutProductDataInput {
   categoryName: String
   superCategory: SuperCategoryUpdateOneWithoutCategoryInput
@@ -361,12 +364,18 @@ input CategoryUpdateWithoutSuperCategoryDataInput {
   product: ProductUpdateManyWithoutCategoryInput
 }
 
+input CategoryUpdateWithWhereUniqueWithoutProductInput {
+  where: CategoryWhereUniqueInput!
+  data: CategoryUpdateWithoutProductDataInput!
+}
+
 input CategoryUpdateWithWhereUniqueWithoutSuperCategoryInput {
   where: CategoryWhereUniqueInput!
   data: CategoryUpdateWithoutSuperCategoryDataInput!
 }
 
-input CategoryUpsertWithoutProductInput {
+input CategoryUpsertWithWhereUniqueWithoutProductInput {
+  where: CategoryWhereUniqueInput!
   update: CategoryUpdateWithoutProductDataInput!
   create: CategoryCreateWithoutProductInput!
 }
@@ -1714,7 +1723,7 @@ type Product {
   id: ID!
   user: User
   productName: String!
-  category: Category
+  category(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   productPhotos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
   isPublished: Boolean
@@ -1732,7 +1741,7 @@ input ProductCreateInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
   productName: String!
-  category: CategoryCreateOneWithoutProductInput
+  category: CategoryCreateManyWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
@@ -1771,7 +1780,7 @@ input ProductCreateWithoutProductPhotosInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
   productName: String!
-  category: CategoryCreateOneWithoutProductInput
+  category: CategoryCreateManyWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1780,7 +1789,7 @@ input ProductCreateWithoutReviewsInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
   productName: String!
-  category: CategoryCreateOneWithoutProductInput
+  category: CategoryCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1788,7 +1797,7 @@ input ProductCreateWithoutReviewsInput {
 input ProductCreateWithoutUserInput {
   id: ID
   productName: String!
-  category: CategoryCreateOneWithoutProductInput
+  category: CategoryCreateManyWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
@@ -1893,7 +1902,7 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
-  category: CategoryUpdateOneWithoutProductInput
+  category: CategoryUpdateManyWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
@@ -1967,7 +1976,7 @@ input ProductUpdateWithoutCategoryDataInput {
 input ProductUpdateWithoutProductPhotosDataInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
-  category: CategoryUpdateOneWithoutProductInput
+  category: CategoryUpdateManyWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   isPublished: Boolean
 }
@@ -1975,14 +1984,14 @@ input ProductUpdateWithoutProductPhotosDataInput {
 input ProductUpdateWithoutReviewsDataInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
-  category: CategoryUpdateOneWithoutProductInput
+  category: CategoryUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
 }
 
 input ProductUpdateWithoutUserDataInput {
   productName: String
-  category: CategoryUpdateOneWithoutProductInput
+  category: CategoryUpdateManyWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
@@ -2050,7 +2059,9 @@ input ProductWhereInput {
   productName_not_starts_with: String
   productName_ends_with: String
   productName_not_ends_with: String
-  category: CategoryWhereInput
+  category_every: CategoryWhereInput
+  category_some: CategoryWhereInput
+  category_none: CategoryWhereInput
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
   reviews_none: ReviewWhereInput
