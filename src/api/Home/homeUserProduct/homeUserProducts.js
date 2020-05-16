@@ -15,7 +15,7 @@ export default {
             {
               OR: [
                 { productName_contains: mapRecentData[0] },
-                { category: { categoryName_contains: mapRecentData[0] } },
+                { category_every: { categoryName_contains: mapRecentData[0] } },
               ],
             },
           ],
@@ -29,7 +29,7 @@ export default {
             AND: [
               { isPublished: true },
               { OR: [{ productName_contains: mapRecentData[1] }] },
-              { category: { categoryName_contains: mapRecentData[1] } },
+              { category_every: { categoryName_contains: mapRecentData[1] } },
             ],
           },
           first: 20,

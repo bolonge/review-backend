@@ -13,12 +13,12 @@ export default {
                   productName_contains: args.term,
                 },
                 {
-                  category: {
+                  category_every: {
                     categoryName_contains: args.term,
                   },
                 },
                 {
-                  category: {
+                  category_every: {
                     superCategory: { superCategoryName_contains: args.term },
                   },
                 },
@@ -38,12 +38,12 @@ export default {
                 OR: [
                   { productName_starts_with: args.term },
                   {
-                    category: {
+                    category_every: {
                       categoryName_contains: args.term,
                     },
                   },
                   {
-                    category: {
+                    category_every: {
                       superCategory: { superCategoryName_contains: args.term },
                     },
                   },
