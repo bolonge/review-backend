@@ -6,9 +6,12 @@ export default {
       const { categoryName } = args;
       return await prisma.products({
         where: {
-          AND: [{ isPublished: true }, { category: { categoryName } }]
-        }
+          AND: [
+            { isPublished: true },
+            { category_every: { categoryName: categoryName } },
+          ],
+        },
       });
-    }
-  }
+    },
+  },
 };
