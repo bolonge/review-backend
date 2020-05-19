@@ -5,7 +5,7 @@ export default {
     createProduct: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const { user } = request;
-      const { productName, categoryId } = args;
+      const { productName, categoryId, requestInfo } = args;
       const exists = await prisma
         .user({ id: user.id })
         .myProduct({ where: { isPublished: false } });
@@ -13,6 +13,7 @@ export default {
         const product = await prisma.createProduct({
           user: { connect: { id: user.id } },
           productName,
+          requestInfo,
         });
         categoryId.forEach(async (id) => {
           await prisma.updateProduct({

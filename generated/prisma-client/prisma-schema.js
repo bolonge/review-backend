@@ -1727,6 +1727,7 @@ type Product {
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   productPhotos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
   isPublished: Boolean
+  requestInfo: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1745,6 +1746,7 @@ input ProductCreateInput {
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String!
 }
 
 input ProductCreateManyWithoutCategoryInput {
@@ -1774,6 +1776,7 @@ input ProductCreateWithoutCategoryInput {
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String!
 }
 
 input ProductCreateWithoutProductPhotosInput {
@@ -1783,6 +1786,7 @@ input ProductCreateWithoutProductPhotosInput {
   category: CategoryCreateManyWithoutProductInput
   reviews: ReviewCreateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String!
 }
 
 input ProductCreateWithoutReviewsInput {
@@ -1792,6 +1796,7 @@ input ProductCreateWithoutReviewsInput {
   category: CategoryCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String!
 }
 
 input ProductCreateWithoutUserInput {
@@ -1801,6 +1806,7 @@ input ProductCreateWithoutUserInput {
   reviews: ReviewCreateManyWithoutProductInput
   productPhotos: PhotoCreateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String!
 }
 
 type ProductEdge {
@@ -1815,6 +1821,8 @@ enum ProductOrderByInput {
   productName_DESC
   isPublished_ASC
   isPublished_DESC
+  requestInfo_ASC
+  requestInfo_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1825,6 +1833,7 @@ type ProductPreviousValues {
   id: ID!
   productName: String!
   isPublished: Boolean
+  requestInfo: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1860,6 +1869,20 @@ input ProductScalarWhereInput {
   productName_not_ends_with: String
   isPublished: Boolean
   isPublished_not: Boolean
+  requestInfo: String
+  requestInfo_not: String
+  requestInfo_in: [String!]
+  requestInfo_not_in: [String!]
+  requestInfo_lt: String
+  requestInfo_lte: String
+  requestInfo_gt: String
+  requestInfo_gte: String
+  requestInfo_contains: String
+  requestInfo_not_contains: String
+  requestInfo_starts_with: String
+  requestInfo_not_starts_with: String
+  requestInfo_ends_with: String
+  requestInfo_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1906,16 +1929,19 @@ input ProductUpdateInput {
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateManyDataInput {
   productName: String
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateManyMutationInput {
   productName: String
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateManyWithoutCategoryInput {
@@ -1971,6 +1997,7 @@ input ProductUpdateWithoutCategoryDataInput {
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateWithoutProductPhotosDataInput {
@@ -1979,6 +2006,7 @@ input ProductUpdateWithoutProductPhotosDataInput {
   category: CategoryUpdateManyWithoutProductInput
   reviews: ReviewUpdateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateWithoutReviewsDataInput {
@@ -1987,6 +2015,7 @@ input ProductUpdateWithoutReviewsDataInput {
   category: CategoryUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateWithoutUserDataInput {
@@ -1995,6 +2024,7 @@ input ProductUpdateWithoutUserDataInput {
   reviews: ReviewUpdateManyWithoutProductInput
   productPhotos: PhotoUpdateManyWithoutProductInput
   isPublished: Boolean
+  requestInfo: String
 }
 
 input ProductUpdateWithWhereUniqueWithoutCategoryInput {
@@ -2070,6 +2100,20 @@ input ProductWhereInput {
   productPhotos_none: PhotoWhereInput
   isPublished: Boolean
   isPublished_not: Boolean
+  requestInfo: String
+  requestInfo_not: String
+  requestInfo_in: [String!]
+  requestInfo_not_in: [String!]
+  requestInfo_lt: String
+  requestInfo_lte: String
+  requestInfo_gt: String
+  requestInfo_gte: String
+  requestInfo_contains: String
+  requestInfo_not_contains: String
+  requestInfo_starts_with: String
+  requestInfo_not_starts_with: String
+  requestInfo_ends_with: String
+  requestInfo_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

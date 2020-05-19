@@ -27,6 +27,7 @@ type Product {
   reviews: [Review] @relation(name: "ReviewsOfProduct", onDelete: CASCADE)
   productPhotos: [Photo] @relation(name: "PhotosOfProduct", onDelete: CASCADE)
   isPublished: Boolean @default(value: false)
+  requestInfo: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

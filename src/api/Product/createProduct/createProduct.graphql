@@ -1,3 +1,7 @@
 type Mutation {
-  createProduct(productName: String!, categoryId: [String]): Product
+  createProduct(
+    productName: String!
+    categoryId: [String]
+    requestInfo: String!
+  ): Product
 }

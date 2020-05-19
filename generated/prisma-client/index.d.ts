@@ -545,6 +545,8 @@ export type ProductOrderByInput =
   | "productName_DESC"
   | "isPublished_ASC"
   | "isPublished_DESC"
+  | "requestInfo_ASC"
+  | "requestInfo_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -759,6 +761,20 @@ export interface ProductWhereInput {
   productPhotos_none?: Maybe<PhotoWhereInput>;
   isPublished?: Maybe<Boolean>;
   isPublished_not?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
+  requestInfo_not?: Maybe<String>;
+  requestInfo_in?: Maybe<String[] | String>;
+  requestInfo_not_in?: Maybe<String[] | String>;
+  requestInfo_lt?: Maybe<String>;
+  requestInfo_lte?: Maybe<String>;
+  requestInfo_gt?: Maybe<String>;
+  requestInfo_gte?: Maybe<String>;
+  requestInfo_contains?: Maybe<String>;
+  requestInfo_not_contains?: Maybe<String>;
+  requestInfo_starts_with?: Maybe<String>;
+  requestInfo_not_starts_with?: Maybe<String>;
+  requestInfo_ends_with?: Maybe<String>;
+  requestInfo_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1464,6 +1480,7 @@ export interface ProductCreateWithoutCategoryInput {
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo: String;
 }
 
 export interface UserCreateOneWithoutMyProductInput {
@@ -1526,6 +1543,7 @@ export interface ProductCreateWithoutReviewsInput {
   category?: Maybe<CategoryCreateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo: String;
 }
 
 export interface CategoryCreateManyWithoutProductInput {
@@ -1615,6 +1633,7 @@ export interface ProductCreateWithoutUserInput {
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo: String;
 }
 
 export interface ReviewCreateManyWithoutProductInput {
@@ -1838,6 +1857,7 @@ export interface ProductCreateWithoutProductPhotosInput {
   category?: Maybe<CategoryCreateManyWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo: String;
 }
 
 export interface CategoryUpdateInput {
@@ -1880,6 +1900,7 @@ export interface ProductUpdateWithoutCategoryDataInput {
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutMyProductInput {
@@ -2062,6 +2083,7 @@ export interface ProductUpdateWithoutReviewsDataInput {
   category?: Maybe<CategoryUpdateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface CategoryUpdateManyWithoutProductInput {
@@ -2287,6 +2309,7 @@ export interface ProductUpdateWithoutUserDataInput {
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface ReviewUpdateManyWithoutProductInput {
@@ -2670,6 +2693,7 @@ export interface ProductUpdateWithoutProductPhotosDataInput {
   category?: Maybe<CategoryUpdateManyWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface ProductUpsertWithoutProductPhotosInput {
@@ -3049,6 +3073,20 @@ export interface ProductScalarWhereInput {
   productName_not_ends_with?: Maybe<String>;
   isPublished?: Maybe<Boolean>;
   isPublished_not?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
+  requestInfo_not?: Maybe<String>;
+  requestInfo_in?: Maybe<String[] | String>;
+  requestInfo_not_in?: Maybe<String[] | String>;
+  requestInfo_lt?: Maybe<String>;
+  requestInfo_lte?: Maybe<String>;
+  requestInfo_gt?: Maybe<String>;
+  requestInfo_gte?: Maybe<String>;
+  requestInfo_contains?: Maybe<String>;
+  requestInfo_not_contains?: Maybe<String>;
+  requestInfo_starts_with?: Maybe<String>;
+  requestInfo_not_starts_with?: Maybe<String>;
+  requestInfo_ends_with?: Maybe<String>;
+  requestInfo_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -3078,6 +3116,7 @@ export interface ProductUpdateManyWithWhereNestedInput {
 export interface ProductUpdateManyDataInput {
   productName?: Maybe<String>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface UserUpsertWithoutMyReviewInput {
@@ -3196,6 +3235,7 @@ export interface ProductCreateInput {
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo: String;
 }
 
 export interface ProductUpdateInput {
@@ -3205,11 +3245,13 @@ export interface ProductUpdateInput {
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface ProductUpdateManyMutationInput {
   productName?: Maybe<String>;
   isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
 }
 
 export interface ReportCreateInput {
@@ -3788,6 +3830,7 @@ export interface Product {
   id: ID_Output;
   productName: String;
   isPublished?: Boolean;
+  requestInfo: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3824,6 +3867,7 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
     last?: Int;
   }) => T;
   isPublished: () => Promise<Boolean>;
+  requestInfo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3862,6 +3906,7 @@ export interface ProductSubscription
     last?: Int;
   }) => T;
   isPublished: () => Promise<AsyncIterator<Boolean>>;
+  requestInfo: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3900,6 +3945,7 @@ export interface ProductNullablePromise
     last?: Int;
   }) => T;
   isPublished: () => Promise<Boolean>;
+  requestInfo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -5530,6 +5576,7 @@ export interface ProductPreviousValues {
   id: ID_Output;
   productName: String;
   isPublished?: Boolean;
+  requestInfo: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -5540,6 +5587,7 @@ export interface ProductPreviousValuesPromise
   id: () => Promise<ID_Output>;
   productName: () => Promise<String>;
   isPublished: () => Promise<Boolean>;
+  requestInfo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -5550,6 +5598,7 @@ export interface ProductPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   productName: () => Promise<AsyncIterator<String>>;
   isPublished: () => Promise<AsyncIterator<Boolean>>;
+  requestInfo: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

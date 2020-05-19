@@ -26,6 +26,7 @@ type Product {
   reviews: [Review]
   productPhotos: [Photo]
   isPublished: Boolean!
+  requestInfo: String!
   reviewCount: Int!
   createdAt: String!
   updatedAt: String!
