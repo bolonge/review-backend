@@ -10,13 +10,13 @@ export default {
       const nickExists = await prisma.$exists.user({ nickName });
       const blackCheck = await prisma.$exists.blackList({ email });
       if (emailExists) {
-        return "emailExists";
+        return false;
       }
       if (nickExists) {
-        return "nickName";
+        return false;
       }
       if (blackCheck) {
-        return "blackList";
+        return false;
       }
 
       await prisma.createUser({

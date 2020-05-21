@@ -6,27 +6,37 @@ export default {
   Mutation: {
     login: async (_, args) => {
       const { NameOrEmail, password, type } = args;
+      let error = "";
       if (type === "EMAIL") {
         const user = await prisma.user({ email: NameOrEmail });
         if (!user) {
-          return "이메일이 없습니다";
+          error = "이메일이 없습니다";
+        } else {
+          const passwordMatch = await bcrypt.compare(password, user.password);
+          if (!passwordMatch) {
+            error = "비밀번호 오류";
+          }
         }
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordMatch) {
-          return "비밀번호 오류";
+        if (error === "이메일이 없습니다" || error === "비밀번호 오류") {
+          throw Error("로그인 할 수 없습니다");
+        } else {
+          return generateToken(user.id);
         }
-        return generateToken(user.id);
       } else if (type === "NICKNAME") {
         const user = await prisma.user({ nickName: NameOrEmail });
         if (!user) {
-          return "유저이름이 없습니다";
+          error = "유저이름이 없습니다";
+        } else {
+          const passwordMatch = await bcrypt.compare(password, user.password);
+          if (!passwordMatch) {
+            error = "비밀번호 오류";
+          }
         }
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
-          return "비밀번호 오류";
+        if (error === "유저이름이 없습니다" || error === "비밀번호 오류") {
+          throw Error("로그인 할 수 없습니다");
+        } else {
+          return generateToken(user.id);
         }
-        return generateToken(user.id);
       }
     },
   },
