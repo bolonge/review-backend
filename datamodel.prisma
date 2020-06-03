@@ -114,6 +114,14 @@ type Report {
   updatedAt: DateTime! @updatedAt
 }
 
+type Suggestion {
+  id: ID! @id
+  user: User!
+  text: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
 type BlackList {
   id: ID! @id
   email: String!

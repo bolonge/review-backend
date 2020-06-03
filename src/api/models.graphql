@@ -119,6 +119,14 @@ type Report {
   updatedAt: String!
 }
 
+type Suggestion {
+  id: ID!
+  user: User!
+  text: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type BlackList {
   id: ID!
   email: String!

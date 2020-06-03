@@ -43,6 +43,10 @@ type AggregateReview {
   count: Int!
 }
 
+type AggregateSuggestion {
+  count: Int!
+}
+
 type AggregateSuperCategory {
   count: Int!
 }
@@ -1422,6 +1426,12 @@ type Mutation {
   upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
+  createSuggestion(data: SuggestionCreateInput!): Suggestion!
+  updateSuggestion(data: SuggestionUpdateInput!, where: SuggestionWhereUniqueInput!): Suggestion
+  updateManySuggestions(data: SuggestionUpdateManyMutationInput!, where: SuggestionWhereInput): BatchPayload!
+  upsertSuggestion(where: SuggestionWhereUniqueInput!, create: SuggestionCreateInput!, update: SuggestionUpdateInput!): Suggestion!
+  deleteSuggestion(where: SuggestionWhereUniqueInput!): Suggestion
+  deleteManySuggestions(where: SuggestionWhereInput): BatchPayload!
   createSuperCategory(data: SuperCategoryCreateInput!): SuperCategory!
   updateSuperCategory(data: SuperCategoryUpdateInput!, where: SuperCategoryWhereUniqueInput!): SuperCategory
   updateManySuperCategories(data: SuperCategoryUpdateManyMutationInput!, where: SuperCategoryWhereInput): BatchPayload!
@@ -2171,6 +2181,9 @@ type Query {
   review(where: ReviewWhereUniqueInput!): Review
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
   reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  suggestion(where: SuggestionWhereUniqueInput!): Suggestion
+  suggestions(where: SuggestionWhereInput, orderBy: SuggestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Suggestion]!
+  suggestionsConnection(where: SuggestionWhereInput, orderBy: SuggestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SuggestionConnection!
   superCategory(where: SuperCategoryWhereUniqueInput!): SuperCategory
   superCategories(where: SuperCategoryWhereInput, orderBy: SuperCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SuperCategory]!
   superCategoriesConnection(where: SuperCategoryWhereInput, orderBy: SuperCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SuperCategoryConnection!
@@ -2895,8 +2908,134 @@ type Subscription {
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
   review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
+  suggestion(where: SuggestionSubscriptionWhereInput): SuggestionSubscriptionPayload
   superCategory(where: SuperCategorySubscriptionWhereInput): SuperCategorySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Suggestion {
+  id: ID!
+  user: User!
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SuggestionConnection {
+  pageInfo: PageInfo!
+  edges: [SuggestionEdge]!
+  aggregate: AggregateSuggestion!
+}
+
+input SuggestionCreateInput {
+  id: ID
+  user: UserCreateOneInput!
+  text: String!
+}
+
+type SuggestionEdge {
+  node: Suggestion!
+  cursor: String!
+}
+
+enum SuggestionOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SuggestionPreviousValues {
+  id: ID!
+  text: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SuggestionSubscriptionPayload {
+  mutation: MutationType!
+  node: Suggestion
+  updatedFields: [String!]
+  previousValues: SuggestionPreviousValues
+}
+
+input SuggestionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SuggestionWhereInput
+  AND: [SuggestionSubscriptionWhereInput!]
+  OR: [SuggestionSubscriptionWhereInput!]
+  NOT: [SuggestionSubscriptionWhereInput!]
+}
+
+input SuggestionUpdateInput {
+  user: UserUpdateOneRequiredInput
+  text: String
+}
+
+input SuggestionUpdateManyMutationInput {
+  text: String
+}
+
+input SuggestionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [SuggestionWhereInput!]
+  OR: [SuggestionWhereInput!]
+  NOT: [SuggestionWhereInput!]
+}
+
+input SuggestionWhereUniqueInput {
+  id: ID
 }
 
 type SuperCategory {

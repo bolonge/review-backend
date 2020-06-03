@@ -26,6 +26,7 @@ export interface Exists {
   product: (where?: ProductWhereInput) => Promise<boolean>;
   report: (where?: ReportWhereInput) => Promise<boolean>;
   review: (where?: ReviewWhereInput) => Promise<boolean>;
+  suggestion: (where?: SuggestionWhereInput) => Promise<boolean>;
   superCategory: (where?: SuperCategoryWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -239,6 +240,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ReviewConnectionPromise;
+  suggestion: (where: SuggestionWhereUniqueInput) => SuggestionNullablePromise;
+  suggestions: (args?: {
+    where?: SuggestionWhereInput;
+    orderBy?: SuggestionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Suggestion>;
+  suggestionsConnection: (args?: {
+    where?: SuggestionWhereInput;
+    orderBy?: SuggestionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => SuggestionConnectionPromise;
   superCategory: (
     where: SuperCategoryWhereUniqueInput
   ) => SuperCategoryNullablePromise;
@@ -437,6 +457,22 @@ export interface Prisma {
   }) => ReviewPromise;
   deleteReview: (where: ReviewWhereUniqueInput) => ReviewPromise;
   deleteManyReviews: (where?: ReviewWhereInput) => BatchPayloadPromise;
+  createSuggestion: (data: SuggestionCreateInput) => SuggestionPromise;
+  updateSuggestion: (args: {
+    data: SuggestionUpdateInput;
+    where: SuggestionWhereUniqueInput;
+  }) => SuggestionPromise;
+  updateManySuggestions: (args: {
+    data: SuggestionUpdateManyMutationInput;
+    where?: SuggestionWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSuggestion: (args: {
+    where: SuggestionWhereUniqueInput;
+    create: SuggestionCreateInput;
+    update: SuggestionUpdateInput;
+  }) => SuggestionPromise;
+  deleteSuggestion: (where: SuggestionWhereUniqueInput) => SuggestionPromise;
+  deleteManySuggestions: (where?: SuggestionWhereInput) => BatchPayloadPromise;
   createSuperCategory: (data: SuperCategoryCreateInput) => SuperCategoryPromise;
   updateSuperCategory: (args: {
     data: SuperCategoryUpdateInput;
@@ -512,6 +548,9 @@ export interface Subscription {
   review: (
     where?: ReviewSubscriptionWhereInput
   ) => ReviewSubscriptionPayloadSubscription;
+  suggestion: (
+    where?: SuggestionSubscriptionWhereInput
+  ) => SuggestionSubscriptionPayloadSubscription;
   superCategory: (
     where?: SuperCategorySubscriptionWhereInput
   ) => SuperCategorySubscriptionPayloadSubscription;
@@ -625,6 +664,16 @@ export type ReportOrderByInput =
   | "id_DESC"
   | "why_ASC"
   | "why_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type SuggestionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -1435,6 +1484,61 @@ export interface ReportWhereInput {
 export type ReviewWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
+
+export type SuggestionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface SuggestionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  text?: Maybe<String>;
+  text_not?: Maybe<String>;
+  text_in?: Maybe<String[] | String>;
+  text_not_in?: Maybe<String[] | String>;
+  text_lt?: Maybe<String>;
+  text_lte?: Maybe<String>;
+  text_gt?: Maybe<String>;
+  text_gte?: Maybe<String>;
+  text_contains?: Maybe<String>;
+  text_not_contains?: Maybe<String>;
+  text_starts_with?: Maybe<String>;
+  text_not_starts_with?: Maybe<String>;
+  text_ends_with?: Maybe<String>;
+  text_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<SuggestionWhereInput[] | SuggestionWhereInput>;
+  OR?: Maybe<SuggestionWhereInput[] | SuggestionWhereInput>;
+  NOT?: Maybe<SuggestionWhereInput[] | SuggestionWhereInput>;
+}
 
 export type SuperCategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -3408,6 +3512,21 @@ export interface ReviewUpdateManyMutationInput {
   rating?: Maybe<Float>;
 }
 
+export interface SuggestionCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  text: String;
+}
+
+export interface SuggestionUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  text?: Maybe<String>;
+}
+
+export interface SuggestionUpdateManyMutationInput {
+  text?: Maybe<String>;
+}
+
 export interface SuperCategoryCreateInput {
   id?: Maybe<ID_Input>;
   superCategoryName: String;
@@ -3619,6 +3738,23 @@ export interface ReviewSubscriptionWhereInput {
   AND?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
   OR?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
   NOT?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
+}
+
+export interface SuggestionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SuggestionWhereInput>;
+  AND?: Maybe<
+    SuggestionSubscriptionWhereInput[] | SuggestionSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    SuggestionSubscriptionWhereInput[] | SuggestionSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    SuggestionSubscriptionWhereInput[] | SuggestionSubscriptionWhereInput
+  >;
 }
 
 export interface SuperCategorySubscriptionWhereInput {
@@ -5080,6 +5216,97 @@ export interface AggregateReviewSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface Suggestion {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface SuggestionPromise extends Promise<Suggestion>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SuggestionSubscription
+  extends Promise<AsyncIterator<Suggestion>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  text: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface SuggestionNullablePromise
+  extends Promise<Suggestion | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SuggestionConnection {
+  pageInfo: PageInfo;
+  edges: SuggestionEdge[];
+}
+
+export interface SuggestionConnectionPromise
+  extends Promise<SuggestionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SuggestionEdge>>() => T;
+  aggregate: <T = AggregateSuggestionPromise>() => T;
+}
+
+export interface SuggestionConnectionSubscription
+  extends Promise<AsyncIterator<SuggestionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SuggestionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSuggestionSubscription>() => T;
+}
+
+export interface SuggestionEdge {
+  node: Suggestion;
+  cursor: String;
+}
+
+export interface SuggestionEdgePromise
+  extends Promise<SuggestionEdge>,
+    Fragmentable {
+  node: <T = SuggestionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SuggestionEdgeSubscription
+  extends Promise<AsyncIterator<SuggestionEdge>>,
+    Fragmentable {
+  node: <T = SuggestionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSuggestion {
+  count: Int;
+}
+
+export interface AggregateSuggestionPromise
+  extends Promise<AggregateSuggestion>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSuggestionSubscription
+  extends Promise<AsyncIterator<AggregateSuggestion>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface SuperCategoryConnection {
   pageInfo: PageInfo;
   edges: SuperCategoryEdge[];
@@ -5709,6 +5936,56 @@ export interface ReviewPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface SuggestionSubscriptionPayload {
+  mutation: MutationType;
+  node: Suggestion;
+  updatedFields: String[];
+  previousValues: SuggestionPreviousValues;
+}
+
+export interface SuggestionSubscriptionPayloadPromise
+  extends Promise<SuggestionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SuggestionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SuggestionPreviousValuesPromise>() => T;
+}
+
+export interface SuggestionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SuggestionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SuggestionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SuggestionPreviousValuesSubscription>() => T;
+}
+
+export interface SuggestionPreviousValues {
+  id: ID_Output;
+  text: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface SuggestionPreviousValuesPromise
+  extends Promise<SuggestionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SuggestionPreviousValuesSubscription
+  extends Promise<AsyncIterator<SuggestionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface SuperCategorySubscriptionPayload {
   mutation: MutationType;
   node: SuperCategory;
@@ -5909,6 +6186,10 @@ export const models: Model[] = [
   },
   {
     name: "Report",
+    embedded: false
+  },
+  {
+    name: "Suggestion",
     embedded: false
   },
   {

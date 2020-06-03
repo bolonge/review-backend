@@ -6,11 +6,11 @@ export default {
       const { nickName } = args;
       const { user } = request;
       const myName = await prisma.user({ id: user.id }).nickName();
-      if (myName === nickName) {
+      if (myName == nickName) {
         return false;
       } else {
         return await prisma.$exists.user({ nickName });
       }
-    }
-  }
+    },
+  },
 };

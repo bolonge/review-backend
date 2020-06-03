@@ -10,8 +10,8 @@ export default {
       return await prisma.createComment({
         user: { connect: { id: user.id } },
         review: { connect: { id: reviewId } },
-        text
+        text,
       });
-    }
-  }
+    },
+  },
 };
