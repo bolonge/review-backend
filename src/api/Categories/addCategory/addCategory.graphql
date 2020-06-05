@@ -1,0 +1,3 @@
+type Mutation {
+  addCategory(scId: String!, categoryName: String!): Boolean!
+}
