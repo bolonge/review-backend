@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/cli": "^7.8.4",
+    "@babel/compat-data": "^7.10.1",
     "@babel/core": "^7.6.2",
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
