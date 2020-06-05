@@ -5,6 +5,9 @@
   "repository": "https://github.com/bolonge/review-backend.git",
   "author": "bolonge <xxs456@naver.com>",
   "license": "MIT",
+  "engines": {
+    "node": "12.14.0"
+  },
   "dependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/compat-data": "^7.10.1",
