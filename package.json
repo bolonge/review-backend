@@ -6,7 +6,8 @@
   "author": "bolonge <xxs456@naver.com>",
   "license": "MIT",
   "engines": {
-    "node": "12.14.0"
+    "node": "12.14.0",
+    "yarn": "1.22.4"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",

@@ -10,32 +10,40 @@ export default {
       if (type === "EMAIL") {
         const user = await prisma.user({ email: NameOrEmail });
         if (!user) {
-          error = "이메일이 없습니다";
+          return (error = "이메일이 없습니다");
         } else {
           const passwordMatch = await bcrypt.compare(password, user.password);
           if (!passwordMatch) {
-            error = "비밀번호 오류";
+            return (error = "비밀번호 오류");
           }
         }
         if (error === "이메일이 없습니다" || error === "비밀번호 오류") {
           throw Error("로그인 할 수 없습니다");
         } else {
-          return generateToken(user.id);
+          if (user.loginSecret === "CONFIRM") {
+            return generateToken(user.id);
+          } else {
+            return (error = "이메일인증을 해야합니다");
+          }
         }
       } else if (type === "NICKNAME") {
         const user = await prisma.user({ nickName: NameOrEmail });
         if (!user) {
-          error = "유저이름이 없습니다";
+          return (error = "유저이름이 없습니다");
         } else {
           const passwordMatch = await bcrypt.compare(password, user.password);
           if (!passwordMatch) {
-            error = "비밀번호 오류";
+            return (error = "비밀번호 오류");
           }
         }
         if (error === "유저이름이 없습니다" || error === "비밀번호 오류") {
           throw Error("로그인 할 수 없습니다");
         } else {
-          return generateToken(user.id);
+          if (user.loginSecret === "CONFIRM") {
+            return generateToken(user.id);
+          } else {
+            return (error = "이메일인증을 해야합니다");
+          }
         }
       }
     },
