@@ -10,13 +10,13 @@ export default {
       const nickExists = await prisma.$exists.user({ nickName });
       const blackCheck = await prisma.$exists.blackList({ email });
       if (emailExists) {
-        return false;
+        return "email";
       }
       if (nickExists) {
-        return false;
+        return "nickName";
       }
       if (blackCheck) {
-        return false;
+        return "blackList";
       }
 
       await prisma.createUser({
@@ -24,7 +24,7 @@ export default {
         email,
         password: hashedPassword,
       });
-      return true;
+      return "true";
     },
   },
 };

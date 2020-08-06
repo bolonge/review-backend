@@ -8,12 +8,12 @@ export default {
       if (user.loginSecret === secret) {
         await prisma.updateUser({
           where: { id: user.id },
-          data: { loginSecret: "CONFIRM" }
+          data: { loginSecret: "CONFIRM" },
         });
         return true;
       } else {
         throw Error("Wrong email/secret");
       }
-    }
-  }
+    },
+  },
 };
