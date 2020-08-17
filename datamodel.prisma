@@ -25,7 +25,7 @@ type Product {
   productName: String! @unique
   category: [Category]
   reviews: [Review] @relation(name: "ReviewsOfProduct", onDelete: CASCADE)
-  productPhotos: [Photo] @relation(name: "PhotosOfProduct", onDelete: CASCADE)
+  productPhoto: Photo @relation(name: "PhotosOfProduct", onDelete: CASCADE)
   isPublished: Boolean @default(value: false)
   requestInfo: String!
   createdAt: DateTime! @createdAt

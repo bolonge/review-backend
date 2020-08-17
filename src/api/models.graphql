@@ -24,7 +24,7 @@ type Product {
   productName: String!
   category: [Category]!
   reviews: [Review]
-  productPhotos: [Photo]
+  productPhoto: Photo
   isPublished: Boolean!
   requestInfo: String!
   reviewCount: Int!
