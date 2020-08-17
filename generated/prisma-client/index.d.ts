@@ -805,9 +805,7 @@ export interface ProductWhereInput {
   reviews_every?: Maybe<ReviewWhereInput>;
   reviews_some?: Maybe<ReviewWhereInput>;
   reviews_none?: Maybe<ReviewWhereInput>;
-  productPhotos_every?: Maybe<PhotoWhereInput>;
-  productPhotos_some?: Maybe<PhotoWhereInput>;
-  productPhotos_none?: Maybe<PhotoWhereInput>;
+  productPhoto?: Maybe<PhotoWhereInput>;
   isPublished?: Maybe<Boolean>;
   isPublished_not?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
@@ -1582,7 +1580,7 @@ export interface ProductCreateWithoutCategoryInput {
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
 }
@@ -1645,7 +1643,7 @@ export interface ProductCreateWithoutReviewsInput {
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
   category?: Maybe<CategoryCreateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
 }
@@ -1673,11 +1671,9 @@ export interface SuperCategoryCreateWithoutCategoryInput {
   superCategoryName: String;
 }
 
-export interface PhotoCreateManyWithoutProductInput {
-  create?: Maybe<
-    PhotoCreateWithoutProductInput[] | PhotoCreateWithoutProductInput
-  >;
-  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
+export interface PhotoCreateOneWithoutProductInput {
+  create?: Maybe<PhotoCreateWithoutProductInput>;
+  connect?: Maybe<PhotoWhereUniqueInput>;
 }
 
 export interface PhotoCreateWithoutProductInput {
@@ -1735,7 +1731,7 @@ export interface ProductCreateWithoutUserInput {
   productName: String;
   category?: Maybe<CategoryCreateManyWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
 }
@@ -1946,15 +1942,15 @@ export interface PhotoCreateManyWithoutReviewInput {
 export interface PhotoCreateWithoutReviewInput {
   id?: Maybe<ID_Input>;
   url: String;
-  product?: Maybe<ProductCreateOneWithoutProductPhotosInput>;
+  product?: Maybe<ProductCreateOneWithoutProductPhotoInput>;
 }
 
-export interface ProductCreateOneWithoutProductPhotosInput {
-  create?: Maybe<ProductCreateWithoutProductPhotosInput>;
+export interface ProductCreateOneWithoutProductPhotoInput {
+  create?: Maybe<ProductCreateWithoutProductPhotoInput>;
   connect?: Maybe<ProductWhereUniqueInput>;
 }
 
-export interface ProductCreateWithoutProductPhotosInput {
+export interface ProductCreateWithoutProductPhotoInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
@@ -2002,7 +1998,7 @@ export interface ProductUpdateWithoutCategoryDataInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
 }
@@ -2185,7 +2181,7 @@ export interface ProductUpdateWithoutReviewsDataInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
   category?: Maybe<CategoryUpdateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
 }
@@ -2306,31 +2302,13 @@ export interface CategoryUpdateManyDataInput {
   categoryName?: Maybe<String>;
 }
 
-export interface PhotoUpdateManyWithoutProductInput {
-  create?: Maybe<
-    PhotoCreateWithoutProductInput[] | PhotoCreateWithoutProductInput
-  >;
-  delete?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  connect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  set?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  disconnect?: Maybe<PhotoWhereUniqueInput[] | PhotoWhereUniqueInput>;
-  update?: Maybe<
-    | PhotoUpdateWithWhereUniqueWithoutProductInput[]
-    | PhotoUpdateWithWhereUniqueWithoutProductInput
-  >;
-  upsert?: Maybe<
-    | PhotoUpsertWithWhereUniqueWithoutProductInput[]
-    | PhotoUpsertWithWhereUniqueWithoutProductInput
-  >;
-  deleteMany?: Maybe<PhotoScalarWhereInput[] | PhotoScalarWhereInput>;
-  updateMany?: Maybe<
-    PhotoUpdateManyWithWhereNestedInput[] | PhotoUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface PhotoUpdateWithWhereUniqueWithoutProductInput {
-  where: PhotoWhereUniqueInput;
-  data: PhotoUpdateWithoutProductDataInput;
+export interface PhotoUpdateOneWithoutProductInput {
+  create?: Maybe<PhotoCreateWithoutProductInput>;
+  update?: Maybe<PhotoUpdateWithoutProductDataInput>;
+  upsert?: Maybe<PhotoUpsertWithoutProductInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<PhotoWhereUniqueInput>;
 }
 
 export interface PhotoUpdateWithoutProductDataInput {
@@ -2411,7 +2389,7 @@ export interface ProductUpdateWithoutUserDataInput {
   productName?: Maybe<String>;
   category?: Maybe<CategoryUpdateManyWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
 }
@@ -2779,19 +2757,19 @@ export interface PhotoUpdateWithWhereUniqueWithoutReviewInput {
 
 export interface PhotoUpdateWithoutReviewDataInput {
   url?: Maybe<String>;
-  product?: Maybe<ProductUpdateOneWithoutProductPhotosInput>;
+  product?: Maybe<ProductUpdateOneWithoutProductPhotoInput>;
 }
 
-export interface ProductUpdateOneWithoutProductPhotosInput {
-  create?: Maybe<ProductCreateWithoutProductPhotosInput>;
-  update?: Maybe<ProductUpdateWithoutProductPhotosDataInput>;
-  upsert?: Maybe<ProductUpsertWithoutProductPhotosInput>;
+export interface ProductUpdateOneWithoutProductPhotoInput {
+  create?: Maybe<ProductCreateWithoutProductPhotoInput>;
+  update?: Maybe<ProductUpdateWithoutProductPhotoDataInput>;
+  upsert?: Maybe<ProductUpsertWithoutProductPhotoInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<ProductWhereUniqueInput>;
 }
 
-export interface ProductUpdateWithoutProductPhotosDataInput {
+export interface ProductUpdateWithoutProductPhotoDataInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
   category?: Maybe<CategoryUpdateManyWithoutProductInput>;
@@ -2800,9 +2778,9 @@ export interface ProductUpdateWithoutProductPhotosDataInput {
   requestInfo?: Maybe<String>;
 }
 
-export interface ProductUpsertWithoutProductPhotosInput {
-  update: ProductUpdateWithoutProductPhotosDataInput;
-  create: ProductCreateWithoutProductPhotosInput;
+export interface ProductUpsertWithoutProductPhotoInput {
+  update: ProductUpdateWithoutProductPhotoDataInput;
+  create: ProductCreateWithoutProductPhotoInput;
 }
 
 export interface PhotoUpsertWithWhereUniqueWithoutReviewInput {
@@ -3233,8 +3211,7 @@ export interface ReviewUpsertWithoutReviewPhotosInput {
   create: ReviewCreateWithoutReviewPhotosInput;
 }
 
-export interface PhotoUpsertWithWhereUniqueWithoutProductInput {
-  where: PhotoWhereUniqueInput;
+export interface PhotoUpsertWithoutProductInput {
   update: PhotoUpdateWithoutProductDataInput;
   create: PhotoCreateWithoutProductInput;
 }
@@ -3318,13 +3295,13 @@ export interface PhotoCreateInput {
   id?: Maybe<ID_Input>;
   url: String;
   review?: Maybe<ReviewCreateOneWithoutReviewPhotosInput>;
-  product?: Maybe<ProductCreateOneWithoutProductPhotosInput>;
+  product?: Maybe<ProductCreateOneWithoutProductPhotoInput>;
 }
 
 export interface PhotoUpdateInput {
   url?: Maybe<String>;
   review?: Maybe<ReviewUpdateOneWithoutReviewPhotosInput>;
-  product?: Maybe<ProductUpdateOneWithoutProductPhotosInput>;
+  product?: Maybe<ProductUpdateOneWithoutProductPhotoInput>;
 }
 
 export interface PhotoUpdateManyMutationInput {
@@ -3337,7 +3314,7 @@ export interface ProductCreateInput {
   productName: String;
   category?: Maybe<CategoryCreateManyWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoCreateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
 }
@@ -3347,7 +3324,7 @@ export interface ProductUpdateInput {
   productName?: Maybe<String>;
   category?: Maybe<CategoryUpdateManyWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
-  productPhotos?: Maybe<PhotoUpdateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
 }
@@ -3993,15 +3970,7 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  productPhotos: <T = FragmentableArray<Photo>>(args?: {
-    where?: PhotoWhereInput;
-    orderBy?: PhotoOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  productPhoto: <T = PhotoPromise>() => T;
   isPublished: () => Promise<Boolean>;
   requestInfo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -4032,15 +4001,7 @@ export interface ProductSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  productPhotos: <T = Promise<AsyncIterator<PhotoSubscription>>>(args?: {
-    where?: PhotoWhereInput;
-    orderBy?: PhotoOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  productPhoto: <T = PhotoSubscription>() => T;
   isPublished: () => Promise<AsyncIterator<Boolean>>;
   requestInfo: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -4071,15 +4032,7 @@ export interface ProductNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  productPhotos: <T = FragmentableArray<Photo>>(args?: {
-    where?: PhotoWhereInput;
-    orderBy?: PhotoOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  productPhoto: <T = PhotoPromise>() => T;
   isPublished: () => Promise<Boolean>;
   requestInfo: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;

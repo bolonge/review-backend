@@ -25,7 +25,7 @@ type Product {
   productName: String! @unique
   category: [Category]
   reviews: [Review] @relation(name: "ReviewsOfProduct", onDelete: CASCADE)
-  productPhoto: Photo @relation(name: "PhotosOfProduct", onDelete: CASCADE)
+  productPhoto: Photo @relation(link: INLINE, onDelete: CASCADE)
   isPublished: Boolean @default(value: false)
   requestInfo: String!
   createdAt: DateTime! @createdAt
@@ -82,7 +82,7 @@ type Photo {
   id: ID! @id
   url: String!
   review: Review @relation(name: "PhotosOfReview")
-  product: Product @relation(name: "PhotosOfProduct")
+  product: Product
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
