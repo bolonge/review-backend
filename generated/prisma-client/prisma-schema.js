@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateBrand {
+  count: Int!
+}
+
 type AggregateCategory {
   count: Int!
 }
@@ -177,6 +181,161 @@ input BlackListWhereInput {
 }
 
 input BlackListWhereUniqueInput {
+  id: ID
+}
+
+type Brand {
+  id: ID!
+  brandName: String!
+  product(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BrandConnection {
+  pageInfo: PageInfo!
+  edges: [BrandEdge]!
+  aggregate: AggregateBrand!
+}
+
+input BrandCreateInput {
+  id: ID
+  brandName: String!
+  product: ProductCreateManyWithoutBrandInput
+}
+
+input BrandCreateOneWithoutProductInput {
+  create: BrandCreateWithoutProductInput
+  connect: BrandWhereUniqueInput
+}
+
+input BrandCreateWithoutProductInput {
+  id: ID
+  brandName: String!
+}
+
+type BrandEdge {
+  node: Brand!
+  cursor: String!
+}
+
+enum BrandOrderByInput {
+  id_ASC
+  id_DESC
+  brandName_ASC
+  brandName_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type BrandPreviousValues {
+  id: ID!
+  brandName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type BrandSubscriptionPayload {
+  mutation: MutationType!
+  node: Brand
+  updatedFields: [String!]
+  previousValues: BrandPreviousValues
+}
+
+input BrandSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: BrandWhereInput
+  AND: [BrandSubscriptionWhereInput!]
+  OR: [BrandSubscriptionWhereInput!]
+  NOT: [BrandSubscriptionWhereInput!]
+}
+
+input BrandUpdateInput {
+  brandName: String
+  product: ProductUpdateManyWithoutBrandInput
+}
+
+input BrandUpdateManyMutationInput {
+  brandName: String
+}
+
+input BrandUpdateOneWithoutProductInput {
+  create: BrandCreateWithoutProductInput
+  update: BrandUpdateWithoutProductDataInput
+  upsert: BrandUpsertWithoutProductInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: BrandWhereUniqueInput
+}
+
+input BrandUpdateWithoutProductDataInput {
+  brandName: String
+}
+
+input BrandUpsertWithoutProductInput {
+  update: BrandUpdateWithoutProductDataInput!
+  create: BrandCreateWithoutProductInput!
+}
+
+input BrandWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  brandName: String
+  brandName_not: String
+  brandName_in: [String!]
+  brandName_not_in: [String!]
+  brandName_lt: String
+  brandName_lte: String
+  brandName_gt: String
+  brandName_gte: String
+  brandName_contains: String
+  brandName_not_contains: String
+  brandName_starts_with: String
+  brandName_not_starts_with: String
+  brandName_ends_with: String
+  brandName_not_ends_with: String
+  product_every: ProductWhereInput
+  product_some: ProductWhereInput
+  product_none: ProductWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [BrandWhereInput!]
+  OR: [BrandWhereInput!]
+  NOT: [BrandWhereInput!]
+}
+
+input BrandWhereUniqueInput {
   id: ID
 }
 
@@ -1374,6 +1533,12 @@ type Mutation {
   upsertBlackList(where: BlackListWhereUniqueInput!, create: BlackListCreateInput!, update: BlackListUpdateInput!): BlackList!
   deleteBlackList(where: BlackListWhereUniqueInput!): BlackList
   deleteManyBlackLists(where: BlackListWhereInput): BatchPayload!
+  createBrand(data: BrandCreateInput!): Brand!
+  updateBrand(data: BrandUpdateInput!, where: BrandWhereUniqueInput!): Brand
+  updateManyBrands(data: BrandUpdateManyMutationInput!, where: BrandWhereInput): BatchPayload!
+  upsertBrand(where: BrandWhereUniqueInput!, create: BrandCreateInput!, update: BrandUpdateInput!): Brand!
+  deleteBrand(where: BrandWhereUniqueInput!): Brand
+  deleteManyBrands(where: BrandWhereInput): BatchPayload!
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
@@ -1729,6 +1894,7 @@ type Product {
   productPhoto: Photo
   isPublished: Boolean
   requestInfo: String!
+  brand: Brand
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1748,6 +1914,12 @@ input ProductCreateInput {
   productPhoto: PhotoCreateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String!
+  brand: BrandCreateOneWithoutProductInput
+}
+
+input ProductCreateManyWithoutBrandInput {
+  create: [ProductCreateWithoutBrandInput!]
+  connect: [ProductWhereUniqueInput!]
 }
 
 input ProductCreateManyWithoutCategoryInput {
@@ -1770,6 +1942,17 @@ input ProductCreateOneWithoutReviewsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductCreateWithoutBrandInput {
+  id: ID
+  user: UserCreateOneWithoutMyProductInput
+  productName: String!
+  category: CategoryCreateManyWithoutProductInput
+  reviews: ReviewCreateManyWithoutProductInput
+  productPhoto: PhotoCreateOneWithoutProductInput
+  isPublished: Boolean
+  requestInfo: String!
+}
+
 input ProductCreateWithoutCategoryInput {
   id: ID
   user: UserCreateOneWithoutMyProductInput
@@ -1778,6 +1961,7 @@ input ProductCreateWithoutCategoryInput {
   productPhoto: PhotoCreateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String!
+  brand: BrandCreateOneWithoutProductInput
 }
 
 input ProductCreateWithoutProductPhotoInput {
@@ -1788,6 +1972,7 @@ input ProductCreateWithoutProductPhotoInput {
   reviews: ReviewCreateManyWithoutProductInput
   isPublished: Boolean
   requestInfo: String!
+  brand: BrandCreateOneWithoutProductInput
 }
 
 input ProductCreateWithoutReviewsInput {
@@ -1798,6 +1983,7 @@ input ProductCreateWithoutReviewsInput {
   productPhoto: PhotoCreateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String!
+  brand: BrandCreateOneWithoutProductInput
 }
 
 input ProductCreateWithoutUserInput {
@@ -1808,6 +1994,7 @@ input ProductCreateWithoutUserInput {
   productPhoto: PhotoCreateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String!
+  brand: BrandCreateOneWithoutProductInput
 }
 
 type ProductEdge {
@@ -1931,6 +2118,7 @@ input ProductUpdateInput {
   productPhoto: PhotoUpdateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String
+  brand: BrandUpdateOneWithoutProductInput
 }
 
 input ProductUpdateManyDataInput {
@@ -1943,6 +2131,18 @@ input ProductUpdateManyMutationInput {
   productName: String
   isPublished: Boolean
   requestInfo: String
+}
+
+input ProductUpdateManyWithoutBrandInput {
+  create: [ProductCreateWithoutBrandInput!]
+  delete: [ProductWhereUniqueInput!]
+  connect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueWithoutBrandInput!]
+  upsert: [ProductUpsertWithWhereUniqueWithoutBrandInput!]
+  deleteMany: [ProductScalarWhereInput!]
+  updateMany: [ProductUpdateManyWithWhereNestedInput!]
 }
 
 input ProductUpdateManyWithoutCategoryInput {
@@ -1992,6 +2192,16 @@ input ProductUpdateOneWithoutReviewsInput {
   connect: ProductWhereUniqueInput
 }
 
+input ProductUpdateWithoutBrandDataInput {
+  user: UserUpdateOneWithoutMyProductInput
+  productName: String
+  category: CategoryUpdateManyWithoutProductInput
+  reviews: ReviewUpdateManyWithoutProductInput
+  productPhoto: PhotoUpdateOneWithoutProductInput
+  isPublished: Boolean
+  requestInfo: String
+}
+
 input ProductUpdateWithoutCategoryDataInput {
   user: UserUpdateOneWithoutMyProductInput
   productName: String
@@ -1999,6 +2209,7 @@ input ProductUpdateWithoutCategoryDataInput {
   productPhoto: PhotoUpdateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String
+  brand: BrandUpdateOneWithoutProductInput
 }
 
 input ProductUpdateWithoutProductPhotoDataInput {
@@ -2008,6 +2219,7 @@ input ProductUpdateWithoutProductPhotoDataInput {
   reviews: ReviewUpdateManyWithoutProductInput
   isPublished: Boolean
   requestInfo: String
+  brand: BrandUpdateOneWithoutProductInput
 }
 
 input ProductUpdateWithoutReviewsDataInput {
@@ -2017,6 +2229,7 @@ input ProductUpdateWithoutReviewsDataInput {
   productPhoto: PhotoUpdateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String
+  brand: BrandUpdateOneWithoutProductInput
 }
 
 input ProductUpdateWithoutUserDataInput {
@@ -2026,6 +2239,12 @@ input ProductUpdateWithoutUserDataInput {
   productPhoto: PhotoUpdateOneWithoutProductInput
   isPublished: Boolean
   requestInfo: String
+  brand: BrandUpdateOneWithoutProductInput
+}
+
+input ProductUpdateWithWhereUniqueWithoutBrandInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateWithoutBrandDataInput!
 }
 
 input ProductUpdateWithWhereUniqueWithoutCategoryInput {
@@ -2046,6 +2265,12 @@ input ProductUpsertWithoutProductPhotoInput {
 input ProductUpsertWithoutReviewsInput {
   update: ProductUpdateWithoutReviewsDataInput!
   create: ProductCreateWithoutReviewsInput!
+}
+
+input ProductUpsertWithWhereUniqueWithoutBrandInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateWithoutBrandDataInput!
+  create: ProductCreateWithoutBrandInput!
 }
 
 input ProductUpsertWithWhereUniqueWithoutCategoryInput {
@@ -2113,6 +2338,7 @@ input ProductWhereInput {
   requestInfo_not_starts_with: String
   requestInfo_ends_with: String
   requestInfo_not_ends_with: String
+  brand: BrandWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -2143,6 +2369,9 @@ type Query {
   blackList(where: BlackListWhereUniqueInput!): BlackList
   blackLists(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlackList]!
   blackListsConnection(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlackListConnection!
+  brand(where: BrandWhereUniqueInput!): Brand
+  brands(where: BrandWhereInput, orderBy: BrandOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Brand]!
+  brandsConnection(where: BrandWhereInput, orderBy: BrandOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BrandConnection!
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
@@ -2888,6 +3117,7 @@ input ReviewWhereUniqueInput {
 
 type Subscription {
   blackList(where: BlackListSubscriptionWhereInput): BlackListSubscriptionPayload
+  brand(where: BrandSubscriptionWhereInput): BrandSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   hate(where: HateSubscriptionWhereInput): HateSubscriptionPayload

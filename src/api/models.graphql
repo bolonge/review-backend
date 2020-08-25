@@ -32,6 +32,14 @@ type Product {
   updatedAt: String!
 }
 
+type Brand {
+  id: ID!
+  brandName: String!
+  product: [Product]
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Keyword {
   id: ID!
   search: String!

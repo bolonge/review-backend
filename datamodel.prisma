@@ -28,6 +28,15 @@ type Product {
   productPhoto: Photo @relation(link: INLINE, onDelete: CASCADE)
   isPublished: Boolean @default(value: false)
   requestInfo: String!
+  brand: Brand
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Brand {
+  id: ID! @id
+  brandName: String!
+  product: [Product]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

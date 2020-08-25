@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   blackList: (where?: BlackListWhereInput) => Promise<boolean>;
+  brand: (where?: BrandWhereInput) => Promise<boolean>;
   category: (where?: CategoryWhereInput) => Promise<boolean>;
   comment: (where?: CommentWhereInput) => Promise<boolean>;
   hate: (where?: HateWhereInput) => Promise<boolean>;
@@ -69,6 +70,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => BlackListConnectionPromise;
+  brand: (where: BrandWhereUniqueInput) => BrandNullablePromise;
+  brands: (args?: {
+    where?: BrandWhereInput;
+    orderBy?: BrandOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Brand>;
+  brandsConnection: (args?: {
+    where?: BrandWhereInput;
+    orderBy?: BrandOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => BrandConnectionPromise;
   category: (where: CategoryWhereUniqueInput) => CategoryNullablePromise;
   categories: (args?: {
     where?: CategoryWhereInput;
@@ -321,6 +341,22 @@ export interface Prisma {
   }) => BlackListPromise;
   deleteBlackList: (where: BlackListWhereUniqueInput) => BlackListPromise;
   deleteManyBlackLists: (where?: BlackListWhereInput) => BatchPayloadPromise;
+  createBrand: (data: BrandCreateInput) => BrandPromise;
+  updateBrand: (args: {
+    data: BrandUpdateInput;
+    where: BrandWhereUniqueInput;
+  }) => BrandPromise;
+  updateManyBrands: (args: {
+    data: BrandUpdateManyMutationInput;
+    where?: BrandWhereInput;
+  }) => BatchPayloadPromise;
+  upsertBrand: (args: {
+    where: BrandWhereUniqueInput;
+    create: BrandCreateInput;
+    update: BrandUpdateInput;
+  }) => BrandPromise;
+  deleteBrand: (where: BrandWhereUniqueInput) => BrandPromise;
+  deleteManyBrands: (where?: BrandWhereInput) => BatchPayloadPromise;
   createCategory: (data: CategoryCreateInput) => CategoryPromise;
   updateCategory: (args: {
     data: CategoryUpdateInput;
@@ -521,6 +557,9 @@ export interface Subscription {
   blackList: (
     where?: BlackListSubscriptionWhereInput
   ) => BlackListSubscriptionPayloadSubscription;
+  brand: (
+    where?: BrandSubscriptionWhereInput
+  ) => BrandSubscriptionPayloadSubscription;
   category: (
     where?: CategorySubscriptionWhereInput
   ) => CategorySubscriptionPayloadSubscription;
@@ -659,6 +698,16 @@ export type CategoryOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type BrandOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "brandName_ASC"
+  | "brandName_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type ReportOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -765,7 +814,7 @@ export interface BlackListWhereInput {
   NOT?: Maybe<BlackListWhereInput[] | BlackListWhereInput>;
 }
 
-export type CategoryWhereUniqueInput = AtLeastOne<{
+export type BrandWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -822,6 +871,7 @@ export interface ProductWhereInput {
   requestInfo_not_starts_with?: Maybe<String>;
   requestInfo_ends_with?: Maybe<String>;
   requestInfo_not_ends_with?: Maybe<String>;
+  brand?: Maybe<BrandWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1396,6 +1446,63 @@ export interface SuperCategoryWhereInput {
   NOT?: Maybe<SuperCategoryWhereInput[] | SuperCategoryWhereInput>;
 }
 
+export interface BrandWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  brandName?: Maybe<String>;
+  brandName_not?: Maybe<String>;
+  brandName_in?: Maybe<String[] | String>;
+  brandName_not_in?: Maybe<String[] | String>;
+  brandName_lt?: Maybe<String>;
+  brandName_lte?: Maybe<String>;
+  brandName_gt?: Maybe<String>;
+  brandName_gte?: Maybe<String>;
+  brandName_contains?: Maybe<String>;
+  brandName_not_contains?: Maybe<String>;
+  brandName_starts_with?: Maybe<String>;
+  brandName_not_starts_with?: Maybe<String>;
+  brandName_ends_with?: Maybe<String>;
+  brandName_not_ends_with?: Maybe<String>;
+  product_every?: Maybe<ProductWhereInput>;
+  product_some?: Maybe<ProductWhereInput>;
+  product_none?: Maybe<ProductWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<BrandWhereInput[] | BrandWhereInput>;
+  OR?: Maybe<BrandWhereInput[] | BrandWhereInput>;
+  NOT?: Maybe<BrandWhereInput[] | BrandWhereInput>;
+}
+
+export type CategoryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type CommentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -1561,24 +1668,24 @@ export interface BlackListUpdateManyMutationInput {
   email?: Maybe<String>;
 }
 
-export interface CategoryCreateInput {
+export interface BrandCreateInput {
   id?: Maybe<ID_Input>;
-  categoryName: String;
-  product?: Maybe<ProductCreateManyWithoutCategoryInput>;
-  superCategory?: Maybe<SuperCategoryCreateOneWithoutCategoryInput>;
+  brandName: String;
+  product?: Maybe<ProductCreateManyWithoutBrandInput>;
 }
 
-export interface ProductCreateManyWithoutCategoryInput {
+export interface ProductCreateManyWithoutBrandInput {
   create?: Maybe<
-    ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
+    ProductCreateWithoutBrandInput[] | ProductCreateWithoutBrandInput
   >;
   connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
 }
 
-export interface ProductCreateWithoutCategoryInput {
+export interface ProductCreateWithoutBrandInput {
   id?: Maybe<ID_Input>;
   user?: Maybe<UserCreateOneWithoutMyProductInput>;
   productName: String;
+  category?: Maybe<CategoryCreateManyWithoutProductInput>;
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
@@ -1646,6 +1753,7 @@ export interface ProductCreateWithoutReviewsInput {
   productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
+  brand?: Maybe<BrandCreateOneWithoutProductInput>;
 }
 
 export interface CategoryCreateManyWithoutProductInput {
@@ -1734,6 +1842,7 @@ export interface ProductCreateWithoutUserInput {
   productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
+  brand?: Maybe<BrandCreateOneWithoutProductInput>;
 }
 
 export interface ReviewCreateManyWithoutProductInput {
@@ -1958,29 +2067,39 @@ export interface ProductCreateWithoutProductPhotoInput {
   reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
+  brand?: Maybe<BrandCreateOneWithoutProductInput>;
 }
 
-export interface CategoryUpdateInput {
-  categoryName?: Maybe<String>;
-  product?: Maybe<ProductUpdateManyWithoutCategoryInput>;
-  superCategory?: Maybe<SuperCategoryUpdateOneWithoutCategoryInput>;
+export interface BrandCreateOneWithoutProductInput {
+  create?: Maybe<BrandCreateWithoutProductInput>;
+  connect?: Maybe<BrandWhereUniqueInput>;
 }
 
-export interface ProductUpdateManyWithoutCategoryInput {
+export interface BrandCreateWithoutProductInput {
+  id?: Maybe<ID_Input>;
+  brandName: String;
+}
+
+export interface BrandUpdateInput {
+  brandName?: Maybe<String>;
+  product?: Maybe<ProductUpdateManyWithoutBrandInput>;
+}
+
+export interface ProductUpdateManyWithoutBrandInput {
   create?: Maybe<
-    ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
+    ProductCreateWithoutBrandInput[] | ProductCreateWithoutBrandInput
   >;
   delete?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   set?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   disconnect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
   update?: Maybe<
-    | ProductUpdateWithWhereUniqueWithoutCategoryInput[]
-    | ProductUpdateWithWhereUniqueWithoutCategoryInput
+    | ProductUpdateWithWhereUniqueWithoutBrandInput[]
+    | ProductUpdateWithWhereUniqueWithoutBrandInput
   >;
   upsert?: Maybe<
-    | ProductUpsertWithWhereUniqueWithoutCategoryInput[]
-    | ProductUpsertWithWhereUniqueWithoutCategoryInput
+    | ProductUpsertWithWhereUniqueWithoutBrandInput[]
+    | ProductUpsertWithWhereUniqueWithoutBrandInput
   >;
   deleteMany?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
   updateMany?: Maybe<
@@ -1989,14 +2108,15 @@ export interface ProductUpdateManyWithoutCategoryInput {
   >;
 }
 
-export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
+export interface ProductUpdateWithWhereUniqueWithoutBrandInput {
   where: ProductWhereUniqueInput;
-  data: ProductUpdateWithoutCategoryDataInput;
+  data: ProductUpdateWithoutBrandDataInput;
 }
 
-export interface ProductUpdateWithoutCategoryDataInput {
+export interface ProductUpdateWithoutBrandDataInput {
   user?: Maybe<UserUpdateOneWithoutMyProductInput>;
   productName?: Maybe<String>;
+  category?: Maybe<CategoryUpdateManyWithoutProductInput>;
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
@@ -2184,6 +2304,7 @@ export interface ProductUpdateWithoutReviewsDataInput {
   productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
+  brand?: Maybe<BrandUpdateOneWithoutProductInput>;
 }
 
 export interface CategoryUpdateManyWithoutProductInput {
@@ -2392,6 +2513,7 @@ export interface ProductUpdateWithoutUserDataInput {
   productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
+  brand?: Maybe<BrandUpdateOneWithoutProductInput>;
 }
 
 export interface ReviewUpdateManyWithoutProductInput {
@@ -2776,6 +2898,25 @@ export interface ProductUpdateWithoutProductPhotoDataInput {
   reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
+  brand?: Maybe<BrandUpdateOneWithoutProductInput>;
+}
+
+export interface BrandUpdateOneWithoutProductInput {
+  create?: Maybe<BrandCreateWithoutProductInput>;
+  update?: Maybe<BrandUpdateWithoutProductDataInput>;
+  upsert?: Maybe<BrandUpsertWithoutProductInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<BrandWhereUniqueInput>;
+}
+
+export interface BrandUpdateWithoutProductDataInput {
+  brandName?: Maybe<String>;
+}
+
+export interface BrandUpsertWithoutProductInput {
+  update: BrandUpdateWithoutProductDataInput;
+  create: BrandCreateWithoutProductInput;
 }
 
 export interface ProductUpsertWithoutProductPhotoInput {
@@ -3232,6 +3373,85 @@ export interface UserUpsertWithoutMyProductInput {
   create: UserCreateWithoutMyProductInput;
 }
 
+export interface ProductUpsertWithWhereUniqueWithoutBrandInput {
+  where: ProductWhereUniqueInput;
+  update: ProductUpdateWithoutBrandDataInput;
+  create: ProductCreateWithoutBrandInput;
+}
+
+export interface BrandUpdateManyMutationInput {
+  brandName?: Maybe<String>;
+}
+
+export interface CategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  categoryName: String;
+  product?: Maybe<ProductCreateManyWithoutCategoryInput>;
+  superCategory?: Maybe<SuperCategoryCreateOneWithoutCategoryInput>;
+}
+
+export interface ProductCreateManyWithoutCategoryInput {
+  create?: Maybe<
+    ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
+  >;
+  connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+}
+
+export interface ProductCreateWithoutCategoryInput {
+  id?: Maybe<ID_Input>;
+  user?: Maybe<UserCreateOneWithoutMyProductInput>;
+  productName: String;
+  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+  requestInfo: String;
+  brand?: Maybe<BrandCreateOneWithoutProductInput>;
+}
+
+export interface CategoryUpdateInput {
+  categoryName?: Maybe<String>;
+  product?: Maybe<ProductUpdateManyWithoutCategoryInput>;
+  superCategory?: Maybe<SuperCategoryUpdateOneWithoutCategoryInput>;
+}
+
+export interface ProductUpdateManyWithoutCategoryInput {
+  create?: Maybe<
+    ProductCreateWithoutCategoryInput[] | ProductCreateWithoutCategoryInput
+  >;
+  delete?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  connect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  set?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  disconnect?: Maybe<ProductWhereUniqueInput[] | ProductWhereUniqueInput>;
+  update?: Maybe<
+    | ProductUpdateWithWhereUniqueWithoutCategoryInput[]
+    | ProductUpdateWithWhereUniqueWithoutCategoryInput
+  >;
+  upsert?: Maybe<
+    | ProductUpsertWithWhereUniqueWithoutCategoryInput[]
+    | ProductUpsertWithWhereUniqueWithoutCategoryInput
+  >;
+  deleteMany?: Maybe<ProductScalarWhereInput[] | ProductScalarWhereInput>;
+  updateMany?: Maybe<
+    | ProductUpdateManyWithWhereNestedInput[]
+    | ProductUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ProductUpdateWithWhereUniqueWithoutCategoryInput {
+  where: ProductWhereUniqueInput;
+  data: ProductUpdateWithoutCategoryDataInput;
+}
+
+export interface ProductUpdateWithoutCategoryDataInput {
+  user?: Maybe<UserUpdateOneWithoutMyProductInput>;
+  productName?: Maybe<String>;
+  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
+  productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
+  isPublished?: Maybe<Boolean>;
+  requestInfo?: Maybe<String>;
+  brand?: Maybe<BrandUpdateOneWithoutProductInput>;
+}
+
 export interface ProductUpsertWithWhereUniqueWithoutCategoryInput {
   where: ProductWhereUniqueInput;
   update: ProductUpdateWithoutCategoryDataInput;
@@ -3317,6 +3537,7 @@ export interface ProductCreateInput {
   productPhoto?: Maybe<PhotoCreateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo: String;
+  brand?: Maybe<BrandCreateOneWithoutProductInput>;
 }
 
 export interface ProductUpdateInput {
@@ -3327,6 +3548,7 @@ export interface ProductUpdateInput {
   productPhoto?: Maybe<PhotoUpdateOneWithoutProductInput>;
   isPublished?: Maybe<Boolean>;
   requestInfo?: Maybe<String>;
+  brand?: Maybe<BrandUpdateOneWithoutProductInput>;
 }
 
 export interface ProductUpdateManyMutationInput {
@@ -3614,6 +3836,17 @@ export interface BlackListSubscriptionWhereInput {
   >;
 }
 
+export interface BrandSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<BrandWhereInput>;
+  AND?: Maybe<BrandSubscriptionWhereInput[] | BrandSubscriptionWhereInput>;
+  OR?: Maybe<BrandSubscriptionWhereInput[] | BrandSubscriptionWhereInput>;
+  NOT?: Maybe<BrandSubscriptionWhereInput[] | BrandSubscriptionWhereInput>;
+}
+
 export interface CategorySubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -3877,16 +4110,16 @@ export interface AggregateBlackListSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Category {
+export interface Brand {
   id: ID_Output;
-  categoryName: String;
+  brandName: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
-export interface CategoryPromise extends Promise<Category>, Fragmentable {
+export interface BrandPromise extends Promise<Brand>, Fragmentable {
   id: () => Promise<ID_Output>;
-  categoryName: () => Promise<String>;
+  brandName: () => Promise<String>;
   product: <T = FragmentableArray<Product>>(args?: {
     where?: ProductWhereInput;
     orderBy?: ProductOrderByInput;
@@ -3896,16 +4129,15 @@ export interface CategoryPromise extends Promise<Category>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  superCategory: <T = SuperCategoryPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface CategorySubscription
-  extends Promise<AsyncIterator<Category>>,
+export interface BrandSubscription
+  extends Promise<AsyncIterator<Brand>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  categoryName: () => Promise<AsyncIterator<String>>;
+  brandName: () => Promise<AsyncIterator<String>>;
   product: <T = Promise<AsyncIterator<ProductSubscription>>>(args?: {
     where?: ProductWhereInput;
     orderBy?: ProductOrderByInput;
@@ -3915,16 +4147,15 @@ export interface CategorySubscription
     first?: Int;
     last?: Int;
   }) => T;
-  superCategory: <T = SuperCategorySubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface CategoryNullablePromise
-  extends Promise<Category | null>,
+export interface BrandNullablePromise
+  extends Promise<Brand | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  categoryName: () => Promise<String>;
+  brandName: () => Promise<String>;
   product: <T = FragmentableArray<Product>>(args?: {
     where?: ProductWhereInput;
     orderBy?: ProductOrderByInput;
@@ -3934,7 +4165,6 @@ export interface CategoryNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  superCategory: <T = SuperCategoryPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3973,6 +4203,7 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
   productPhoto: <T = PhotoPromise>() => T;
   isPublished: () => Promise<Boolean>;
   requestInfo: () => Promise<String>;
+  brand: <T = BrandPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -4004,6 +4235,7 @@ export interface ProductSubscription
   productPhoto: <T = PhotoSubscription>() => T;
   isPublished: () => Promise<AsyncIterator<Boolean>>;
   requestInfo: () => Promise<AsyncIterator<String>>;
+  brand: <T = BrandSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -4035,6 +4267,7 @@ export interface ProductNullablePromise
   productPhoto: <T = PhotoPromise>() => T;
   isPublished: () => Promise<Boolean>;
   requestInfo: () => Promise<String>;
+  brand: <T = BrandPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -4579,6 +4812,68 @@ export interface PhotoNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
+export interface Category {
+  id: ID_Output;
+  categoryName: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface CategoryPromise extends Promise<Category>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  categoryName: () => Promise<String>;
+  product: <T = FragmentableArray<Product>>(args?: {
+    where?: ProductWhereInput;
+    orderBy?: ProductOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  superCategory: <T = SuperCategoryPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface CategorySubscription
+  extends Promise<AsyncIterator<Category>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  categoryName: () => Promise<AsyncIterator<String>>;
+  product: <T = Promise<AsyncIterator<ProductSubscription>>>(args?: {
+    where?: ProductWhereInput;
+    orderBy?: ProductOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  superCategory: <T = SuperCategorySubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface CategoryNullablePromise
+  extends Promise<Category | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  categoryName: () => Promise<String>;
+  product: <T = FragmentableArray<Product>>(args?: {
+    where?: ProductWhereInput;
+    orderBy?: ProductOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  superCategory: <T = SuperCategoryPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
 export interface SuperCategory {
   id: ID_Output;
   superCategoryName: String;
@@ -4638,6 +4933,60 @@ export interface SuperCategoryNullablePromise
   }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface BrandConnection {
+  pageInfo: PageInfo;
+  edges: BrandEdge[];
+}
+
+export interface BrandConnectionPromise
+  extends Promise<BrandConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BrandEdge>>() => T;
+  aggregate: <T = AggregateBrandPromise>() => T;
+}
+
+export interface BrandConnectionSubscription
+  extends Promise<AsyncIterator<BrandConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BrandEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBrandSubscription>() => T;
+}
+
+export interface BrandEdge {
+  node: Brand;
+  cursor: String;
+}
+
+export interface BrandEdgePromise extends Promise<BrandEdge>, Fragmentable {
+  node: <T = BrandPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface BrandEdgeSubscription
+  extends Promise<AsyncIterator<BrandEdge>>,
+    Fragmentable {
+  node: <T = BrandSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateBrand {
+  count: Int;
+}
+
+export interface AggregateBrandPromise
+  extends Promise<AggregateBrand>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateBrandSubscription
+  extends Promise<AsyncIterator<AggregateBrand>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface CategoryConnection {
@@ -5436,6 +5785,56 @@ export interface BlackListPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface BrandSubscriptionPayload {
+  mutation: MutationType;
+  node: Brand;
+  updatedFields: String[];
+  previousValues: BrandPreviousValues;
+}
+
+export interface BrandSubscriptionPayloadPromise
+  extends Promise<BrandSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = BrandPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = BrandPreviousValuesPromise>() => T;
+}
+
+export interface BrandSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<BrandSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = BrandSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = BrandPreviousValuesSubscription>() => T;
+}
+
+export interface BrandPreviousValues {
+  id: ID_Output;
+  brandName: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface BrandPreviousValuesPromise
+  extends Promise<BrandPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  brandName: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface BrandPreviousValuesSubscription
+  extends Promise<AsyncIterator<BrandPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  brandName: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface CategorySubscriptionPayload {
   mutation: MutationType;
   node: Category;
@@ -6103,6 +6502,10 @@ export const models: Model[] = [
   },
   {
     name: "Product",
+    embedded: false
+  },
+  {
+    name: "Brand",
     embedded: false
   },
   {
